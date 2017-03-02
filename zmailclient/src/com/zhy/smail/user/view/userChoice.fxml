@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1024.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.76-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zhy.smail.user.view.UserChoiceController">
+    <top>
+        <ToolBar prefHeight="40.0" prefWidth="1260.0" BorderPane.alignment="CENTER">
+            <items>
+                <Button mnemonicParsing="false" onAction="#onBackAction" text="返回" />
+                <Region fx:id="topLeft" />
+                <Label text="选择用户" />
+                <Region fx:id="topRight" />
+                <Label fx:id="lblTimer" text="99" />
+            </items>
+        </ToolBar>
+    </top>
+    <center>
+        <VBox spacing="10.0">
+            <HBox spacing="10.0">
+                <children>
+               <Label text="栋">
+                  <padding>
+                     <Insets left="30.0" />
+                  </padding>
+                  <HBox.margin>
+                     <Insets />
+                  </HBox.margin>
+               </Label>
+                    <TextField fx:id="txtBuildingNo" prefHeight="23.0" prefWidth="98.0">
+                  <opaqueInsets>
+                     <Insets left="30.0" />
+                  </opaqueInsets></TextField>
+                    <Label fx:id="lblUnitNo" text="单元:">
+                        <HBox.margin>
+                            <Insets left="20.0" />
+                        </HBox.margin></Label>
+                    <TextField fx:id="txtUnitNo" prefHeight="23.0" prefWidth="99.0" />
+                    <Label fx:id="lblRoomNo" text="房号:">
+                        <HBox.margin>
+                            <Insets left="20.0" />
+                        </HBox.margin></Label>
+                    <TextField fx:id="txtRoomNo" prefHeight="23.0" prefWidth="97.0" />
+               <Button mnemonicParsing="false" onAction="#onQueryAction" text="查询" />
+                    
+                </children>
+            <opaqueInsets>
+               <Insets />
+            </opaqueInsets>
+            </HBox>
+            <TableView fx:id="ownerTable" minHeight="700.0" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="tcBuildingNo" prefWidth="150" text="栋" />
+                    <TableColumn fx:id="tcUnitNo" prefWidth="150" text="单元" />
+                    <TableColumn fx:id="tcRoomNo" prefWidth="155.0" text="房号" />
+                    <TableColumn fx:id="tcPhoneNo" prefWidth="228.0" text="手机" />
+                    <TableColumn fx:id="tcCardNo1" prefWidth="319.0" text="卡号1" />
+                    <TableColumn fx:id="tcCardNo2" prefWidth="327.0" text="卡号2" />
+                    <TableColumn fx:id="tcCardNo3" prefWidth="300.0" text="卡号3" />
+                    <TableColumn fx:id="tcCardNo4" prefWidth="300.0" text="卡号4" />
+                    <TableColumn fx:id="tcCardNo5" prefWidth="300.0" text="卡号5" />
+                    <TableColumn fx:id="tcCardNo6" prefWidth="300.0" text="卡号6" />
+                    <TableColumn fx:id="tcCardNo7" prefWidth="300.0" text="卡号7" />
+                    <TableColumn fx:id="tcCardNo8" prefWidth="300.0" text="卡号8" />
+                    <TableColumn fx:id="tcCardNo9" prefWidth="300.0" text="卡号9" />
+                    <TableColumn fx:id="tcCardNo10" prefWidth="300.0" text="卡号10" />
+                </columns>
+            </TableView>
+        </VBox>
+    </center>
+   <bottom>
+      <Button mnemonicParsing="false" onAction="#onOkAction" text="选择" BorderPane.alignment="CENTER" />
+   </bottom>
+
+</BorderPane>

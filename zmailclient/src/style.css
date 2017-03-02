@@ -1,0 +1,47 @@
+.root{
+    -fx-font-size: 32px !important;
+    -fx-background-color: #ffffff;
+    -fx-font-family: "Microsoft YaHei",Arial,Helvetica,sans-serif,"宋体";
+    -fx-background-image: url("/images/back3.jpg");
+
+}
+
+.label{
+    -fx-text-fill: black;
+}
+
+.label-title{
+    -fx-font-size: 150%;
+}
+.button-label{
+    -fx-font-size: 125%;
+}
+
+
+
+.full-button{
+    -fx-text-fill: #006464;
+    -fx-background-color: #DFB951;
+    -fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 0 );
+    -fx-padding: 5;
+}
+
+.locked-button{
+    -fx-text-fill: #006464;
+    -fx-background-color: #ff0000;
+    -fx-padding: 5;
+}
+.mail-button{
+    -fx-image: url("/resources/images/button/email.png");
+
+}
+
+.empty-button{
+    -fx-padding: 5;
+    -fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 0 );
+}
+
+.selected-toggle{
+    -fx-background-color: #DFB951;
+}
+

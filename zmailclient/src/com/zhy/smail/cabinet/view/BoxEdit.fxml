@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1020.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.76-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zhy.smail.cabinet.view.BoxEditController">
+   <children>
+       <ToolBar prefHeight="60.0" prefWidth="1220.0">
+           <items>
+               <HBox fx:id="topToolbar" prefHeight="60.0" prefWidth="1210.0">
+                   <children>
+                       <Button mnemonicParsing="false" onAction="#onBackAction" text="返回" />
+                       <Pane HBox.hgrow="ALWAYS" />
+                       <Label fx:id="lblTitle" text="箱门信息" GridPane.halignment="CENTER" />
+                       <Pane HBox.hgrow="ALWAYS" />
+                       <Label fx:id="lblTimer" text="99" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
+                   </children>
+               </HBox>
+           </items>
+       </ToolBar>
+       <GridPane prefWidth="1270">
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="100.0" />
+            <RowConstraints minHeight="10.0" prefHeight="100.0" />
+            <RowConstraints minHeight="10.0" prefHeight="100.0" />
+            <RowConstraints minHeight="10.0" prefHeight="100.0" />
+             <RowConstraints minHeight="10.0" prefHeight="100.0" />
+            <RowConstraints minHeight="10.0" prefHeight="100.0" />
+            <RowConstraints minHeight="10.0" prefHeight="100.0" />
+         </rowConstraints>
+         <columnConstraints>
+            <ColumnConstraints minWidth="10.0" prefWidth="135.0" />
+            <ColumnConstraints minWidth="10.0" prefWidth="300.0" />
+            <ColumnConstraints minWidth="10.0" prefWidth="600.0" />
+            <ColumnConstraints minWidth="10.0" prefWidth="135.0" />
+         </columnConstraints>
+         <children>
+            <Label text="箱门编号:" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
+            <Label fx:id="lblSequence" GridPane.columnIndex="2" />
+             <Label text="箱门类别:" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+            <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+               <children>
+                  <ToggleButton fx:id="btnBoxMail" mnemonicParsing="false" onAction="#onBoxTypeChange" selected="true" text="信箱">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="boxType" />
+                     </toggleGroup></ToggleButton>
+                  <ToggleButton fx:id="btnBoxSmall" mnemonicParsing="false" onAction="#onBoxTypeChange" text="小包箱" toggleGroup="$boxType" />
+                  <ToggleButton fx:id="btnBoxMiddle" mnemonicParsing="false" onAction="#onBoxTypeChange" text="中包箱" toggleGroup="$boxType" />
+                  <ToggleButton fx:id="btnBoxLarge" mnemonicParsing="false" onAction="#onBoxTypeChange" text="大包箱" toggleGroup="$boxType" />
+               </children>
+            </HBox>
+             <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="2" GridPane.rowIndex="5">
+               <children>
+                  <Button fx:id="openButton" mnemonicParsing="false" onAction="#onOpenBoxAction" text="开箱" />
+                   <Button fx:id="lockButton" mnemonicParsing="false" onAction="#onLockBoxAction" text="锁箱" />
+                  <Button fx:id="clearButton" mnemonicParsing="false" onAction="#onClearBoxAction" text="清箱" />
+               </children>
+             </HBox>
+            <Label text="箱门状态：" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+            <Label fx:id="lblOpened" text="关闭" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+             <Label text="锁定状态：" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+             <Label fx:id="lblLocked" text="关闭" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <Label text="使用状态:" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
+            <Label fx:id="lblUseStatus" text="空闲" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+         </children></GridPane>
+   </children>
+</VBox>

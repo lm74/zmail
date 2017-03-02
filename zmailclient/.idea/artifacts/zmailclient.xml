@@ -1,0 +1,22 @@
+<component name="ArtifactManager">
+  <artifact type="javafx" name="zmailclient">
+    <output-path>$PROJECT_DIR$/out/artifacts/zmailclient</output-path>
+    <properties id="javafx-properties">
+      <options>
+        <option name="appClass" value="com.zhy.smail.MainApp" />
+        <option name="description" value="" />
+        <option name="htmlPlaceholderId" value="" />
+        <option name="nativeBundle" value="all" />
+        <option name="title" value="test" />
+        <option name="vendor" value="test" />
+        <option name="version" value="test" />
+      </options>
+    </properties>
+    <root id="root">
+      <element id="archive" name="zmailclient.jar">
+        <element id="module-output" name="zmailclient" />
+      </element>
+      <element id="library" level="project" name="lib1" />
+    </root>
+  </artifact>
+</component>

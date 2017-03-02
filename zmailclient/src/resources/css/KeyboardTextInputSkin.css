@@ -1,0 +1,7 @@
+.text-field { 
+	-fx-skin: "com.zhy.smail.component.keyboard.control.skin.KeyboardTextFieldSkin";
+}
+
+.text-area { 
+	-fx-skin: "com.zhy.smail.component.keyboard.control.skin.KeyboardTextAreaSkin";
+}

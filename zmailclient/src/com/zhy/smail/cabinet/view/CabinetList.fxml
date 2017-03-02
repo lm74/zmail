@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox alignment="center" prefHeight="1024.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.76-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zhy.smail.cabinet.view.CabinetListController">
+    <children>
+        <ToolBar fx:id="topToolbar" prefHeight="40.0" prefWidth="1240.0">
+            <items>
+                <Button mnemonicParsing="false" onAction="#onBackAction" text="返回" />
+                <Pane HBox.hgrow="ALWAYS" />
+                <Label text="箱柜管理" GridPane.halignment="CENTER" />
+                <Pane HBox.hgrow="ALWAYS" />
+                <Label fx:id="lblTimer" text="99" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
+            </items>
+        </ToolBar>
+
+        <ScrollPane>
+        <content>
+        <TableView fx:id="cabinetTable" minHeight="700.0" prefHeight="874.0" prefWidth="2260.0">
+            <columns>
+                <TableColumn fx:id="tcCabinetNo" prefWidth="100" text="柜号" />
+                <TableColumn fx:id="tcBoxNumber" prefWidth="160" text="箱门数量" />
+                <TableColumn fx:id="tcController1BoxNumber" prefWidth="200.0" text="控1箱门数" />
+                <TableColumn fx:id="tcController2BoxNumber" prefWidth="200.0" text="控2箱门数" />
+                <TableColumn fx:id="tcController3BoxNumber" prefWidth="200.0" text="控3箱门数" />
+                <TableColumn fx:id="tcController4BoxNumber"  prefWidth="200.0" text="控4箱门数" />
+                <TableColumn fx:id="tcController5BoxNumber"  prefWidth="200.0" text="控5箱门数" />
+                <TableColumn fx:id="tcController6BoxNumber"  prefWidth="200.0" text="控6箱门数" />
+                <TableColumn fx:id="tcController7BoxNumber"  prefWidth="200.0" text="控7箱门数" />
+                <TableColumn fx:id="tcController8BoxNumber"  prefWidth="200.0" text="控8箱门数" />
+                <TableColumn fx:id="tcController9BoxNumber"  prefWidth="200.0" text="控9箱门数" />
+                <TableColumn fx:id="tcController10BoxNumber"  prefWidth="200.0" text="控10箱门数" />
+            </columns>
+        </TableView>
+        </content>
+        </ScrollPane>
+
+        <ToolBar prefHeight="40.0" prefWidth="200.0">
+            <items>
+                <Button onAction="#onAddAction" mnemonicParsing="false" text="增加" />
+                <Button onAction="#onDeleteAction" mnemonicParsing="false" text="删除" />
+                <Button onAction="#onEditAction" mnemonicParsing="false" text="修改" />
+            </items>
+        </ToolBar>
+    </children>
+</VBox>

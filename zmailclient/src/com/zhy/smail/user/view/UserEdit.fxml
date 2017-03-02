@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1024.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.76-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zhy.smail.user.view.UserEditController">
+   <top>
+      <ToolBar prefHeight="40.0" prefWidth="1260.0" BorderPane.alignment="CENTER">
+        <items>
+          <Button mnemonicParsing="false" onAction="#onBackAction" text="返回" />
+            <Region fx:id="topLeft" />
+            <Label text="增加用户" />
+            <Region fx:id="topRight" />
+            <Label fx:id="lblTimer" text="99" />
+        </items>
+      </ToolBar>
+   </top>
+   <center>
+      <GridPane BorderPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="10.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="60.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="160.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="160.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+
+        </rowConstraints>
+         <children>
+            <Label fx:id="lblBuildingNo" text="栋:" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
+            <TextField fx:id="txtPhoneNo" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <TextField fx:id="txtCard1No" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <TextField fx:id="txtCard2No" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <TextField fx:id="txtCard3No" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+            <Label text="电话:" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+            <Label text="卡号1:" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+            <Label text="卡号2:" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+            <Label text="卡号3:" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
+            <Label text="卡号4:" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
+            <Label text="卡号5:" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
+            <Label text="卡号6:" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+            <Label text="卡号7:" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+            <Label text="卡号8:" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+            <Label text="卡号9:" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
+            <Label text="卡号10:" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
+            <TextField fx:id="txtCard4No" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+            <TextField fx:id="txtCard5No" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+            <TextField fx:id="txtCard6No" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+            <TextField fx:id="txtCard7No" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+            <TextField fx:id="txtCard8No" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+            <TextField fx:id="txtCard9No" GridPane.columnIndex="4" GridPane.rowIndex="4" />
+            <TextField fx:id="txtCard10No" GridPane.columnIndex="4" GridPane.rowIndex="5" />
+            <Button mnemonicParsing="false" onAction="#onSave" text="保存" GridPane.columnIndex="4" GridPane.rowIndex="6" />
+            <HBox fx:id="userNameTool" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="2" GridPane.columnSpan="4" GridPane.hgrow="SOMETIMES" GridPane.valignment="CENTER">
+               <children>
+                  <TextField fx:id="txtBuildingNo" prefHeight="23.0" prefWidth="98.0" />
+                  <Label fx:id="lblUnitNo" text="单元:">
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin></Label>
+                  <TextField fx:id="txtUnitNo" prefHeight="23.0" prefWidth="99.0" />
+                  <Label fx:id="lblRoomNo" text="房号:">
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin></Label>
+                  <TextField fx:id="txtRoomNo" prefHeight="23.0" prefWidth="97.0" />
+                  <Label fx:id="lblUserType" text="类别:">
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin></Label>
+                  <RadioButton fx:id="rdoManager" mnemonicParsing="false" selected="true" text="管理员">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="manager" />
+                     </toggleGroup>
+                  </RadioButton>
+                  <RadioButton fx:id="rdoAdvanceManager" mnemonicParsing="false" text="高级管理员" toggleGroup="$manager" />
+                  <RadioButton fx:id="rdoFactory" mnemonicParsing="false" text="厂家" toggleGroup="$manager" />
+               </children>
+            </HBox>
+         </children>
+      </GridPane>
+   </center>
+</BorderPane>
