@@ -28,6 +28,15 @@ public class BoxEntry {
     private int boxNo;
     private int status;
     private int sequence;
+    private int boxId;
+
+    public int getBoxId() {
+        return boxId;
+    }
+
+    public void setBoxId(int boxId) {
+        this.boxId = boxId;
+    }
 
     public int getSequence() {
         return sequence;

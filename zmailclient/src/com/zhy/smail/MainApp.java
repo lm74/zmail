@@ -12,6 +12,7 @@ import com.zhy.smail.config.GlobalOption;
 import com.zhy.smail.config.LocalConfig;
 import com.zhy.smail.delivery.view.*;
 import com.zhy.smail.manager.view.ManagerController;
+import com.zhy.smail.manager.view.OpeningLogController;
 import com.zhy.smail.pickup.view.PickupController;
 import com.zhy.smail.restful.RestfulResult;
 import com.zhy.smail.restful.RfFaultEvent;
@@ -106,6 +107,7 @@ public class MainApp extends Application {
         builder.initScale(scale);
         builder.initLocale(Locale.CHINESE);
         KeyBoardPopup popup = builder.build();
+
 
         popup.addDoubleClickEventFilter(primaryStage);
         popup.addFocusListener(rootScene);
@@ -413,6 +415,10 @@ public class MainApp extends Application {
 
     public OccupyBoxController goOccupyBox( ){
         return (OccupyBoxController)loadFxml("delivery/view/occupyBox.fxml");
+    }
+
+    public OpeningLogController goOpeningLog( ){
+        return (OpeningLogController)loadFxml("manager/view/openingLog.fxml");
     }
 
     private RootController loadFxml(String path){

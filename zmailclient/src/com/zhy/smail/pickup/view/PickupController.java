@@ -3,6 +3,7 @@ package com.zhy.smail.pickup.view;
 import com.zhy.smail.MainApp;
 import com.zhy.smail.cabinet.entity.BoxInfo;
 import com.zhy.smail.cabinet.entity.CabinetEntry;
+import com.zhy.smail.cabinet.entity.CabinetNode;
 import com.zhy.smail.component.SimpleDialog;
 import com.zhy.smail.component.music.Speaker;
 import com.zhy.smail.config.GlobalOption;
@@ -102,8 +103,19 @@ public class PickupController  implements Initializable {
             public void doResult(RfResultEvent event) {
                 if(event.getResult() == RfResultEvent.OK && event.getData() != null) return;
 
+                List<CabinetNode> nodes = (List<CabinetNode>) event.getData();
+                String nodeMessage = "";
+                for(int i=0; i<nodes.size(); i++){
+                    CabinetNode node = nodes.get(i);
+                    if(!node.getCabinetId().equals(GlobalOption.currentCabinet.getCabinetId())){
+                        nodeMessage += "," + node.getCabinetNo().toString();
+                    }
 
-                //lblNotify.setText();
+                }
+                if(!nodeMessage.equals("")) {
+                    nodeMessage = nodeMessage.substring(1);
+                    lblNotify.setText("您还有信包在如下柜中：" + nodeMessage);
+                }
             }
 
             @Override

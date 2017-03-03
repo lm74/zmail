@@ -1,6 +1,7 @@
 package com.zhy.smail.manager.service;
 
 import com.zhy.smail.cabinet.entity.CabinetInfo;
+import com.zhy.smail.cabinet.entity.CabinetNode;
 import com.zhy.smail.config.GlobalOption;
 import com.zhy.smail.manager.entity.DeliveryLog;
 import com.zhy.smail.restful.*;
@@ -23,7 +24,11 @@ public class DeliveryLogService {
 
     public static void listAllByOwner(Integer ownerId, RestfulResult result){
         String url = GlobalOption.getServerUrl() +"/deliveryLog/allByOwner?ownerId="+ownerId+"&pickuped=0";
-        HttpOperator.get(url,getDefaultResultResult(result));
+        HttpOperator.get(url,new DefaultRestfulResult(result){
+            protected Object changeToObject(Object original){
+                return JsonOperator.toObject(original, CabinetNode.class);
+            }
+        });
     }
 
     public static void listByDelivery(Integer cabinetId, Integer deliveryMan, Integer pickuped, Integer periodType, RestfulResult result){

@@ -114,6 +114,10 @@ public class BoxInfo {
     private Integer deliveryMan;
     private Integer owner;
 
+    public String toString(){
+        return String.valueOf(this.controlSequence);
+    }
+
     public Button createButton(){
         String styleClass;
         String title = String.valueOf(getSequence()) + " ";

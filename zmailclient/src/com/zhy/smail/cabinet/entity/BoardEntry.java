@@ -24,7 +24,7 @@ public class BoardEntry {
         this.boxEntrys = boxEntrys;
     }
 
-    public int[] getBoxIds(){
+    public int[] getBoxNos(){
         int[] boxList = new int[boxEntrys.size()];
         for(int i = 0; i< boxEntrys.size(); i++){
             boxList[i] = boxEntrys.get(i).getBoxNo();
@@ -32,8 +32,8 @@ public class BoardEntry {
         return boxList;
     }
 
-    public BoxEntry getBoxEntry(Integer boxId){
-        return boxEntryMap.get(boxId);
+    public BoxEntry getBoxEntry(Integer boxNo){
+        return boxEntryMap.get(boxNo);
     }
 
     public void addEntry(BoxEntry boxEntry){
@@ -61,19 +61,20 @@ public class BoardEntry {
         boxEntryMap = new HashMap<>();
     }
 
-    public BoxEntry addBoxId(Integer boxId){
-        BoxEntry boxEntry = boxEntryMap.get(boxId);
+    public BoxEntry addBoxNo(Integer boxNo){
+        BoxEntry boxEntry = boxEntryMap.get(boxNo);
         if(boxEntry == null){
-            boxEntry = new BoxEntry(boxId, -1);
+            boxEntry = new BoxEntry(boxNo, -1);
             boxEntrys.add(boxEntry);
-            boxEntryMap.put(boxId, boxEntry);
+            boxEntryMap.put(boxNo, boxEntry);
         }
 
         return boxEntry;
     }
 
     public void addBox(BoxInfo boxInfo){
-        BoxEntry boxEntry =addBoxId(boxInfo.getControlSequence());
+        BoxEntry boxEntry = addBoxNo(boxInfo.getControlSequence());
         boxEntry.setSequence(boxInfo.getSequence());
+        boxEntry.setBoxId(boxInfo.getBoxId());
     }
 }

@@ -2,9 +2,15 @@ package com.zhy.smail.task;
 
 import com.zhy.smail.cabinet.entity.BoxInfo;
 import com.zhy.smail.component.SimpleDialog;
+import com.zhy.smail.config.GlobalOption;
 import com.zhy.smail.lcp.LcProtocol;
 import com.zhy.smail.lcp.LcResult;
 import com.zhy.smail.lcp.command.LcCommand;
+import com.zhy.smail.manager.service.OpeningLogService;
+import com.zhy.smail.restful.DefaultRestfulResult;
+import com.zhy.smail.restful.RestfulResult;
+import com.zhy.smail.restful.RfFaultEvent;
+import com.zhy.smail.restful.RfResultEvent;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 
@@ -39,6 +45,7 @@ public class OpenBoxTask extends Task<Integer> {
             } else {
                 if (result.getErrorNo() == LcResult.SUCCESS) {
                     updateValue(0);
+                    OpeningLogService.save(GlobalOption.currentUser.getUserId(), box.getBoxId(), "开箱成功", new DefaultRestfulResult());
                     return 0;
                 } else {
                     updateMessage("开箱失败，请重试。");
@@ -56,6 +63,7 @@ public class OpenBoxTask extends Task<Integer> {
             e.printStackTrace();
         }
         updateValue(-1);
+        OpeningLogService.save(GlobalOption.currentUser.getUserId(), box.getBoxId(), "开箱失败", new DefaultRestfulResult());
         return -1;
     }
 

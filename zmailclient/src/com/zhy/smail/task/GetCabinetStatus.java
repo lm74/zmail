@@ -50,7 +50,7 @@ public class GetCabinetStatus extends Task<Integer> {
     }
 
     public void getBoardStatus(BoardEntry boardEntry){
-        int[] boxList = boardEntry.getBoxIds();
+        int[] boxList = boardEntry.getBoxNos();
         ResponseManager.response.clear();
         try {
             LcProtocol protocol = new LcProtocol();

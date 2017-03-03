@@ -2,6 +2,7 @@ package com.zhy.smail.restful;
 
 import com.zhy.smail.common.json.JsonResult;
 import org.apache.http.HttpEntity;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
@@ -74,10 +75,12 @@ public class HttpOperator {
         try{
             HttpPost httpPost = new HttpPost(url);
             //httpPost.addHeader(HTTP.CONTENT_TYPE, "application/x-www-form-urlencoded");
-            StringEntity se = new StringEntity(value);
-            //se.setContentEncoding("UTF-8");
+            StringEntity se = new StringEntity(value, "UTF-8");
+            se.setContentEncoding("UTF-8");
             se.setContentType("application/json");
+
             httpPost.setEntity(se);
+
             CloseableHttpResponse response = httpClient.execute(httpPost);
             try{
                 if(response.getStatusLine().getStatusCode() == 200){

@@ -109,6 +109,11 @@ public class ManagerController implements Initializable{
     }
 
     @FXML
+    public void onOpeningLogAction(ActionEvent event){
+        app.goOpeningLog();
+    }
+
+    @FXML
     public void onExitPlatform(){
         app.stopApplication();
     }

@@ -32,6 +32,17 @@
             <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
+         <children>
+            <Button mnemonicParsing="false" onAction="#onExitPlatform" text="退出系统" GridPane.columnIndex="2">
+                <graphic>
+                    <ImageView fitHeight="30.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@/resources/images/button/logout.png" />
+                        </image>
+                    </ImageView>
+                </graphic>
+                    </Button>
+         </children>
         </GridPane>
 
         <GridPane prefHeight="935.0" prefWidth="1200.0">
@@ -55,7 +66,7 @@
                             </image>
                         </ImageView>
                     </graphic></Button>
-                <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onLogListAction" prefHeight="178.0" prefWidth="287.0" text="记录查询" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onLogListAction" prefHeight="178.0" prefWidth="287.0" text="投件记录" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                     <graphic>
                         <ImageView fitHeight="130.0" fitWidth="123.0" pickOnBounds="true" preserveRatio="true">
                             <image>
@@ -90,11 +101,11 @@
                     </ImageView>
                 </graphic>
                     </Button>
-            <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onExitPlatform" prefHeight="178.0" prefWidth="287.0" text="退出系统" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+            <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onOpeningLogAction" prefHeight="178.0" prefWidth="287.0" text="开箱记录" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                 <graphic>
                     <ImageView fitHeight="130.0" fitWidth="123.0" pickOnBounds="true" preserveRatio="true">
                         <image>
-                            <Image url="@/resources/images/button/exit.png" />
+                            <Image url="@/resources/images/button/opening.png" />
                         </image>
                     </ImageView>
                 </graphic>

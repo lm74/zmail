@@ -10,6 +10,8 @@ import com.zhy.smail.lcp.LcProtocol;
 import com.zhy.smail.lcp.LcResult;
 import com.zhy.smail.lcp.command.LcCommand;
 import com.zhy.smail.manager.service.DeliveryLogService;
+import com.zhy.smail.manager.service.OpeningLogService;
+import com.zhy.smail.restful.DefaultRestfulResult;
 import com.zhy.smail.restful.RestfulResult;
 import com.zhy.smail.restful.RfFaultEvent;
 import com.zhy.smail.restful.RfResultEvent;
@@ -105,11 +107,13 @@ public class ConfirmDeliveryController extends RootController implements Initial
                                 public void run() {
                                     confirmButton.setDisable(false);
                                     lblConfirmMessage.setVisible(true);
+                                    OpeningLogService.save(GlobalOption.currentUser.getUserId(),  box.getBoxId(), "开箱成功", new DefaultRestfulResult());
                                     Speaker.delivery();
                                 }
                             });
 
                             updateValue(0);
+                            return null;
                         } else {
                             updateMessage("开"+box.getSequence()+"号箱门箱失败，请重试或联系管理员。");
                             updateValue(-1);
@@ -127,6 +131,7 @@ public class ConfirmDeliveryController extends RootController implements Initial
                     e.printStackTrace();
                 }
                 updateValue(-1);
+                OpeningLogService.save(GlobalOption.currentUser.getUserId(),  box.getBoxId(), "开箱失败", new DefaultRestfulResult());
                 return null;
             }
         }, "正在开箱...", "开箱");

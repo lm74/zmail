@@ -1,12 +1,14 @@
 package com.zhy.smail.task;
 
 import com.zhy.smail.cabinet.entity.BoardEntry;
-import com.zhy.smail.cabinet.entity.BoxInfo;
 import com.zhy.smail.cabinet.entity.CabinetEntry;
+import com.zhy.smail.config.GlobalOption;
 import com.zhy.smail.lcp.BoxEntry;
 import com.zhy.smail.lcp.LcProtocol;
 import com.zhy.smail.lcp.LcResult;
 import com.zhy.smail.lcp.command.LcCommand;
+import com.zhy.smail.manager.service.OpeningLogService;
+import com.zhy.smail.restful.DefaultRestfulResult;
 import javafx.concurrent.Task;
 
 import java.io.IOException;
@@ -44,7 +46,7 @@ public class OpenAllBoxTask  extends Task<Integer> {
     }
 
     public void openBoardBoxes(BoardEntry boardEntry){
-        int[] boxList = boardEntry.getBoxIds();
+        int[] boxList = boardEntry.getBoxNos();
         for (int i=0; i<boxList.length; i++) {
             int boxId = boxList[i];
             BoxEntry boxEntry = boardEntry.getBoxEntry(boxId);
@@ -72,7 +74,8 @@ public class OpenAllBoxTask  extends Task<Integer> {
 
                 } else {
                     if (result.getErrorNo() == LcResult.SUCCESS) {
-
+                        OpeningLogService.save(GlobalOption.currentUser.getUserId(),  boxEntry.getBoxId(), "开箱成功", new DefaultRestfulResult());
+                        continue;
                     } else {
                         updateMessage("打开箱门("+(boxEntry.getSequence())+")失败！");
                         try {
@@ -91,6 +94,7 @@ public class OpenAllBoxTask  extends Task<Integer> {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            OpeningLogService.save(GlobalOption.currentUser.getUserId(), boxEntry.getBoxId(), "开箱失败", new DefaultRestfulResult());
         }
 
 

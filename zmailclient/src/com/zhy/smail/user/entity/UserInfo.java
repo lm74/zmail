@@ -393,4 +393,8 @@ public class UserInfo {
     private SimpleStringProperty cardNo9Property;
     private String cardNo10;
     private SimpleStringProperty cardNo10Property;
+
+    public String toString(){
+        return this.userName;
+    }
 }

@@ -14,6 +14,10 @@ public class DefaultRestfulResult implements RestfulResult {
         this.result = result;
     }
 
+    public DefaultRestfulResult(){
+        this.result = null;
+    }
+
     public void doResult(RfResultEvent event){
         if(event.getResult() == RfResultEvent.OK){
             if(event.getData()!=null){
@@ -29,10 +33,14 @@ public class DefaultRestfulResult implements RestfulResult {
                 }
             }
         }
-        result.doResult(event);
+        if(result != null) {
+            result.doResult(event);
+        }
     }
     public void doFault(RfFaultEvent event){
-        result.doFault(event);
+        if(result!= null) {
+            result.doFault(event);
+        }
     }
 
     protected Object changeToObject(Object original){
