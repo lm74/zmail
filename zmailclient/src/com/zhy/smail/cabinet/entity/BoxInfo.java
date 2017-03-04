@@ -141,14 +141,14 @@ public class BoxInfo {
         Button button;
         switch (getBoxType()){
             case BoxInfo.BOX_TYPE_MAIL:
-                height = 60;
-                Image image = new Image(getClass().getResourceAsStream("/resources/images/button/email.png"));
+                height = 40;
+                Image image = new Image(getClass().getResourceAsStream("/resources/images/button/check.png"));
                 ImageView imageView = new ImageView();
                 imageView.setImage(image);
                 button = new Button(title, imageView);
                 break;
             case BoxInfo.BOX_TYPE_SMALL:
-                height = 60;
+                height = 40;
                 button = new Button(title);
                 break;
             case BoxInfo.BOX_TYPE_MIDDLE:

@@ -7,9 +7,11 @@ import com.zhy.smail.config.LocalConfig;
 import com.zhy.smail.restful.RestfulResult;
 import com.zhy.smail.restful.RfFaultEvent;
 import com.zhy.smail.restful.RfResultEvent;
+import com.zhy.smail.serial.SerialGateway;
 import com.zhy.smail.serial.SerialPortInfo;
 import com.zhy.smail.setting.entity.SystemOption;
 import com.zhy.smail.setting.service.OptionService;
+import com.zhy.smail.task.SendManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -141,7 +143,17 @@ public class SettingController  implements Initializable {
         else{
             config.setAppMode(1);
         }
-        config.getSerialPortInfo().setPortName(comPortList.getSelectionModel().getSelectedItem());
+        String newPortName = comPortList.getSelectionModel().getSelectedItem();
+        if(!config.getSerialPortInfo().getPortName().equals(newPortName)){
+            app.closeCom();
+            config.getSerialPortInfo().setPortName(newPortName);
+            if(SendManager.gateway instanceof SerialGateway){
+                SerialGateway gateway = (SerialGateway) SendManager.gateway;
+                gateway.setPortName(newPortName);
+            }
+            app.openCom();
+        }
+
         config.saveProperties();
 
         Integer timeout = getInteger(txtTimeout);

@@ -72,7 +72,9 @@ public class OccupyBoxController extends RootController implements Initializable
                 boxesFlow.getChildren().remove(0, boxesFlow.getChildren().size());
                 for(int i=0; i<boxes.size(); i++){
                     BoxInfo boxInfo = boxes.get(i);
-                    createButton(boxInfo);
+                    if(boxInfo.getBoxType().equals(BoxInfo.BOX_TYPE_MAIL)||boxInfo.getBoxType().equals(BoxInfo.BOX_TYPE_SMALL)) {
+                        createButton(boxInfo);
+                    }
                 }
             }
 

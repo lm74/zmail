@@ -56,6 +56,10 @@ public class SerialGateway extends  Gateway{
         return portName;
     }
 
+    public void setPortName(String portName){
+        this.portName = portName;
+    }
+
 
 
 

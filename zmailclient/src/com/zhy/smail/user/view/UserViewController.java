@@ -108,6 +108,7 @@ public class UserViewController extends RootController implements Initializable 
 
     @FXML
     private void onChangePassword(ActionEvent event){
+
         app.goChangePassword();
         GlobalOption.parents.push("userView");
     }

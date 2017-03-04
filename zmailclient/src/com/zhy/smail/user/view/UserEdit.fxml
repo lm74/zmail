@@ -20,7 +20,7 @@
         <items>
           <Button mnemonicParsing="false" onAction="#onBackAction" text="返回" />
             <Region fx:id="topLeft" />
-            <Label text="增加用户" />
+            <Label fx:id="lblTitle" text="增加用户" />
             <Region fx:id="topRight" />
             <Label fx:id="lblTimer" text="99" />
         </items>

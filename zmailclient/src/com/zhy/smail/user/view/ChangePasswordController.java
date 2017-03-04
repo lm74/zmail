@@ -52,6 +52,10 @@ public class ChangePasswordController  implements Initializable {
 
     public void setUserClass(Integer userClass) {
         this.userClass = userClass;
+
+        txtOldPassword.setDisable(true);
+        txtOldPassword.setText(user.getPassword());
+
     }
 
     public Integer getParentType() {

@@ -78,6 +78,7 @@ public class PutmailController extends RootController implements Initializable {
                             if(log.getBoxInfo().getBoxType() == BoxInfo.BOX_TYPE_MAIL ||
                                     log.getBoxInfo().getBoxType() == BoxInfo.BOX_TYPE_SMALL){
                                 startDelivery(log.getBoxInfo(), log.getPickupUser());
+                                break;
                             }
 
                         }
@@ -146,6 +147,7 @@ public class PutmailController extends RootController implements Initializable {
                         if(hasOpened){
                             SimpleDialog.showMessageDialog(app.getRootStage(), "请关上打开的箱门，否则不能投递.","");
                             startDeliveryButton.setDisable(true);
+                            app.goDelivery();
                         }
                     }
 
@@ -225,6 +227,7 @@ public class PutmailController extends RootController implements Initializable {
                         else {
                             String message = "本柜信箱和小箱已满," + event.getResult() + "号柜有" + event.getData().toString() + "个空箱,请到" + event.getResult() + "号柜投信.";
                             SimpleDialog.showMessageDialog(app.getRootStage(), message, "");
+
                         }
                     }
                 }
@@ -245,7 +248,7 @@ public class PutmailController extends RootController implements Initializable {
 
 
     protected void  changeUser(UserInfo user){
-        this.user = user;
+        setUser(user);
     }
 
     @FXML

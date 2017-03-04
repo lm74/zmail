@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ChoiceBox?>
@@ -19,7 +20,7 @@
                     <children>
                         <Button mnemonicParsing="false" onAction="#onBackAction" text="返回" />
                         <Pane HBox.hgrow="ALWAYS" />
-                        <Label fx:id="lblTitle" text="增加箱柜" GridPane.halignment="CENTER" />
+                        <Label fx:id="lblTitle" text="箱门管理" GridPane.halignment="CENTER" />
                         <Pane HBox.hgrow="ALWAYS" />
                         <Label fx:id="lblTimer" text="99" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
                     </children>
@@ -74,7 +75,11 @@
                 <Button mnemonicParsing="false" onAction="#onOpenAllBox" text="全开" />
                 <Button mnemonicParsing="false" onAction="#onOpenAllBox" text="全清" />
             <CheckBox fx:id="chkOpenBoxTest" mnemonicParsing="false" text="开门测试" />
+            <Button mnemonicParsing="false" onAction="#onRefreshAction" text="刷新状态" />
             </items>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
         </ToolBar>
     </children>
 </VBox>

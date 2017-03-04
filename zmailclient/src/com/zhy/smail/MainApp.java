@@ -24,6 +24,7 @@ import com.zhy.smail.setting.entity.SystemOption;
 import com.zhy.smail.setting.service.OptionService;
 import com.zhy.smail.task.ResponseManager;
 import com.zhy.smail.task.SendManager;
+import com.zhy.smail.task.SendingTask;
 import com.zhy.smail.user.service.UserService;
 import com.zhy.smail.user.view.*;
 import javafx.application.Application;
@@ -85,7 +86,7 @@ public class MainApp extends Application {
         primaryStage.show();
         rootScene.getWindow().centerOnScreen();
         initVK(rootStage);
-        initCom();
+        openCom();
         //initUDP();
         testConnection();
         Speaker.welcome();
@@ -101,7 +102,7 @@ public class MainApp extends Application {
         Rectangle2D bounds = screen.getVisualBounds();
         double height = rootScene.getWindow().getHeight();
         double width = rootScene.getWindow().getWidth();
-        double scale =Math.min(height/500, width/600);
+        double scale =Math.min(height/550, width/650);
 
         KeyBoardPopupBuilder builder = KeyBoardPopupBuilder.create();
         builder.initScale(scale);
@@ -190,8 +191,24 @@ public class MainApp extends Application {
         }
     }
 
+    public void closeCom(){
+        if(SendManager.gateway == null) return;
 
-    private void initCom(){
+        if(SendManager.gateway.isOpened()) {
+            SendManager.gateway.close();
+        }
+
+        if(responseManager!=null) {
+            responseManager.setCanceled(true);
+            try {
+                responseThread.join();
+            } catch (InterruptedException e) {
+
+            }
+        }
+    }
+
+    public void openCom(){
         if(SendManager.gateway==null) {
             SendManager.gateway = new SerialGateway();
         }
@@ -204,25 +221,6 @@ public class MainApp extends Application {
             try {
                 gateway.connect(gateway.getPortName());
 
-               /* ParamValueList paramList = ParamManager.getCheckParams();
-                SendingTask progressTask = new SendingTask(paramList, BusinessType.GET_MODULE_BASE, true);
-                progressTask.valueProperty().addListener(new ChangeListener() {
-                    @Override
-                    public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-                        if(newValue == null) return;
-
-                        Integer realValue = (Integer) newValue;
-                        if(realValue == 0){
-                            //connectButton.setText("关闭端口");
-
-
-                        }
-                        else if(realValue == -1){
-                            SendManager.gateway.close();
-                        }
-                    }
-                });
-                SimpleDialog.modelDialog(progressTask,"正在检查设备有效性...", "检查设备有效性");*/
                 responseManager = new ResponseManager();
                 responseThread = new Thread(responseManager);
                 responseThread.start();

@@ -164,7 +164,7 @@ public class ConfirmDeliveryController extends RootController implements Initial
             public void doResult(RfResultEvent event) {
                 if(event.getResult() == RfResultEvent.OK){
                     Speaker.deliverySucess();
-                    onBackAction(null);
+                    app.goDelivery();
                 }
                 else {
                     Speaker.deliveryFail();

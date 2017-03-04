@@ -36,6 +36,8 @@ public class UserEditController implements Initializable{
     @FXML
     private Label lblTimer;
     @FXML
+    private  Label lblTitle;
+    @FXML
     private ToolBar topToolBar;
     @FXML
     private Region topLeft;
@@ -95,6 +97,7 @@ public class UserEditController implements Initializable{
     }
 
     public void setUserClass(int userClass) {
+
         this.userClass = userClass;
         switch (userClass){
             case 0:
@@ -156,6 +159,7 @@ public class UserEditController implements Initializable{
 
     public void setUser(UserInfo user) {
         this.user = user;
+        lblTitle.setText("修改用户");
         showUser();
     }
 

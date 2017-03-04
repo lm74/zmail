@@ -111,6 +111,12 @@ public class BoxListController  implements Initializable {
         checked = false;
     }
 
+    @FXML
+    private  void onRefreshAction(ActionEvent event){
+        checked = false;
+        onRefreshBoxes();
+    }
+
     private void onRefreshBoxes(){
         currentCabinet = cabinets.get(currentCabinetIndex);
         BoxService.listByCabinetId(currentCabinet.getCabinetId(), new RestfulResult() {
@@ -164,42 +170,7 @@ public class BoxListController  implements Initializable {
             }
 
             private void createButton(BoxInfo boxInfo) {
-                String styleClass;
-                String title = String.valueOf(boxInfo.getSequence()) + " ";
-                if(boxInfo.isLocked()){
-                    title +="锁定";
-                    styleClass = "locked-button";
-                }
-                else if(boxInfo.isUsed()){
-                    title += "占用";
-                    styleClass="full-button";
-                }
-                else if(boxInfo.isOpened()){
-                    title += "开门";
-                    styleClass = "full-button";
-                }
-                else {
-                    title += "空闲";
-                    styleClass = "empty-button";
-                }
-
-                Button button = new Button(title);
-                button.setPrefWidth(200);
-                button.getStyleClass().add(styleClass);
-                switch (boxInfo.getBoxType()){
-                    case BoxInfo.BOX_TYPE_MAIL:
-                        button.setPrefHeight(60);
-                        break;
-                    case BoxInfo.BOX_TYPE_SMALL:
-                        button.setPrefHeight(80);
-                        break;
-                    case BoxInfo.BOX_TYPE_MIDDLE:
-                        button.setPrefHeight(100);
-                        break;
-                    case BoxInfo.BOX_TYPE_LARGE:
-                        button.setPrefHeight(120);
-                        break;
-                }
+                Button button = boxInfo.createButton();
                 boxesFlow.getChildren().add(button);
 
                 button.addEventHandler(ActionEvent.ACTION, (ActionEvent actionEvent)-> {
@@ -259,7 +230,7 @@ public class BoxListController  implements Initializable {
             public void changed(ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) {
                 if(newValue!=null && newValue == 0){
                     saveBox(boxInfo);
-                    onRefreshBoxes();
+
                 }
             }
         });

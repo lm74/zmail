@@ -140,6 +140,7 @@ public class PutdownController  extends RootController implements Initializable 
                             smallButton.setDisable(true);
                             middleButton.setDisable(true);
                             largeButton.setDisable(true);
+                            app.goDelivery();
                         }
                     }
 
@@ -239,6 +240,7 @@ public class PutdownController  extends RootController implements Initializable 
                     else {
                         String message = "本柜箱门已满," + event.getResult() + "号柜有" + event.getData().toString() + "个空箱,请到" + event.getResult() + "号柜投件.";
                         SimpleDialog.showMessageDialog(app.getRootStage(), message, "");
+
                     }
                 }
             }
