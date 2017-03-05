@@ -48,6 +48,9 @@ public class MainController implements Initializable{
             }
         });
         lblMessage.setVisible(false);
+        if(GlobalOption.mainTitle != null){
+            setAppTitle(GlobalOption.mainTitle.getCharValue());
+        }
 
         startGetTyped = false;
     }
@@ -139,7 +142,7 @@ public class MainController implements Initializable{
                             break;
                     }
                     if(loginController != null){
-                        loginController.setUserName(cardNo);
+                        loginController.setUserName(user.getUserName());
                         loginController.passwordFocus();
                     }
                 }

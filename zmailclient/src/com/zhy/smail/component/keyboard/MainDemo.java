@@ -163,8 +163,8 @@ public class MainDemo extends Application implements VkProperties {
   }
 
   public static void main(String[] args) {
-    //Application.launch(args);
-    Calendar cal =Calendar.getInstance();
+    Application.launch(args);
+    /*Calendar cal =Calendar.getInstance();
     SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     cal.set(Calendar.HOUR, 0);
     cal.set(Calendar.MINUTE, 0);
@@ -173,7 +173,7 @@ public class MainDemo extends Application implements VkProperties {
     System.out.println(df.format(cal.getTime()));
     //这种输出的是上个星期周日的日期，因为老外那边把周日当成第一天
     cal.set(Calendar.DAY_OF_MONTH, 1);
-    System.out.println(df.format(cal.getTime()));
+    System.out.println(df.format(cal.getTime()));*/
 
   }
 

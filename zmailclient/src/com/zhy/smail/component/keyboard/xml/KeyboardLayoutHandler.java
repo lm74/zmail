@@ -36,11 +36,13 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
 import com.zhy.smail.component.keyboard.xml.layout.Keyboard;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 
 public class KeyboardLayoutHandler {
 
-  private final static org.slf4j.Logger logger = LoggerFactory.getLogger(KeyboardLayoutHandler.class);
+  private final static Log logger = LogFactory.getLog(KeyboardLayoutHandler.class);
 
   private ConcurrentHashMap<String, Keyboard> layoutStringCache;;
   private ConcurrentHashMap<URL, Keyboard> layoutURLCache;

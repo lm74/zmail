@@ -15,6 +15,7 @@ import com.zhy.smail.config.GlobalOption;
 import com.zhy.smail.config.LocalConfig;
 import com.zhy.smail.lcp.LcProtocol;
 import com.zhy.smail.lcp.command.LcCommand;
+import com.zhy.smail.restful.DefaultRestfulResult;
 import com.zhy.smail.restful.RestfulResult;
 import com.zhy.smail.restful.RfFaultEvent;
 import com.zhy.smail.restful.RfResultEvent;
@@ -23,6 +24,7 @@ import com.zhy.smail.serial.SerialGateway;
 import com.zhy.smail.task.SendManager;
 import com.zhy.smail.user.entity.UserInfo;
 import com.zhy.smail.user.service.UserService;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -65,6 +67,7 @@ public class LoginController implements Initializable{
 
     public void setUserName(String userName){
         txtUserName.setText(userName);
+        txtUserName.setDisable(true);
     }
     public void passwordFocus(){
         txtPassword.requestFocus();
@@ -103,18 +106,6 @@ public class LoginController implements Initializable{
     }
 
     public void initialize(URL location, ResourceBundle resources){
-        /*kb = new KeyboardPane();
-        kb.setLayer(DefaultLayer.DEFAULT);
-        kb.setLocale(Locale.CHINESE);
-        kb.setScale(2.28);
-        try {
-            kb.load();
-        }
-        catch (Exception e){
-
-        }*/
-
-
         txtPassword.focusedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
@@ -357,7 +348,28 @@ public class LoginController implements Initializable{
         if(event.getCode() == KeyCode.ENTER){
             String userName = txtUserName.getText();
             if(userName !=null && userName.length()>0  && (userName.substring(0,1).equals(";")||userName.substring(0,1).equals("；"))){
-                txtUserName.setText(userName.substring(1));
+                userName = userName.substring(1);
+                UserService.getByCardNo(userName, new RestfulResult() {
+                    @Override
+                    public void doResult(RfResultEvent event) {
+                        if(event.getResult() == RfResultEvent.OK && event.getData()!=null){
+                            UserInfo user = (UserInfo) event.getData();
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    txtUserName.setText(user.getUserName());
+                                    txtUserName.setDisable(true);
+                                }
+                            });
+                        }
+                    }
+
+                    @Override
+                    public void doFault(RfFaultEvent event) {
+
+                    }
+                });
+
             }
             txtPassword.requestFocus();
         }

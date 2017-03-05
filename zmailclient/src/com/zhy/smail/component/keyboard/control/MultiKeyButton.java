@@ -28,7 +28,8 @@ package com.zhy.smail.component.keyboard.control;
 
 import java.util.Collection;
 
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javafx.animation.Animation.Status;
 import javafx.animation.KeyFrame;
@@ -39,7 +40,7 @@ import javafx.util.Duration;
 
 class MultiKeyButton extends KeyButton {
 
-  private final static org.slf4j.Logger logger = LoggerFactory.getLogger(MultiKeyButton.class);
+  private final static Log logger = LogFactory.getLog(MultiKeyButton.class);
 
   private MultiKeyPopup context;
 
@@ -60,7 +61,7 @@ class MultiKeyButton extends KeyButton {
     buttonDelay = new Timeline(new KeyFrame(new Duration(delay), event -> fireLongPressed()));
 
     setOnDragDetected(e -> {
-      logger.trace("{} drag detected", getKeyCode());
+      logger.trace(getKeyCode()+"drag detected" );
       if (buttonDelay.getStatus().equals(Status.RUNNING) && buttonDelay.getCurrentRate() > 0) {
         buttonDelay.stop();
         fireLongPressed();
@@ -69,7 +70,7 @@ class MultiKeyButton extends KeyButton {
     });
 
     setOnMouseClicked(event -> {
-      logger.trace("{} clicked: {}", getKeyCode(), buttonDelay.getCurrentRate());
+      logger.trace(getKeyCode()+"clicked: "+buttonDelay.getCurrentRate());
 
       if (event.getButton().equals(MouseButton.PRIMARY)) {
         if (buttonDelay.getStatus().equals(Status.RUNNING)) {
@@ -82,7 +83,7 @@ class MultiKeyButton extends KeyButton {
     });
 
     setOnMousePressed(event -> {
-      logger.trace("{} pressed: {}", getKeyCode(), buttonDelay.getCurrentRate());
+      logger.trace(getKeyCode()+"pressed:"+ buttonDelay.getCurrentRate());
       if (event.getButton().equals(MouseButton.PRIMARY)) {
         buttonDelay.playFromStart();
       }

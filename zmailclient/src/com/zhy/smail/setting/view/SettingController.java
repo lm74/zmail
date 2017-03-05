@@ -1,6 +1,7 @@
 package com.zhy.smail.setting.view;
 
 import com.zhy.smail.MainApp;
+import com.zhy.smail.common.controller.RootController;
 import com.zhy.smail.component.keyboard.control.VkProperties;
 import com.zhy.smail.config.GlobalOption;
 import com.zhy.smail.config.LocalConfig;
@@ -26,8 +27,8 @@ import java.util.ResourceBundle;
 /**
  * Created by wenliz on 2017/2/15.
  */
-public class SettingController  implements Initializable {
-    private MainApp app;
+public class SettingController extends RootController implements Initializable {
+
 
     @FXML
     private Label lblTimer;
@@ -61,9 +62,7 @@ public class SettingController  implements Initializable {
     private TextField txtMainTitle;
 
 
-    public MainApp getApp() {
-        return app;
-    }
+
 
     public void setApp(MainApp app) {
         this.app = app;
@@ -161,6 +160,7 @@ public class SettingController  implements Initializable {
         saveOption(GlobalOption.timeout);
 
         GlobalOption.mainTitle.setCharValue(txtMainTitle.getText());
+        app.setAppTitle(GlobalOption.mainTitle.getCharValue());
         saveOption(GlobalOption.mainTitle);
         if(chkNeedPasswordForCard.isSelected()){
             GlobalOption.cardNeedPassword.setIntValue(1);

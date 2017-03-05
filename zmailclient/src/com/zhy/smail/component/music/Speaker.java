@@ -150,5 +150,13 @@ public class Speaker {
         Media media2 = new Media(music0);
         MediaPlayer mp2 = new MediaPlayer(media2);
         mp2.play();
+
+        mp2.setOnStopped(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        });
+
     }
 }

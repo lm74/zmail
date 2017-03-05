@@ -98,7 +98,7 @@ public class ConfirmDeliveryController extends RootController implements Initial
 
                     LcResult result = ResponseManager.response.poll(ResponseManager.WAIT_SECONDS, TimeUnit.SECONDS);
                     if (result == null) {
-                        updateMessage("开"+box.getSequence()+"号箱门箱失败，请重试或联系管理员。");
+                        updateMessage("开"+box.getSequence()+"号箱门开启失败，请重试或联系管理员。");
                         updateValue(-1);
                     } else {
                         if (result.getErrorNo() == LcResult.SUCCESS) {
@@ -107,6 +107,7 @@ public class ConfirmDeliveryController extends RootController implements Initial
                                 public void run() {
                                     confirmButton.setDisable(false);
                                     lblConfirmMessage.setVisible(true);
+                                    lblConfirmMessage.setText(box.getSequence()+"号箱门已开，请放入物品后，点击确认投递。");
                                     OpeningLogService.save(GlobalOption.currentUser.getUserId(),  box.getBoxId(), "开箱成功", new DefaultRestfulResult());
                                     Speaker.delivery();
                                 }
@@ -115,7 +116,7 @@ public class ConfirmDeliveryController extends RootController implements Initial
                             updateValue(0);
                             return null;
                         } else {
-                            updateMessage("开"+box.getSequence()+"号箱门箱失败，请重试或联系管理员。");
+                            updateMessage("开"+box.getSequence()+"号箱门开启失败，请重试或联系管理员。");
                             updateValue(-1);
                         }
                     }

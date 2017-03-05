@@ -27,6 +27,7 @@
 
                 <ColumnConstraints hgrow="SOMETIMES" prefWidth="280.0" />
                 <ColumnConstraints hgrow="ALWAYS" prefWidth="600.0" />
+            <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="600.0" />
                 <ColumnConstraints hgrow="SOMETIMES" prefWidth="180.0" />
             </columnConstraints>
             <rowConstraints>
@@ -42,8 +43,9 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <Label fx:id="lblConfirmMessage" text="箱门已开，请放入物品后，点击确认投递。" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-                <Button onAction="#onConfirmAction" fx:id="confirmButton" mnemonicParsing="false" text="确认投件" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                <Label fx:id="lblConfirmMessage" text="箱门已开，请放入物品后，点击确认投递。" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" />
+                <Button fx:id="confirmButton" mnemonicParsing="false" onAction="#onConfirmAction" text="确认投件" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <Button mnemonicParsing="false" onAction="#onBackAction" text="取消投件" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
             </children>
         </GridPane>
     </center>

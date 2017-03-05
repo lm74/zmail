@@ -117,6 +117,7 @@ public class PutdownController  extends RootController implements Initializable 
                         if(newValue != 0) return;
 
                         boolean hasOpened = false;
+                        String openNos = "";
                         for(int i=0; i<boxes.size(); i++) {
                             BoxInfo boxInfo = boxes.get(i);
                             BoxEntry boxEntry = task.getCabinet().getBoxEntry(boxInfo.getControlCardId(), boxInfo.getControlSequence());
@@ -133,10 +134,12 @@ public class PutdownController  extends RootController implements Initializable 
 
                             if (!boxInfo.isLocked() && boxInfo.isOpened()) {
                                 hasOpened = true;
+                                openNos += "," +boxInfo.getSequence();
                             }
                         }
                         if(hasOpened){
-                            SimpleDialog.showMessageDialog(app.getRootStage(), "请关上打开的箱门，否则不能投递.","");
+                            openNos = openNos.substring(1);
+                            SimpleDialog.showMessageDialog(app.getRootStage(), "请关上打开的箱门:"+openNos+"，否则不能投递.","");
                             smallButton.setDisable(true);
                             middleButton.setDisable(true);
                             largeButton.setDisable(true);

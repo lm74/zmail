@@ -52,6 +52,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -77,12 +78,12 @@
                         <TextField fx:id="txtServerIP" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <TextField fx:id="txtTimeout" GridPane.columnIndex="3" GridPane.rowIndex="2" />
                         <TextField fx:id="txtLocalCabinetNo" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <Button mnemonicParsing="false" onAction="#onGeneralSaveAction" text="保存" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
+                        <Button mnemonicParsing="false" onAction="#onGeneralSaveAction" text="保存" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
                         <Label text="串口:" GridPane.columnIndex="2" GridPane.halignment="RIGHT" />
-                        <CheckBox fx:id="chkNeedPasswordForCard" mnemonicParsing="false" text="刷卡登录需要密码" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="3" />
-                        <CheckBox fx:id="chkDeliverSameMail" mnemonicParsing="false" text="投信选择已投未取件信箱" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" />
-                        <Label text="主界面标题:" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                        <TextField fx:id="txtMainTitle" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                        <CheckBox fx:id="chkNeedPasswordForCard" mnemonicParsing="false" text="刷卡登录需要密码" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="4" />
+                        <CheckBox fx:id="chkDeliverSameMail" mnemonicParsing="false" text="投信选择已投未取件信箱" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="4" />
+                        <Label text="主界面标题:" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+                        <TextField fx:id="txtMainTitle" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="3" />
                         <ChoiceBox fx:id="comPortList" prefHeight="23.0" prefWidth="227.0" GridPane.columnIndex="3" />
                      </children>
                   </GridPane>

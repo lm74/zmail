@@ -40,6 +40,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.util.Locale;
 
@@ -81,8 +82,8 @@ public class MainApp extends Application {
         rootScene.getStylesheets().add("style.css");
         primaryStage.setScene(rootScene);
         rootStage = primaryStage;
-        //primaryStage.setMaximized(true);
-        //primaryStage.initStyle(StageStyle.UNDECORATED);
+        primaryStage.setMaximized(true);
+        primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.show();
         rootScene.getWindow().centerOnScreen();
         initVK(rootStage);
@@ -167,7 +168,10 @@ public class MainApp extends Application {
 
             }
         });
+    }
 
+    public void setAppTitle(String title){
+        mainController.setAppTitle(title);
     }
 
     private void initUDP(){
@@ -417,6 +421,10 @@ public class MainApp extends Application {
 
     public OpeningLogController goOpeningLog( ){
         return (OpeningLogController)loadFxml("manager/view/openingLog.fxml");
+    }
+
+    public void goSetting(){
+        loadFxml("setting/view/Setting.fxml");
     }
 
     private RootController loadFxml(String path){

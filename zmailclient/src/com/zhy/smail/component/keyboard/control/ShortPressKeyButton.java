@@ -1,6 +1,6 @@
 package com.zhy.smail.component.keyboard.control;
 
-import org.slf4j.LoggerFactory;
+
 
 /*******************************************************************************
  * Copyright (c) 2016 comtel2000
@@ -29,10 +29,13 @@ import org.slf4j.LoggerFactory;
  *******************************************************************************/
 
 import javafx.scene.input.MouseButton;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 
 class ShortPressKeyButton extends KeyButton {
 
-  private final static org.slf4j.Logger logger = LoggerFactory.getLogger(ShortPressKeyButton.class);
+  private final static Log logger = LogFactory.getLog(ShortPressKeyButton.class);
 
   ShortPressKeyButton() {
     super();
@@ -41,7 +44,7 @@ class ShortPressKeyButton extends KeyButton {
   @Override
   protected void initEventListener(long delay) {
     setOnMousePressed(event -> {
-      logger.trace("{} pressed", getKeyCode());
+      logger.trace(getKeyCode()+" pressed" );
       if (event.getButton().equals(MouseButton.PRIMARY)) {
         fireShortPressed();
       }

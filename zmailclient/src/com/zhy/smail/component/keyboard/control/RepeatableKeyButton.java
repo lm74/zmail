@@ -26,7 +26,9 @@ package com.zhy.smail.component.keyboard.control;
  * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
 
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 
 import javafx.animation.Animation.Status;
 import javafx.animation.KeyFrame;
@@ -36,7 +38,7 @@ import javafx.util.Duration;
 
 class RepeatableKeyButton extends KeyButton {
 
-  private final static org.slf4j.Logger logger = LoggerFactory.getLogger(RepeatableKeyButton.class);
+  private final static Log logger = LogFactory.getLog(RepeatableKeyButton.class);
 
   private final long REPEAT_DELAY = 40;
 
@@ -54,13 +56,13 @@ class RepeatableKeyButton extends KeyButton {
     }));
 
     setOnDragDetected(e -> {
-      logger.trace("{} drag detected", getKeyCode());
+      logger.trace(getKeyCode()+" drag detected");
       buttonDelay.stop();
       e.consume();
     });
 
     setOnMousePressed(e -> {
-      logger.trace("{} pressed", getKeyCode());
+      logger.trace(getKeyCode()+" pressed" );
       if (e.getButton().equals(MouseButton.PRIMARY)) {
         if (!isMovable()) {
           fireShortPressed();
@@ -71,7 +73,7 @@ class RepeatableKeyButton extends KeyButton {
     });
 
     setOnMouseReleased(e -> {
-      logger.trace("{} released", getKeyCode());
+      logger.trace(getKeyCode()+" released" );
       if (isMovable() && buttonDelay.getStatus() == Status.RUNNING) {
         fireShortPressed();
       }

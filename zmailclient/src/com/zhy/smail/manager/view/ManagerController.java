@@ -84,24 +84,12 @@ public class ManagerController implements Initializable{
 
     @FXML
     public void onSettingtAction(ActionEvent actionEvent) throws IOException{
-        FXMLLoader fxmlLoader;
-
-        fxmlLoader = new FXMLLoader(getClass().getResource("../../setting/view/Setting.fxml"));
-        Parent root = fxmlLoader.load();
-        SettingController controller = (SettingController)fxmlLoader.getController();
-        app.getRootStage().getScene().setRoot(root);
-        controller.setApp(app);
+        app.goSetting();
     }
 
     @FXML
     public void onCabinetListAction(ActionEvent actionEvent) throws IOException{
-        FXMLLoader fxmlLoader;
-        fxmlLoader = new FXMLLoader(getClass().getResource("../../cabinet/view/CabinetList.fxml"));
-        Parent root = fxmlLoader.load();
-        CabinetListController controller = (CabinetListController) fxmlLoader.getController();
-
-        app.getRootStage().getScene().setRoot(root);
-        controller.setApp(app);
+        app.goCabinetList();
     }
     @FXML
     public void onBackAction(ActionEvent event){

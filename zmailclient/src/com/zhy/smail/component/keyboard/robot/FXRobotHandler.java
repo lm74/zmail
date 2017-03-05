@@ -30,8 +30,9 @@ import static javafx.scene.input.KeyCode.CONTROL;
 import static javafx.scene.input.KeyCode.META;
 
 import com.zhy.smail.component.keyboard.control.KeyboardPane;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 
 import javafx.application.Platform;
 import javafx.event.EventTarget;
@@ -45,7 +46,7 @@ import javafx.stage.Window;
 
 public class FXRobotHandler implements IRobot {
 
-  private final static Logger logger = LoggerFactory.getLogger(FXRobotHandler.class);
+  private final static Log logger = LogFactory.getLog(FXRobotHandler.class);
 
   private final KeyCode controlKeyCode;
 
@@ -60,7 +61,7 @@ public class FXRobotHandler implements IRobot {
 
   @Override
   public void sendToComponent(Object kb, final char ch, final boolean ctrl) {
-    logger.trace("fire: {}", ch);
+    logger.trace("fire: "+ ch);
 
     final Window keyboardWindow = ((KeyboardPane) kb).getScene().getWindow();
     if (keyboardWindow != null) {

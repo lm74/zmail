@@ -52,7 +52,9 @@ import com.zhy.smail.component.keyboard.robot.FXRobotHandler;
 import com.zhy.smail.component.keyboard.robot.IRobot;
 import com.zhy.smail.component.keyboard.xml.KeyboardLayoutHandler;
 import com.zhy.smail.component.keyboard.xml.layout.Keyboard;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -87,7 +89,7 @@ import javafx.util.Duration;
 
 public class KeyboardPane extends Region implements StandardKeyCode, EventHandler<KeyButtonEvent> {
 
-  private final static org.slf4j.Logger logger = LoggerFactory.getLogger(KeyboardPane.class);
+  private final static Log logger = LogFactory.getLog(KeyboardPane.class);
 
   private final EnumMap<KeyboardType, Region> typeRegionMap = new EnumMap<>(KeyboardType.class);
 
@@ -185,18 +187,20 @@ public class KeyboardPane extends Region implements StandardKeyCode, EventHandle
 
     setOnZoom(e -> {
       double s = getScale() * e.getTotalZoomFactor();
+      logger.info("onZoom-->"+s);
       if (s >= getMinScale() && s <= getMaxScale()) {
         setScale(s);
         e.consume();
       }
     });
 
-    setOnScroll(e -> {
-      double s = getScale() + (e.getDeltaY() > 0.0d ? getScaleOffset() : -getScaleOffset());
+    setOnScroll(e -> {  //在触屏下此事件引起缩放
+      /*double s = getScale() + (e.getDeltaY() > 0.0d ? getScaleOffset() : -getScaleOffset());
+      logger.info("onScroll-->"+s);
       if (s >= getMinScale() && s <= getMaxScale()) {
-        setScale(s);
+       setScale(s);
         e.consume();
-      }
+      }*/
     });
   }
 
@@ -251,29 +255,29 @@ public class KeyboardPane extends Region implements StandardKeyCode, EventHandle
 
   private void setLayoutLocale(final Locale local) throws MalformedURLException, IOException, URISyntaxException {
 
-    logger.debug("try to set keyboard local: {}->{}", getActiveLocale(), local);
+    logger.debug("try to set keyboard local: "+getActiveLocale()+"->" +local);
 
     Map<Locale, String> localeMap = getAvailableLocales();
     if (localeMap.containsKey(local)) {
       if (local.equals(getActiveLocale())) {
-        logger.debug("locale already active: {}", local);
+        logger.debug("locale already active:"+ local);
         return;
       }
       setActiveLocale(local);
     } else if (localeMap.containsKey(Locale.forLanguageTag(local.getLanguage()))) {
       if (Locale.forLanguageTag(local.getLanguage()).equals(getActiveLocale())) {
-        logger.debug("locale language already active: {}", local);
+        logger.debug("locale language already active: "+ local);
         return;
       }
       setActiveLocale(Locale.forLanguageTag(local.getLanguage()));
     } else {
       if (Locale.ENGLISH.equals(getActiveLocale())) {
-        logger.info("locale language already active: {}", local);
+        logger.info("locale language already active: "+local);
         return;
       }
       setActiveLocale(Locale.ENGLISH);
     }
-    logger.debug("use keyboard local: {}", getActiveLocale());
+    logger.debug("use keyboard local: "+ getActiveLocale());
     String root = localeMap.get(getActiveLocale());
 
     addTypeRegion(KeyboardType.TEXT, root, "kb-layout.xml");
@@ -297,24 +301,24 @@ public class KeyboardPane extends Region implements StandardKeyCode, EventHandle
       url = Paths.get(root, file).toUri().toURL();
     }
     if (url != null) {
-      logger.debug("add layout: {}", url);
+      logger.debug("add layout: "+url);
       typeRegionMap.put(type, createKeyboardPane(handler.getLayout(url)));
       return;
     }
     String defaultRoot = getAvailableLocales().get(Locale.ENGLISH);
     if (defaultRoot == null) {
-      logger.error("layout: {} / {} not found - no default available", root, file);
+      logger.error("layout: "+root+" / "+file+" not found - no default available");
       return;
     }
     url = KeyboardLayoutHandler.class.getResource(defaultRoot + "/" + file);
     if (url != null) {
-      logger.debug("add default layout: {}", url);
+      logger.debug("add default layout: "+ url);
       typeRegionMap.put(type, createKeyboardPane(handler.getLayout(url)));
       return;
     }
     if (Files.exists(Paths.get(defaultRoot, file))) {
       url = Paths.get(defaultRoot, file).toUri().toURL();
-      logger.debug("add default layout: {}", url);
+      logger.debug("add default layout: "+ url);
       typeRegionMap.put(type, createKeyboardPane(handler.getLayout(url)));
       return;
     }
@@ -327,7 +331,7 @@ public class KeyboardPane extends Region implements StandardKeyCode, EventHandle
     if (getLayerPath() == null) {
       String layer = getLayer().toString().toLowerCase(Locale.ENGLISH);
       URL url = Objects.requireNonNull(KeyboardLayoutHandler.class.getResource("/resources/xml/" + layer));
-      logger.debug("use embedded layer path: {}", url);
+      logger.debug("use embedded layer path: "+ url);
       if (url.toExternalForm().contains("!")) {
         availableLocales.put(Locale.ENGLISH, "/xml/" + layer);
         readJarLocales(url);
@@ -351,7 +355,7 @@ public class KeyboardPane extends Region implements StandardKeyCode, EventHandle
     } catch (IOException e) {
       logger.error(e.getMessage(), e);
     }
-    logger.debug("locales: {}", availableLocales.keySet());
+    logger.debug("locales: "+ availableLocales.keySet());
     return availableLocales;
   }
 
@@ -377,14 +381,14 @@ public class KeyboardPane extends Region implements StandardKeyCode, EventHandle
     try {
       kType = type == null || type.isEmpty() ? KeyboardType.TEXT : KeyboardType.valueOf(type.toUpperCase(Locale.ENGLISH));
     } catch (Exception e) {
-      logger.error("unknown type: {}", type);
+      logger.error("unknown type: "+ type);
       kType = KeyboardType.TEXT;
     }
     setKeyboardType(kType);
   }
 
   public void setKeyboardType(KeyboardType type) {
-    logger.debug("try to set type: {}->{}", getActiveType(), type);
+    logger.debug("try to set type: "+getActiveType()+"->"+type);
     if (type.equals(getActiveType())) {
       return;
     }
@@ -504,7 +508,7 @@ public class KeyboardPane extends Region implements StandardKeyCode, EventHandle
           colPane.add(placeholder, colIdx, 0);
           colPane.getColumnConstraints().add(cc);
 
-          logger.trace("placeholder: {}", cc);
+          logger.trace("placeholder: "+cc);
           colIdx++;
           rowWidth += cc.getPrefWidth();
           continue;
@@ -560,7 +564,7 @@ public class KeyboardPane extends Region implements StandardKeyCode, EventHandle
         }
 
         if (key.getKeyIconStyle() != null && key.getKeyIconStyle().startsWith(".")) {
-          logger.trace("Load css style: {}", key.getKeyIconStyle());
+          logger.trace("Load css style: "+key.getKeyIconStyle());
           Label icon = new Label();
 
           for (String style : key.getKeyIconStyle().split(";")) {
@@ -577,7 +581,7 @@ public class KeyboardPane extends Region implements StandardKeyCode, EventHandle
             if (!image.isError()) {
               button.setGraphic(new ImageView(image));
             } else {
-              logger.error("Image: {} not found", key.getKeyIconStyle());
+              logger.error("Image: "+key.getKeyIconStyle()+" not found");
             }
           } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -622,11 +626,11 @@ public class KeyboardPane extends Region implements StandardKeyCode, EventHandle
         colPane.add(button, colIdx, 0);
         colPane.getColumnConstraints().add(cc);
 
-        logger.trace("btn: {} {}", button.getText(), cc);
+        logger.trace("btn: "+ button.getText() +" " + cc);
         colIdx++;
         rowWidth += cc.getPrefWidth();
       }
-      logger.trace("row[{}] - {}", rowIdx, rowWidth);
+      logger.trace("row["+rowIdx+"] - "+ rowWidth);
       colPane.getRowConstraints().add(rc);
       rPane.add(colPane, 0, rowIdx);
       rowIdx++;
@@ -761,7 +765,7 @@ public class KeyboardPane extends Region implements StandardKeyCode, EventHandle
         } else if (kb.getKeyCode() > -1) {
           sendToComponent((char) kb.getKeyCode(), isControl());
         } else {
-          logger.debug("unknown key code: {}", kb.getKeyCode());
+          logger.debug("unknown key code: "+ kb.getKeyCode());
           sendToComponent((char) kb.getKeyCode(), true);
         }
         if (!isCapsLock() && isShift()) {
@@ -780,7 +784,7 @@ public class KeyboardPane extends Region implements StandardKeyCode, EventHandle
    */
   private void sendToComponent(char ch, boolean ctrl) {
 
-    logger.trace("send ({}) ctrl={}", ch, ctrl);
+    logger.trace("send ("+ch+") ctrl="+ctrl);
 
     if (ctrl) {
       switch (Character.toUpperCase(ch)) {
@@ -983,6 +987,7 @@ public class KeyboardPane extends Region implements StandardKeyCode, EventHandle
   }
 
   public final void setScale(double s) {
+    logger.info("scale: " + s);
     if (scale == null) {
       _scale = s;
       setScaleX(_scale);
@@ -1155,8 +1160,8 @@ public class KeyboardPane extends Region implements StandardKeyCode, EventHandle
         }
       };
     }
-    node.setOnMouseMoved(movedHandler);
-    node.setOnMouseDragged(draggedHandler);
+    //node.setOnMouseMoved(movedHandler);
+    //node.setOnMouseDragged(draggedHandler);
   }
 
 }
