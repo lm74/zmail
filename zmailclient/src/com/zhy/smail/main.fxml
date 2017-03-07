@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
@@ -9,7 +10,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox onKeyPressed="#onKeyPressed" prefHeight="1024.0" prefWidth="1280.0" stylesheets="@../../../style.css" xmlns="http://javafx.com/javafx/8.0.76-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zhy.smail.MainController">
+<VBox onKeyPressed="#onKeyPressed" prefHeight="1024.0" prefWidth="1280.0" stylesheets="@../../../style.css" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zhy.smail.MainController">
     <children>
         <GridPane prefHeight="100.0" prefWidth="1200.0">
             <columnConstraints>
@@ -21,8 +22,11 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <Label fx:id="lblAppTitle" styleClass="label-title" text="智能信包箱系统" GridPane.columnIndex="1" />
+                <Label fx:id="lblAppTitle" styleClass="label-title" text="智能信包箱系统" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
             </children>
+         <padding>
+            <Insets top="30.0" />
+         </padding>
         </GridPane>
 
         <GridPane prefHeight="921.0" prefWidth="1260.0">
@@ -37,7 +41,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onLoginAction" prefHeight="180.0" prefWidth="330.0" styleClass="button-label" text="取件" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+                <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onLoginAction" prefHeight="180.0" prefWidth="330.0" styleClass="button-label" text="取件" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
                     <graphic>
                         <ImageView fitHeight="130.0" fitWidth="140.0" onDragDetected="#onLoginAction" pickOnBounds="true" preserveRatio="true">
                             <image>
@@ -45,7 +49,7 @@
                             </image>
                         </ImageView>
                     </graphic></Button>
-                <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onDeliveryAction" prefHeight="180.0" prefWidth="330.0" styleClass="button-label" text="投递员" GridPane.columnIndex="2" GridPane.halignment="CENTER">
+                <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onDeliveryAction" prefHeight="180.0" prefWidth="330.0" styleClass="button-label" text="投递员" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
                     <graphic>
                         <ImageView fitHeight="130.0" fitWidth="123.0" pickOnBounds="true" preserveRatio="true">
                             <image>
@@ -53,7 +57,21 @@
                             </image>
                         </ImageView>
                     </graphic></Button>
-                <Button mnemonicParsing="false" onAction="#onHelpAction" prefHeight="171.0" prefWidth="346.0" styleClass="button-label" text="帮助" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                <Button contentDisplay="CENTER" mnemonicParsing="false" onAction="#onHelpAction" styleClass="button-label" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+               <graphic>
+                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@/resources/images/button/help.png" />
+                     </image></ImageView>
+               </graphic>
+               <GridPane.margin>
+                  <Insets left="170.0" />
+               </GridPane.margin></Button>
+            <!--<ImageView fitHeight="150.0" fitWidth="200.0" onKeyPressed="#onHelpAction" onMousePressed="#onHelpAction" onTouchPressed="#onHelpAction" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+               <image>
+                  <Image url="@/resources/images/button/help.png" />
+               </image>
+            </ImageView>-->
             </children>
         </GridPane>
       <Label fx:id="lblMessage" />

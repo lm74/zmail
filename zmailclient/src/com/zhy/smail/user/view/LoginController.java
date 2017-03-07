@@ -170,6 +170,7 @@ public class LoginController implements Initializable{
             @Override
             public void doResult(RfResultEvent event) {
                 if (event.getResult() != 0) {
+                    Speaker.userOrPasswordError();
                     SimpleDialog.showMessageDialog(app.getRootStage(), "非法的帐号或密码，请重新输入", "错误");
                     txtUserName.requestFocus();
                     return;
@@ -185,6 +186,7 @@ public class LoginController implements Initializable{
 
             @Override
             public void doFault(RfFaultEvent event) {
+                Speaker.userOrPasswordError();
                 SimpleDialog.showMessageDialog(app.getRootStage(), "非法的帐号或密码，请重新输入", "错误");
                 txtUserName.requestFocus();
             }

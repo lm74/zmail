@@ -40,6 +40,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.util.Locale;
 
@@ -81,8 +82,8 @@ public class MainApp extends Application {
         rootScene.getStylesheets().add("style.css");
         primaryStage.setScene(rootScene);
         rootStage = primaryStage;
-        //primaryStage.setMaximized(true);
-        //primaryStage.initStyle(StageStyle.UNDECORATED);
+//        primaryStage.setMaximized(true);
+//        primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.show();
         rootScene.getWindow().centerOnScreen();
         initVK(rootStage);
@@ -463,6 +464,32 @@ public class MainApp extends Application {
            timer.cancel();
         }
         timer = new TimeoutTimer(lblTimer, GlobalOption.TimeoutTotal, new TimeoutTimer.TimeoutCallback() {
+            @Override
+            public void run() {
+                goHome();
+            }
+        });
+        timer.start();
+    }
+
+    public void ownerCreateTimeout(Label lblTimer){
+        if(timer !=null){
+            timer.cancel();
+        }
+        timer = new TimeoutTimer(lblTimer, GlobalOption.OwnerTimeoutTotal, new TimeoutTimer.TimeoutCallback() {
+            @Override
+            public void run() {
+                goHome();
+            }
+        });
+        timer.start();
+    }
+
+    public void deliveryCreateTimeout(Label lblTimer){
+        if(timer !=null){
+            timer.cancel();
+        }
+        timer = new TimeoutTimer(lblTimer, GlobalOption.DeliveryTimeoutTotal, new TimeoutTimer.TimeoutCallback() {
             @Override
             public void run() {
                 goHome();
