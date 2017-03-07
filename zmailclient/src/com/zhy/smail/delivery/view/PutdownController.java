@@ -136,7 +136,6 @@ public class PutdownController  extends RootController implements Initializable 
                             }
                         }
                         if(hasOpened){
-                            Speaker.doorNoClosed();
                             SimpleDialog.showMessageDialog(app.getRootStage(), "请关上打开的箱门，否则不能投递.","");
                             smallButton.setDisable(true);
                             middleButton.setDisable(true);

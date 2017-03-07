@@ -66,7 +66,7 @@ public class PickupController  implements Initializable {
 
     public void setApp(MainApp app) {
         this.app = app;
-        app.ownerCreateTimeout(lblTimer);
+        app.createTimeout(lblTimer);
     }
 
     public void initialize(URL location, ResourceBundle resources) {
@@ -89,9 +89,6 @@ public class PickupController  implements Initializable {
                     @Override
                     public void run() {
                         setBoxNumber(logs.size());
-                        if(logs.size()==0){
-                            Speaker.noPacket();
-                        }
                     }
                 });
             }
@@ -134,7 +131,7 @@ public class PickupController  implements Initializable {
         lblBoxNumber.setText("您有"+ boxNumber.toString()+"信包。");
         if(boxNumber == 0){
             openDoorButton.setDisable(true);
-//            Speaker.noPacket();
+            Speaker.noPacket();
         }
         else{
             openDoorButton.setDisable(false);

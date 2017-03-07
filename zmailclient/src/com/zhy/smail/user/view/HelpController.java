@@ -42,8 +42,7 @@ public class HelpController  extends RootController implements Initializable {
         HBox.setHgrow(topLeft, Priority.ALWAYS);
         HBox.setHgrow(topRight, Priority.ALWAYS);
 
-//        helpView.getEngine().load(GlobalOption.getServerUrl() + "/help/index.html");
-//        helpView.getEngine().load(GlobalOption.getServerRoot() + "/help/index.html");
+        helpView.getEngine().load(GlobalOption.getServerUrl() + "/help/index.html");
     }
 
     @FXML

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.web.WebView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Region?>
-<?import javafx.scene.text.Font?>
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1024.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zhy.smail.user.view.HelpController">
+<?import javafx.scene.control.Label?>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1024.0" prefWidth="1280.0"
+            xmlns="http://javafx.com/javafx/8.0.76-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zhy.smail.user.view.HelpController">
     <top>
         <ToolBar prefHeight="40.0" prefWidth="1260.0" BorderPane.alignment="CENTER">
             <items>
@@ -20,15 +20,9 @@
             </items>
         </ToolBar>
     </top>
-   <center>
-      <TextArea editable="false" focusTraversable="false" prefHeight="200.0" prefWidth="200.0" text="在使用信包箱系统前，请您务必事先阅读《信包箱系统使用协议》，如您不接受《信包箱系统使用协议》中的任何条款，请不要使用信包箱存取快件物品；在您实际使用信包箱系统后就视为您已经充分知悉并全部接受《信包箱使用协议》的所有条款。&#10;&#10;1、信包箱系统仅授权经过工商登机注册的合法快递公司所属快递人员和所投快递的取件人使用。&#10;&#10;2、信包箱系统所提供的服务范围仅限于快件的自主投递、暂存和自主领取，该服务不涉及投递物件的任何物权，使用人在完全清除服务范围的情况下自愿使用信包箱系统。&#10;&#10;3、投递人投递前须确保已经事先告知收件人并征得其同意使用信包箱系统投递快件。使用人登录信包箱系统投递快件，即视为使用人自愿使用信包箱，自愿遵守信包箱的使用规定，接受信包箱的使用条件。&#10;&#10;4、禁止在信包箱系统投递我国邮政及法律法规禁止流通或寄存的物品。我国法律法规禁止流通或者寄递的物品包括但不限于武器、弹药、麻醉药物、生化制品、传染性物品和爆炸性、易燃性、腐蚀性、放射性、毒性等危险物品及含有反动、淫秽或有伤风化内容的报刊书籍、图片、宣传品、音像制品、激光视盘（VCD、DVD、LD）、计算机磁盘及光盘等。&#10;&#10;5、以下情形的快件，请勿投递到信包箱中：&#10;①贵重及易碎物品（包括但不限于电脑、现金、珠宝、以及超过了3000元（大写：叁仟元）的物品等）及外包装破损、变形的快件；&#10;②不适合当前室外温度存放的物品；&#10;③寄件人对快件进行了保价的物品、紧急、重要信函等；&#10;④易碎物品或者包裹包装已经破损的物品；&#10;⑤易变质、易腐烂的快件，超出快递柜容纳体积的快件；&#10;⑥电话号码及地址填写不清楚的快件；&#10;⑦货到付款或者到付快递费的快件；&#10;⑧收件人明确要求本人签收的快件。&#10;&#10;6、投递到信包箱中的快件，外观是否破损，快件中的物品是否寄件人托运的物品、是否损坏等全部责任由承运该快件的电商或快递公司及投递该快件的投递员负责，由此产生的一切责任与信包箱无关。&#10;&#10;7、收件人应妥善保管好收自己的用户帐号和密码，不得泄漏给其他人，收件人应及时的取出投递物件。&#10;&#10;8、因不可抗力（“不可抗力”指不能预见、不能避免和不能克服的客观情况，包括但不限于政府行为、主管部门政策变化、战争、地震、台风、洪水、火灾等其他类似事件）造成快件损伤的，信包箱不承担赔偿责任。&#10;&#10;9，使用过程中有任何疑问，请拨打信包箱热线电话：400-886-3136   服务时间：（早9点-晚9点）。" wrapText="true" BorderPane.alignment="CENTER">
-         <font>
-            <Font name="Microsoft YaHei Bold" size="16.3" />
-         </font></TextArea>
-   </center>
-    <!--<center>
+    <center>
     <WebView fx:id="helpView" prefHeight="1024.0" prefWidth="1200.0">
 
     </WebView>
- </center>-->
+ </center>
 </BorderPane>

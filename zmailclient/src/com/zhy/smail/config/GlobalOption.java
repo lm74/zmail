@@ -18,8 +18,6 @@ public class GlobalOption {
     public static UserInfo currentUser=null;
     public static CabinetInfo currentCabinet = null;
     public static int TimeoutTotal = 99;
-    public static int OwnerTimeoutTotal = 15;
-    public static int DeliveryTimeoutTotal = 30;
     public static LinkedList<String> parents = new LinkedList<>();
     public static SystemOption timeout;
     public static SystemOption mainTitle;

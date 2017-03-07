@@ -145,14 +145,6 @@ public class Speaker {
     public static void openBoxSound(){
         playMusic("/music/19.wav");
     }
-
-    /**
-     * 用户或密码错误
-     */
-    public static void userOrPasswordError(){
-        playMusic("/music/20.wav");
-    }
-
     private static void playMusic(String path){
         String music0 = Speaker.class.getResource(path).toString();
         Media media2 = new Media(music0);
