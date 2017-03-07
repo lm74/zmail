@@ -1,6 +1,7 @@
 package com.zhy.smail.delivery.view;
 
 import com.zhy.smail.MainApp;
+import com.zhy.smail.component.music.Speaker;
 import com.zhy.smail.config.GlobalOption;
 import com.zhy.smail.manager.entity.DeliveryLog;
 import com.zhy.smail.manager.service.DeliveryLogService;
@@ -49,7 +50,7 @@ public class DeliveryController implements Initializable{
 
     public void setApp(MainApp app) {
         this.app = app;
-        app.createTimeout(lblTimer);
+        app.deliveryCreateTimeout(lblTimer);
     }
 
     public void initialize(URL location, ResourceBundle resources) {
@@ -60,6 +61,9 @@ public class DeliveryController implements Initializable{
         if(user.getUserType() == UserInfo.DELIVERY){
             mailButton.setVisible(false);
             tomailButton.setVisible(false);
+        }
+        if(user.getUserType()==UserInfo.MAILMAN){
+            Speaker.deliveryType();
         }
     }
 
