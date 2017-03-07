@@ -3,6 +3,7 @@ package com.zhy.smail;
 import com.zhy.smail.cabinet.view.BoxListController;
 import com.zhy.smail.cabinet.view.CabinetListController;
 import com.zhy.smail.common.controller.RootController;
+import com.zhy.smail.common.utils.SystemUtil;
 import com.zhy.smail.component.SimpleDialog;
 import com.zhy.smail.component.TimeoutTimer;
 import com.zhy.smail.component.keyboard.control.KeyBoardPopup;
@@ -82,11 +83,13 @@ public class MainApp extends Application {
         rootScene.getStylesheets().add("style.css");
         primaryStage.setScene(rootScene);
         rootStage = primaryStage;
+
         primaryStage.setMaximized(true);
         primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.show();
         rootScene.getWindow().centerOnScreen();
         initVK(rootStage);
+
         openCom();
         //initUDP();
         testConnection();
@@ -96,6 +99,19 @@ public class MainApp extends Application {
         rootStage.addEventFilter(KeyEvent.KEY_PRESSED, keyEventEventHandler);
         rootStage.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEventEventHandler);
         rootStage.addEventFilter(MouseEvent.MOUSE_MOVED, mouseEventEventHandler);
+
+        checkRegisterNo();
+    }
+
+    private void checkRegisterNo(){
+        String registerNo = SystemUtil.getRegisterNo();
+        if(registerNo.equals(LocalConfig.getInstance().getRegisterNo())){
+           return;
+        }
+
+        goRegister();
+
+
     }
 
     private void initVK(Stage primaryStage){
@@ -421,6 +437,10 @@ public class MainApp extends Application {
 
     public OpeningLogController goOpeningLog( ){
         return (OpeningLogController)loadFxml("manager/view/openingLog.fxml");
+    }
+
+    public void goRegister(){
+        loadFxml("user/view/register.fxml");
     }
 
     public void goSetting(){

@@ -3,6 +3,8 @@ package com.zhy.smail;
 import com.zhy.smail.cabinet.entity.CabinetInfo;
 import com.zhy.smail.cabinet.service.CabinetService;
 import com.zhy.smail.common.json.JsonResult;
+import com.zhy.smail.common.utils.KeySecurity;
+import com.zhy.smail.common.utils.SystemUtil;
 import com.zhy.smail.component.SimpleDialog;
 import com.zhy.smail.component.music.Speaker;
 import com.zhy.smail.config.GlobalOption;
@@ -35,7 +37,11 @@ public class MainController implements Initializable{
     private String typedStr;
     private boolean startGetTyped;
 
+
     public void initialize(URL location, ResourceBundle resources){
+
+
+
         OptionService.loadOptions(new RestfulResult() {
             @Override
             public void doResult(RfResultEvent event) {
@@ -55,6 +61,8 @@ public class MainController implements Initializable{
         startGetTyped = false;
     }
 
+
+
     @FXML
     public void onScreenMax(ActionEvent action){
         app.getRootStage().setMaximized(true);
@@ -72,6 +80,8 @@ public class MainController implements Initializable{
 
     public void setApp(MainApp app){
         this.app = app;
+
+
     }
 
     public void setAppTitle(String title){

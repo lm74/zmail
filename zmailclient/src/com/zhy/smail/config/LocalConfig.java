@@ -1,5 +1,6 @@
 package com.zhy.smail.config;
 
+import com.sun.org.apache.regexp.internal.RE;
 import com.zhy.smail.serial.SerialPortInfo;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -35,12 +36,22 @@ public class LocalConfig {
     private final static String SERVER_IP = "serverIP";
     private final static String SERVER_URL = "serverUrl";
     private final static String LOCAL_URL = "localUrl";
+    private final static String REGISTER_NO = "registerNo";
 
     private Properties properties;
     private SerialPortInfo serialPortInfo;
     private String localCabinet;
     private Integer appMode;
     private String serverIP;
+    private String registerNo;
+
+    public String getRegisterNo() {
+        return registerNo;
+    }
+
+    public void setRegisterNo(String registerNo) {
+        this.registerNo = registerNo;
+    }
 
     public String getServerIP() {
         return serverIP;
@@ -153,6 +164,7 @@ public class LocalConfig {
             setServerIP(getString(SERVER_IP,"127.0.0.1"));
             setServerUrl(getString(SERVER_URL, ""));
             setLocalUrl(getString(LOCAL_URL, "http://127.0.0.1:8080/api"));
+            setRegisterNo(getString(REGISTER_NO, "0000"));
 
 
 
@@ -208,6 +220,7 @@ public class LocalConfig {
             properties.setProperty(SERVER_IP,getServerIP() );
             properties.setProperty(SERVER_URL, getServerUrl());
             properties.setProperty(LOCAL_URL, getLocalUrl());
+            properties.setProperty(REGISTER_NO, getRegisterNo());
 
 
             FileOutputStream output=new FileOutputStream(file);
