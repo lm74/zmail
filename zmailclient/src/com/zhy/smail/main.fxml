@@ -49,7 +49,7 @@
                             </image>
                         </ImageView>
                     </graphic></Button>
-                <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onDeliveryAction" prefHeight="180.0" prefWidth="330.0" styleClass="button-label" text="投递员" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+                <Button contentDisplay="TOP" mnemonicParsing="false" onAction="#onDeliveryAction" prefHeight="180.0" prefWidth="330.0" styleClass="button-label" text="投件" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
                     <graphic>
                         <ImageView fitHeight="130.0" fitWidth="123.0" pickOnBounds="true" preserveRatio="true">
                             <image>
@@ -57,7 +57,8 @@
                             </image>
                         </ImageView>
                     </graphic></Button>
-                <Button contentDisplay="CENTER" mnemonicParsing="false" onAction="#onHelpAction" styleClass="button-label" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+                <Button mnemonicParsing="false" onAction="#onHelpAction" prefHeight="85.0" prefWidth="173.0" styleClass="button-label" text="帮助" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM"/>
+                <!--<Button contentDisplay="CENTER" mnemonicParsing="false" onAction="#onHelpAction" styleClass="button-label" text="帮助" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
                <graphic>
                   <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -66,7 +67,8 @@
                </graphic>
                <GridPane.margin>
                   <Insets left="170.0" />
-               </GridPane.margin></Button>
+               </GridPane.margin></Button>-->
+
             <!--<ImageView fitHeight="150.0" fitWidth="200.0" onKeyPressed="#onHelpAction" onMousePressed="#onHelpAction" onTouchPressed="#onHelpAction" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
                <image>
                   <Image url="@/resources/images/button/help.png" />

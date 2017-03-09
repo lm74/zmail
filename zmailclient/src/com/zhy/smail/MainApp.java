@@ -42,6 +42,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import java.io.IOException;
 import java.util.Locale;
 
 public class MainApp extends Application {
@@ -72,11 +73,11 @@ public class MainApp extends Application {
 
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("main.fxml"));
+   public void start(Stage primaryStage) throws Exception{
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("firstMain.fxml"));
         Parent root = fxmlLoader.load();
-        mainController = fxmlLoader.getController();
-        mainController.setApp(this);
+        FirstMainController firstController = fxmlLoader.getController();
+        firstController.setApp(this);
         primaryStage.setTitle("ZY Mail");
         rootScene = new Scene(root, 1280, 1024);
         rootScene.getStylesheets().add("style.css");
@@ -85,7 +86,30 @@ public class MainApp extends Application {
 //        primaryStage.setMaximized(true);
 //        primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.show();
-        rootScene.getWindow().centerOnScreen();
+
+
+
+
+//        initVK(rootStage);
+//        openCom();
+        //initUDP();
+//        testConnection();
+        Speaker.welcome();
+
+
+        rootStage.addEventFilter(KeyEvent.KEY_PRESSED, keyEventEventHandler);
+        rootStage.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEventEventHandler);
+        rootStage.addEventFilter(MouseEvent.MOUSE_MOVED, mouseEventEventHandler);
+    }
+
+    public void starMain(Stage primaryStage) throws Exception{
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("main.fxml"));
+        Parent root = fxmlLoader.load();
+        mainController = fxmlLoader.getController();
+        mainController.setApp(this);
+        primaryStage=rootStage;
+        primaryStage.setTitle("ZY Mail");
+        getRootStage().getScene().setRoot(root);
         initVK(rootStage);
         openCom();
         //initUDP();
@@ -97,6 +121,32 @@ public class MainApp extends Application {
         rootStage.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEventEventHandler);
         rootStage.addEventFilter(MouseEvent.MOUSE_MOVED, mouseEventEventHandler);
     }
+
+    /*public void start(Stage primaryStage) throws Exception{
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("main.fxml"));
+            Parent root = fxmlLoader.load();
+            mainController = fxmlLoader.getController();
+            mainController.setApp(this);
+            primaryStage.setTitle("ZY Mail");
+            rootScene = new Scene(root, 1280, 1024);
+            rootScene.getStylesheets().add("style.css");
+            primaryStage.setScene(rootScene);
+            rootStage = primaryStage;
+    //        primaryStage.setMaximized(true);
+    //        primaryStage.initStyle(StageStyle.UNDECORATED);
+            primaryStage.show();
+            rootScene.getWindow().centerOnScreen();
+            initVK(rootStage);
+            openCom();
+            //initUDP();
+            testConnection();
+            Speaker.welcome();
+
+
+            rootStage.addEventFilter(KeyEvent.KEY_PRESSED, keyEventEventHandler);
+            rootStage.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEventEventHandler);
+            rootStage.addEventFilter(MouseEvent.MOUSE_MOVED, mouseEventEventHandler);
+        }*/
 
     private void initVK(Stage primaryStage){
         Screen screen = Screen.getPrimary();

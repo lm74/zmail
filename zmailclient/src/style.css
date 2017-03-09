@@ -3,8 +3,16 @@
     -fx-background-color: #ffffff;
     -fx-font-family: "Microsoft YaHei",Arial,Helvetica,sans-serif,"宋体";
     -fx-background-image: url("/images/back3.jpg");
-
+    -fx-background-size: stretch;
 }
+
+/*.firstMain{
+    -fx-font-size: 32px !important;
+    -fx-background-color: #ffffff;
+    -fx-font-family: "Microsoft YaHei",Arial,Helvetica,sans-serif,"宋体";
+    -fx-background-image: url("/images/firstMainBack.jpg");
+
+}*/
 
 .label{
     -fx-text-fill: black;
