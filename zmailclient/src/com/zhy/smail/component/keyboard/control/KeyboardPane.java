@@ -183,21 +183,21 @@ public class KeyboardPane extends Region implements StandardKeyCode, EventHandle
       setScaleY(getScale());
     }
 
-    setOnZoom(e -> {
+   /* setOnZoom(e -> {
       double s = getScale() * e.getTotalZoomFactor();
       if (s >= getMinScale() && s <= getMaxScale()) {
         setScale(s);
         e.consume();
       }
-    });
+    });*/
 
-    setOnScroll(e -> {
+   /* setOnScroll(e -> {
       double s = getScale() + (e.getDeltaY() > 0.0d ? getScaleOffset() : -getScaleOffset());
       if (s >= getMinScale() && s <= getMaxScale()) {
         setScale(s);
         e.consume();
       }
-    });
+    });*/
   }
 
   private void setKeyboardType(boolean ctrl, boolean shift, boolean symbol) {

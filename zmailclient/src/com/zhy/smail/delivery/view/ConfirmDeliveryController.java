@@ -98,6 +98,7 @@ public class ConfirmDeliveryController extends RootController implements Initial
 
                     LcResult result = ResponseManager.response.poll(ResponseManager.WAIT_SECONDS, TimeUnit.SECONDS);
                     if (result == null) {
+                        Speaker.boxFault();
                         updateMessage("开"+box.getSequence()+"号箱门箱失败，请重试或联系管理员。");
                         updateValue(-1);
                     } else {
@@ -115,6 +116,7 @@ public class ConfirmDeliveryController extends RootController implements Initial
                             updateValue(0);
                             return null;
                         } else {
+                            Speaker.boxFault();
                             updateMessage("开"+box.getSequence()+"号箱门箱失败，请重试或联系管理员。");
                             updateValue(-1);
                         }
