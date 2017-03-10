@@ -11,6 +11,7 @@ import java.util.LinkedList;
  */
 public class GlobalOption {
     public static int appMode = 0;
+    public static int runMode = 0;
     public static final String localUrl = "http://127.0.0.1:8080/api";
     public static String serverIP = null;
 
@@ -20,11 +21,17 @@ public class GlobalOption {
     public static int TimeoutTotal = 99;
     public static LinkedList<String> parents = new LinkedList<>();
     public static SystemOption timeout;
+    public static SystemOption buildingNo;
+    public static SystemOption unitNo;
+    public static SystemOption useDays;
+    public static SystemOption useStart;
     public static SystemOption mainTitle;
+    public static SystemOption doorProtocol;
     public static SystemOption doorServerIp;
     public static SystemOption doorServerPort;
     public static SystemOption cardNeedPassword;
     public static SystemOption deliverySameMail;
+
 
 
     public static String getServerRoot(){

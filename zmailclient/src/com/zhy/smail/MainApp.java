@@ -30,6 +30,7 @@ import com.zhy.smail.user.service.UserService;
 import com.zhy.smail.user.view.*;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.concurrent.Task;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -52,7 +53,19 @@ public class MainApp extends Application {
     private TimeoutTimer timer=null;
     private Thread responseThread;
     private ResponseManager responseManager;
+    private SimpleBooleanProperty offline;
 
+    public boolean isOffline() {
+        return offline.get();
+    }
+
+    public SimpleBooleanProperty offlineProperty() {
+        return offline;
+    }
+
+    public void setOffline(boolean offline) {
+        this.offline.set(offline);
+    }
 
     public TimeoutTimer getTimer() {
         return timer;
@@ -72,8 +85,11 @@ public class MainApp extends Application {
 
 
 
+
     @Override
     public void start(Stage primaryStage) throws Exception{
+        this.offline = new SimpleBooleanProperty(false);
+
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("main.fxml"));
         Parent root = fxmlLoader.load();
         mainController = fxmlLoader.getController();
@@ -84,8 +100,8 @@ public class MainApp extends Application {
         primaryStage.setScene(rootScene);
         rootStage = primaryStage;
 
-        primaryStage.setMaximized(true);
-        primaryStage.initStyle(StageStyle.UNDECORATED);
+        //primaryStage.setMaximized(true);
+        //primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.show();
         rootScene.getWindow().centerOnScreen();
         initVK(rootStage);
@@ -132,7 +148,7 @@ public class MainApp extends Application {
         popup.addGlobalFocusListener();
     }
 
-    private void testConnection(){
+    public void testConnection(){
         Task<Integer> testTask = new Task<Integer>() {
             @Override
             protected Integer call() throws Exception {
@@ -141,22 +157,27 @@ public class MainApp extends Application {
                     @Override
                     public void doResult(RfResultEvent event) {
                         updateValue(0);
+                        GlobalOption.runMode = 0;
+                        setOffline(false);
+
                         loadSetting();
                     }
 
                     @Override
                     public void doFault(RfFaultEvent event) {
+                        updateValue(-1);
                         if(event.getErrorNo() == -1){
                             updateMessage(event.getMessage());
                         }
                         else {
-                            updateMessage("连接服务器(" + GlobalOption.serverIP + ")失败.本机进入维护模式，只有管理员才能登录.");
+                            updateMessage("连接服务器(" + GlobalOption.serverIP + ")失败.本机进入脱机状态，只有管理员才能登录.");
                             GlobalOption.serverIP = "127.0.0.1";
+                            GlobalOption.runMode = 1;
+                            setOffline(true);
                         }
-                        updateValue(-1);
                     }
                 });
-                return 1;
+                return -1;
 
             }
         };
@@ -372,21 +393,8 @@ public class MainApp extends Application {
         }
     }
 
-    public void goBoxList(){
-        try{
-            FXMLLoader fxmlLoader;
-
-            fxmlLoader = new FXMLLoader(getClass().getResource("cabinet/view/BoxList.fxml"));
-
-            Parent root = fxmlLoader.load();
-            BoxListController controller = (BoxListController) fxmlLoader.getController();
-            getRootStage().getScene().setRoot(root);
-            controller.setApp(this);
-        }
-        catch (Exception e){
-            SimpleDialog.showMessageDialog(getRootStage(),e.getMessage(),"错误");
-            e.printStackTrace();
-        }
+    public BoxListController goBoxList(){
+        return (BoxListController) loadFxml("cabinet/view/BoxList.fxml");
     }
 
     public UserListController goUserList(){

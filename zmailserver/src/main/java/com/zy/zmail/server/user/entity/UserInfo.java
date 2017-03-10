@@ -29,6 +29,8 @@ public class UserInfo  implements Serializable{
     private String password;
     private String buildingNo;
     private String unitNo;
+    private String floorNo;
+
     private String roomNo;
     private String cardNo1;
     private String cardNo2;
@@ -87,6 +89,16 @@ public class UserInfo  implements Serializable{
     public void setUnitNo(String unitNo) {
         this.unitNo = unitNo;
     }
+
+
+    public String getFloorNo() {
+        return floorNo;
+    }
+
+    public void setFloorNo(String floorNo) {
+        this.floorNo = floorNo;
+    }
+
 
     public String getRoomNo() {
         return roomNo;

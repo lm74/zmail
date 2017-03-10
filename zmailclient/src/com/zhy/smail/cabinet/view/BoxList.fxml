@@ -72,10 +72,10 @@
                 <ChoiceBox fx:id="cabinetList" prefWidth="200.0">
 
                 </ChoiceBox>
-                <Button mnemonicParsing="false" onAction="#onOpenAllBox" text="全开" />
-                <Button mnemonicParsing="false" onAction="#onOpenAllBox" text="全清" />
+                <Button fx:id="openAllButton" mnemonicParsing="false" onAction="#onOpenAllBox" text="全开" />
+                <Button fx:id="clearAllButton" mnemonicParsing="false" onAction="#onOpenAllBox" text="全清" />
             <CheckBox fx:id="chkOpenBoxTest" mnemonicParsing="false" text="开门测试" />
-            <Button mnemonicParsing="false" onAction="#onRefreshAction" text="刷新状态" />
+            <Button fx:id="refreshButton" mnemonicParsing="false" onAction="#onRefreshAction" text="刷新状态" />
             </items>
          <VBox.margin>
             <Insets />

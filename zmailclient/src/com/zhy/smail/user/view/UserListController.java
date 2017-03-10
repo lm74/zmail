@@ -1,11 +1,13 @@
 package com.zhy.smail.user.view;
 
+import com.sun.corba.se.spi.orbutil.fsm.Action;
 import com.zhy.smail.MainApp;
 import com.zhy.smail.component.SimpleDialog;
 import com.zhy.smail.config.GlobalOption;
 import com.zhy.smail.restful.RestfulResult;
 import com.zhy.smail.restful.RfFaultEvent;
 import com.zhy.smail.restful.RfResultEvent;
+import com.zhy.smail.setting.service.OptionService;
 import com.zhy.smail.task.ExportUserTask;
 import com.zhy.smail.task.ImportUserTask;
 import com.zhy.smail.user.entity.UserInfo;
@@ -20,6 +22,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -28,6 +31,7 @@ import javafx.stage.FileChooser;
 
 import java.io.*;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -65,11 +69,15 @@ public class UserListController implements Initializable {
 
     @FXML
     private TableView<UserInfo> ownerTable;
-    private ObservableList ownerList;
+    private ObservableList<UserInfo> ownerList;
+    @FXML
+    private TableColumn<UserInfo, Boolean> tcChecked;
     @FXML
     private TableColumn<UserInfo, String> tcBuildingNo;
     @FXML
     private TableColumn<UserInfo, String> tcUnitNo;
+    @FXML
+    private TableColumn<UserInfo, String> tcFloorNo;
     @FXML
     private TableColumn<UserInfo, String> tcRoomNo;
     @FXML
@@ -96,7 +104,9 @@ public class UserListController implements Initializable {
     private TableColumn<UserInfo, String> tcCardNo10;
     @FXML
     private TableView<UserInfo> deliveryTable;
-    private ObservableList deliveryList;
+    private ObservableList<UserInfo> deliveryList;
+    @FXML
+    private TableColumn<UserInfo, Boolean> tcdChecked;
     @FXML
     private TableColumn<UserInfo, String> tcDelivery;
     @FXML
@@ -123,9 +133,11 @@ public class UserListController implements Initializable {
     private TableColumn<UserInfo, String> tcdCardNo10;
     @FXML
     private TableView<UserInfo> managerTable;
-    private ObservableList managerList;
+    private ObservableList<UserInfo> managerList;
     @FXML
     private TableColumn<UserInfo, String> tcUserName;
+    @FXML
+    private TableColumn<UserInfo, Boolean> tcmChecked;
     @FXML
     private TableColumn<UserInfo, String> tcmPhoneNo;
     @FXML
@@ -148,6 +160,8 @@ public class UserListController implements Initializable {
     private TableColumn<UserInfo, String> tcmCardNo9;
     @FXML
     private TableColumn<UserInfo, String> tcmCardNo10;
+    @FXML
+    private CheckBox chkSelectAll;
 
     private FileChooser openFileChoose;
     private FileChooser saveFileChoose;
@@ -162,6 +176,7 @@ public class UserListController implements Initializable {
                 List<UserInfo> users = (List<UserInfo>)event.getData();
                 if(users == null) return;
 
+                Integer currentUserType = GlobalOption.currentUser.getUserType();
                 for(int i=0; i<users.size(); i++){
                     UserInfo user = users.get(i);
                     if(user.getUserType() == UserInfo.OWNER){
@@ -171,7 +186,9 @@ public class UserListController implements Initializable {
                         deliveryList.add(user);
                     }
                     else {
-                        managerList.add(user);
+                        if(user.getUserType()>=currentUserType) {
+                            managerList.add(user);
+                        }
                     }
                 }
             }
@@ -195,6 +212,7 @@ public class UserListController implements Initializable {
         onRefresh();
 
 
+
     }
 
     private void initFileChooser(){
@@ -210,8 +228,11 @@ public class UserListController implements Initializable {
     }
 
     private void createOwnerTable(){
+        tcChecked.setCellFactory(tc->new CheckBoxTableCell<UserInfo, Boolean>());
+        tcChecked.setCellValueFactory(new PropertyValueFactory<UserInfo, Boolean>("checked"));
         tcBuildingNo.setCellValueFactory(new PropertyValueFactory("buildingNo"));
         tcUnitNo.setCellValueFactory(new PropertyValueFactory<UserInfo, String>("unitNo"));
+        tcFloorNo.setCellValueFactory(new PropertyValueFactory<UserInfo, String>("floorNo"));
         tcRoomNo.setCellValueFactory(new PropertyValueFactory<UserInfo, String>("roomNo"));
         tcPhoneNo.setCellValueFactory(new PropertyValueFactory<UserInfo, String>("phoneNo"));
         tcCardNo1.setCellValueFactory(new PropertyValueFactory<UserInfo, String>("cardNo1"));
@@ -225,11 +246,14 @@ public class UserListController implements Initializable {
         tcCardNo9.setCellValueFactory(new PropertyValueFactory<UserInfo, String>("cardNo9"));
         tcCardNo10.setCellValueFactory(new PropertyValueFactory<UserInfo, String>("cardNo10"));
         ownerList = FXCollections.observableArrayList();
+
         ownerTable.setItems(ownerList);
 
     }
 
     private void createManagerTable(){
+        tcdChecked.setCellFactory(tc->new CheckBoxTableCell<UserInfo, Boolean>());
+        tcdChecked.setCellValueFactory(new PropertyValueFactory<UserInfo, Boolean>("checked"));
         tcUserName.setCellValueFactory(new PropertyValueFactory("userName"));
         tcmPhoneNo.setCellValueFactory(new PropertyValueFactory<UserInfo, String>("phoneNo"));
         tcmCardNo1.setCellValueFactory(new PropertyValueFactory<UserInfo, String>("cardNo1"));
@@ -247,6 +271,8 @@ public class UserListController implements Initializable {
     }
 
     private void createDeliveryTable(){
+        tcmChecked.setCellFactory(tc->new CheckBoxTableCell<UserInfo, Boolean>());
+        tcmChecked.setCellValueFactory(new PropertyValueFactory<UserInfo, Boolean>("checked"));
         tcDelivery.setCellValueFactory(new PropertyValueFactory("userName"));
         tcdPhoneNo.setCellValueFactory(new PropertyValueFactory<UserInfo, String>("phoneNo"));
         tcdCardNo1.setCellValueFactory(new PropertyValueFactory<UserInfo, String>("cardNo1"));
@@ -319,26 +345,121 @@ public class UserListController implements Initializable {
 
     @FXML
     private void onDeleteAction(ActionEvent event){
-        UserInfo user = getSelectedUserInfo();
-        if(user == null){
+        List<UserInfo> users = getSelectedUsers();
+        if(users.size() == 0){
+            users.add(getSelectedUserInfo());
+        }
+
+        if(users.size() == 0){
             SimpleDialog.showMessageDialog(app.getRootStage(), "请选择需要删除的用户.", "删除出错");
             return;
         }
-        String message = "你确认要删除你选择的用户(" + user.getUserName()+")吗？";
+        String message = "你确认要删除你选择的" + users.size()+"个用户吗？";
         SimpleDialog.Response  response = SimpleDialog.showConfirmDialog(app.getRootStage(),message ,"确认");
         if(response == SimpleDialog.Response.NO) return;
 
-        UserService.delete(user.getUserId(), new RestfulResult() {
-            @Override
-            public void doResult(RfResultEvent event) {
-                onRefresh();
+        for(int i=users.size()-1; i>=0; i--){
+            UserInfo user = users.get(i);
+            if(user.getUserType() == UserInfo.FACTORY_USER && user.getUserName().equals("ADMIN")){
+                SimpleDialog.showAutoCloseError(app.getRootStage(), "超级用户ADMIN不能删除。");
+                users.remove(i);
             }
-
-            @Override
-            public void doFault(RfFaultEvent event) {
-
+            if(user.getUserId().equals(GlobalOption.currentUser.getUserId())){
+                SimpleDialog.showAutoCloseError(app.getRootStage(), "用户不能删除自己。");
+                users.remove(i);
             }
-        });
+        }
+        if(users.size() == 0) return;
+
+        if(users.size() == 1) {
+            UserInfo user = users.get(0);
+
+            UserService.delete(user.getUserId(), new RestfulResult() {
+                @Override
+                public void doResult(RfResultEvent event) {
+                    onRefresh();
+                    SimpleDialog.showAutoCloseInfo(app.getRootStage(), "删除成功。");
+                }
+
+                @Override
+                public void doFault(RfFaultEvent event) {
+
+                }
+            });
+        }
+        else{
+            String ids = getUserIds(users);
+            UserService.deleteByIds(ids, new RestfulResult() {
+                @Override
+                public void doResult(RfResultEvent event) {
+                    onRefresh();
+                    SimpleDialog.showMessageDialog(app.getRootStage(), "删除成功。","");
+                }
+
+                @Override
+                public void doFault(RfFaultEvent event) {
+
+                }
+            });
+        }
+    }
+
+    private String getUserIds(List<UserInfo> users){
+        String ids = "";
+        for(int i=0; i<users.size(); i++){
+            UserInfo user = users.get(i);
+            ids += "," + user.getUserId();
+        }
+        if(ids.length()>0){
+            ids = ids.substring(1);
+        }
+        return ids;
+    }
+
+    @FXML
+    private void onSelectAllAction(ActionEvent event){
+        ObservableList<UserInfo> users = getUserLists();
+        if(chkSelectAll.isSelected()){
+           selectAll(users, true);
+        }
+        else{
+            selectAll(users, false);
+        }
+    }
+
+    private List<UserInfo> getSelectedUsers(){
+        List<UserInfo> selectedUsers = new ArrayList<>();
+
+        ObservableList<UserInfo> users = getUserLists();
+        for(int i=0; i<users.size(); i++){
+            UserInfo user = users.get(i);
+            if(user.isChecked()){
+                selectedUsers.add(user);
+            }
+        }
+
+        return selectedUsers;
+    }
+
+    private ObservableList<UserInfo> getUserLists(){
+        Tab selectedTab = userContainer.getSelectionModel().getSelectedItem();
+
+        if(selectedTab == ownerTab){
+            return ownerList;
+        }
+        else if(selectedTab == deliveryTab){
+            return deliveryList;
+        }
+        else{
+            return managerList;
+        }
+    }
+
+    private void selectAll(ObservableList<UserInfo> users, Boolean checked){
+        for(int i=0; i<users.size(); i++){
+            UserInfo user = (UserInfo)users.get(i);
+            user.setChecked( checked);
+        }
     }
 
     private UserEditController loadUserEdit(){

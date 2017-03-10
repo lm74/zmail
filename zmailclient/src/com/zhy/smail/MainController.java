@@ -17,6 +17,8 @@ import com.zhy.smail.user.entity.UserInfo;
 import com.zhy.smail.user.service.UserService;
 import com.zhy.smail.user.view.LoginController;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -33,15 +35,14 @@ public class MainController implements Initializable{
     private Label lblMessage;
     @FXML
     private Label lblAppTitle;
+    @FXML
+    private  Label lblOffline;
 
     private String typedStr;
     private boolean startGetTyped;
 
 
     public void initialize(URL location, ResourceBundle resources){
-
-
-
         OptionService.loadOptions(new RestfulResult() {
             @Override
             public void doResult(RfResultEvent event) {
@@ -59,6 +60,8 @@ public class MainController implements Initializable{
         }
 
         startGetTyped = false;
+        lblOffline.setVisible(false);
+
     }
 
 
@@ -81,7 +84,12 @@ public class MainController implements Initializable{
     public void setApp(MainApp app){
         this.app = app;
 
-
+        app.offlineProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                lblOffline.setVisible(newValue);
+            }
+        });
     }
 
     public void setAppTitle(String title){

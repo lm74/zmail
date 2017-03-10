@@ -14,6 +14,7 @@ import com.zhy.smail.restful.RestfulResult;
 import com.zhy.smail.restful.RfFaultEvent;
 import com.zhy.smail.restful.RfResultEvent;
 import com.zhy.smail.task.*;
+import com.zhy.smail.user.entity.UserInfo;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -81,23 +82,33 @@ public class BoxEditController extends RootController  implements Initializable{
     public void setApp(MainApp app) {
         this.app = app;
         app.createTimeout(lblTimer);
-
-        GetBoxStatusTask task = new GetBoxStatusTask(boxInfo);
-        task.valueProperty().addListener(new ChangeListener<Integer>() {
-            @Override
-            public void changed(ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) {
-                if(newValue>=0){
-                    if(newValue==0 ){
-                        setOpened(false);
+        if(!GlobalOption.currentUser.getUserType().equals(UserInfo.FACTORY_USER)){
+            btnBoxMail.setDisable(true);
+            btnBoxSmall.setDisable(true);
+            btnBoxLarge.setDisable(true);
+            btnBoxMiddle.setDisable(true);
+        }
+        if(GlobalOption.currentCabinet.getCabinetId().equals(boxInfo.getCabinetId())) {
+            GetBoxStatusTask task = new GetBoxStatusTask(boxInfo);
+            task.valueProperty().addListener(new ChangeListener<Integer>() {
+                @Override
+                public void changed(ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) {
+                    if (newValue >= 0) {
+                        if (newValue == 0) {
+                            setOpened(false);
+                        } else if (newValue > 0) {
+                            setOpened(true);
+                        }
+                        saveBox();
                     }
-                    else if(newValue>0){
-                        setOpened(true);
-                    }
-                    saveBox();
                 }
-            }
-        });
-        SimpleDialog.showDialog(app.getRootStage(), task, "正在检查箱门状态...", "");
+            });
+            SimpleDialog.showDialog(app.getRootStage(), task, "正在检查箱门状态...", "");
+        }
+        else{
+            openButton.setDisable(true);
+            clearButton.setDisable(true);
+        }
 
     }
 
@@ -192,7 +203,8 @@ public class BoxEditController extends RootController  implements Initializable{
             dector.cancel();
             dector = null;
         }
-        app.goBoxList();
+        BoxListController controller = app.goBoxList();
+        controller.createCabinetList(boxInfo.getCabinetId());
     }
 
     @FXML

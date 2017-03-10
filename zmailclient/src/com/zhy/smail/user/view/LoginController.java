@@ -7,6 +7,7 @@ package com.zhy.smail.user.view;
 import com.zhy.smail.MainApp;
 import com.zhy.smail.cabinet.entity.CabinetInfo;
 import com.zhy.smail.cabinet.service.CabinetService;
+import com.zhy.smail.common.utils.KeySecurity;
 import com.zhy.smail.component.SimpleDialog;
 import com.zhy.smail.component.TimeoutTimer;
 import com.zhy.smail.component.keyboard.control.KeyboardPane;
@@ -21,6 +22,7 @@ import com.zhy.smail.restful.RfFaultEvent;
 import com.zhy.smail.restful.RfResultEvent;
 import com.zhy.smail.serial.GatewayException;
 import com.zhy.smail.serial.SerialGateway;
+import com.zhy.smail.setting.service.OptionService;
 import com.zhy.smail.task.SendManager;
 import com.zhy.smail.user.entity.UserInfo;
 import com.zhy.smail.user.service.UserService;
@@ -130,7 +132,17 @@ public class LoginController implements Initializable{
         });
 
 
+        OptionService.loadOptions(new RestfulResult() {
+            @Override
+            public void doResult(RfResultEvent event) {
 
+            }
+
+            @Override
+            public void doFault(RfFaultEvent event) {
+
+            }
+        });
     }
 
     public boolean isDelivery() {
@@ -144,7 +156,7 @@ public class LoginController implements Initializable{
     @FXML
     public void onLoginAction(ActionEvent actionEvent) throws IOException {
         String userName = txtUserName.getText();
-        String password = txtPassword.getText();
+        String password = KeySecurity.encrypt(txtPassword.getText());
         if (userName.length() == 0) {
             SimpleDialog.showMessageDialog(app.getRootStage(), "请输入帐号，账号不能为空", "错误");
             txtUserName.requestFocus();
@@ -161,12 +173,16 @@ public class LoginController implements Initializable{
             @Override
             public void doResult(RfResultEvent event) {
                 if (event.getResult() != 0) {
-                    SimpleDialog.showMessageDialog(app.getRootStage(), "非法的帐号或密码，请重新输入", "错误");
+                    SimpleDialog.showMessageDialog(app.getRootStage(), "帐号或密码错误，请重新输入", "错误");
                     txtUserName.requestFocus();
                     return;
                 } else {
                     UserInfo user = (UserInfo) event.getData();
                     GlobalOption.currentUser = user;
+                    if(GlobalOption.runMode == 1 && user.getUserType()>UserInfo.ADMIN){
+                        SimpleDialog.showAutoCloseError(app.getRootStage(), "系统处于脱机状态，只有管理员才能登录。");
+                        return;
+                    }
                     if (user != null) {
                         loginForward(user);
                     }

@@ -5,6 +5,8 @@ import com.zhy.smail.config.GlobalOption;
 import com.zhy.smail.config.LocalConfig;
 import com.zhy.smail.restful.*;
 import com.zhy.smail.user.entity.UserInfo;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.io.IOException;
 import java.util.List;
@@ -14,6 +16,8 @@ import java.util.Map;
  * Created by wenliz on 2017/1/22.
  */
 public class UserService {
+    private static Log log = LogFactory.getLog(UserService.class);
+
     public static void testConnection(RestfulResult result){
         HttpOperator.get(GlobalOption.getServerUrl()+"/user/test", result);
     }
@@ -40,6 +44,7 @@ public class UserService {
         String url = GlobalOption.getServerUrl() +"/user";
         try {
             String value = HttpOperator.mapper.writeValueAsString(userInfo);
+            log.info(value);
             HttpOperator.post(value, url, new RestfulResult() {
                 @Override
                 public void doResult(RfResultEvent event) {
@@ -107,7 +112,8 @@ public class UserService {
     }
 
     public static void changePassword(Integer userId, String oldPassword, String newPassword, RestfulResult result){
-        String url = GlobalOption.getServerUrl()+"/user/changePassword?userId=" + userId.toString()+"&oldPassword=" + oldPassword+"&newPassword=" + newPassword;
+        String url = GlobalOption.getServerUrl()+"/user/changePassword?userId=" + userId.toString()+"&oldPassword=" +
+                oldPassword+"&newPassword=" + newPassword;
         HttpOperator.get(url, result);
     }
 
@@ -143,8 +149,9 @@ public class UserService {
         });
     }
 
-    public static void listOwnerByRoom(String buildingNo, String unitNo, String roomNo, RestfulResult result){
-        String url = GlobalOption.getServerUrl() +"/user/owner/byRoom?buildingNo="+buildingNo+"&unitNo="+unitNo+"&roomNo="+roomNo;
+    public static void listOwnerByRoom(String buildingNo, String unitNo,String floorNo, String roomNo, RestfulResult result){
+        String url = GlobalOption.getServerUrl() +"/user/owner/byRoom?buildingNo="+buildingNo+"&unitNo="+unitNo+
+                "&floorNo="+floorNo+"&roomNo="+roomNo;
         HttpOperator.get(url, new RestfulResult() {
             @Override
             public void doResult(RfResultEvent event) {
@@ -162,5 +169,15 @@ public class UserService {
     public static void delete(Integer userId, RestfulResult result){
         String url = GlobalOption.getServerUrl() +"/user/" + userId.toString();
         HttpOperator.delete(url, result);
+    }
+
+    public static void deleteByIds(String ids, RestfulResult result){
+        String url = GlobalOption.getServerUrl() +"/user/deleteByIds";
+        try {
+            HttpOperator.post(ids, url,result);
+        }
+        catch (Exception e){
+
+        }
     }
 }

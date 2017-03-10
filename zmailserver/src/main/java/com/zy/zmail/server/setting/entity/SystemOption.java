@@ -9,6 +9,12 @@ import java.sql.Timestamp;
  */
 @Entity
 public class SystemOption {
+    public static int DOOR_SERVER_IP_ID = 100;
+    public static int DOOR_SERVER_PORT_ID = 101;
+    public static int DOOR_PROTOCOL_ID = 102;
+    public static int BUILDING_NO_ID = 121;
+    public static int UNIT_NO_ID = 122;
+
     @Id
     private Integer optionId;
     private String optionName;

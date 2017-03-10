@@ -22,6 +22,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
+import javafx.scene.text.Text;
 
 import java.net.URL;
 import java.util.List;
@@ -47,6 +48,8 @@ public class UserChoiceController extends RootController implements Initializabl
     private TableColumn<UserInfo, String> tcBuildingNo;
     @FXML
     private TableColumn<UserInfo, String> tcUnitNo;
+    @FXML
+    private TableColumn<UserInfo, String> tcFloorNo;
     @FXML
     private TableColumn<UserInfo, String> tcRoomNo;
     @FXML
@@ -77,6 +80,8 @@ public class UserChoiceController extends RootController implements Initializabl
     @FXML
     private TextField txtUnitNo;
     @FXML
+    private TextField txtFloorNo;
+    @FXML
     private TextField txtRoomNo;
 
     public void setApp(MainApp app) {
@@ -89,6 +94,7 @@ public class UserChoiceController extends RootController implements Initializabl
         HBox.setHgrow(topRight, Priority.ALWAYS);
         txtBuildingNo.getProperties().put(VkProperties.VK_TYPE, VkProperties.VK_TYPE_NUMERIC);
         txtUnitNo.getProperties().put(VkProperties.VK_TYPE, VkProperties.VK_TYPE_NUMERIC);
+        txtFloorNo.getProperties().put(VkProperties.VK_TYPE, VkProperties.VK_TYPE_NUMERIC);
         txtRoomNo.getProperties().put(VkProperties.VK_TYPE, VkProperties.VK_TYPE_NUMERIC);
 
         createOwnerTable();
@@ -100,6 +106,7 @@ public class UserChoiceController extends RootController implements Initializabl
     private void createOwnerTable(){
         tcBuildingNo.setCellValueFactory(new PropertyValueFactory("buildingNo"));
         tcUnitNo.setCellValueFactory(new PropertyValueFactory<UserInfo, String>("unitNo"));
+        tcFloorNo.setCellValueFactory(new PropertyValueFactory<UserInfo, String>("floorNo"));
         tcRoomNo.setCellValueFactory(new PropertyValueFactory<UserInfo, String>("roomNo"));
         tcPhoneNo.setCellValueFactory(new PropertyValueFactory<UserInfo, String>("phoneNo"));
         tcCardNo1.setCellValueFactory(new PropertyValueFactory<UserInfo, String>("cardNo1"));
@@ -120,7 +127,7 @@ public class UserChoiceController extends RootController implements Initializabl
     public void onRefresh(){
         ownerList.clear();
 
-        UserService.listOwnerByRoom(txtBuildingNo.getText(), txtUnitNo.getText(), txtRoomNo.getText(),
+        UserService.listOwnerByRoom(txtBuildingNo.getText(), txtUnitNo.getText(), txtFloorNo.getText(), txtRoomNo.getText(),
                 new RestfulResult() {
             @Override
             public void doResult(RfResultEvent event) {

@@ -92,7 +92,7 @@ public class UserViewController extends RootController implements Initializable 
             @Override
             public void doResult(RfResultEvent event) {
                 if(event.getResult() == 0) {
-
+                    SimpleDialog.showAutoCloseInfo(app.getRootStage(),"保存成功。");
                 }
                 else{
                     SimpleDialog.showMessageDialog(app.getRootStage(), event.getMessage(), "保存出错");

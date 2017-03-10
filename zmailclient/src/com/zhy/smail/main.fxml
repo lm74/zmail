@@ -22,6 +22,7 @@
             </rowConstraints>
             <children>
                 <Label fx:id="lblAppTitle" styleClass="label-title" text="智能信包箱系统" GridPane.columnIndex="1" />
+            <Label fx:id="lblOffline" styleClass="offline" text="脱机" GridPane.columnIndex="2" />
             </children>
         </GridPane>
 

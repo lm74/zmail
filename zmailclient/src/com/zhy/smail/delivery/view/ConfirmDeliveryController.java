@@ -3,6 +3,7 @@ package com.zhy.smail.delivery.view;
 import com.zhy.smail.MainApp;
 import com.zhy.smail.cabinet.entity.BoxInfo;
 import com.zhy.smail.common.controller.RootController;
+import com.zhy.smail.common.utils.SystemUtil;
 import com.zhy.smail.component.SimpleDialog;
 import com.zhy.smail.component.music.Speaker;
 import com.zhy.smail.config.GlobalOption;
@@ -90,6 +91,11 @@ public class ConfirmDeliveryController extends RootController implements Initial
             @Override
             protected Object call() throws Exception {
                 updateMessage("正在开"+box.getSequence()+"号箱门...");
+                if(!SystemUtil.canUse()){
+                    updateMessage("开箱失败，请联系厂家(9999)。");
+                    updateValue(-1);
+                    return -1;
+                }
                 ResponseManager.response.clear();
                 try {
                     LcProtocol protocol = new LcProtocol();

@@ -22,16 +22,57 @@ public class UserServiceImpl implements UserService{
     @PersistenceContext
     private EntityManager em;
 
+    public UserInfo getByUserId(Integer userId){
+        return em.find(UserInfo.class, userId);
+    }
+
     public UserInfo getByUserName(String userName){
         Query query = em.createQuery("from UserInfo user where user.userName = :userName");
         query.setParameter("userName", userName);
-        return (UserInfo)query.getSingleResult();
+        List users = query.getResultList();
+        if(users.size()==0){
+            return null;
+        }
+        else{
+            return (UserInfo) users.get(0);
+        }
     }
+
+    public UserInfo getByUserName(String userName, Integer excludeUserId){
+        Query query = em.createQuery("from UserInfo user where user.userName = :userName and user.userId<>:userId");
+        query.setParameter("userName", userName);
+        query.setParameter("userId", excludeUserId);
+        List users = query.getResultList();
+        if(users.size()==0){
+            return null;
+        }
+        else{
+            return (UserInfo) users.get(0);
+        }
+    }
+
     public UserInfo getByPhoneNo(String phoneNo){
         Query query = em.createQuery("from UserInfo user where user.phoneNo = :phoneNo");
         query.setParameter("phoneNo", phoneNo);
-        return (UserInfo)query.getSingleResult();
-
+        List users = query.getResultList();
+        if(users.size()==0){
+            return null;
+        }
+        else{
+            return (UserInfo) users.get(0);
+        }
+    }
+    public UserInfo getByPhoneNo(String phoneNo, Integer excludeUserId){
+        Query query = em.createQuery("from UserInfo user where user.phoneNo = :phoneNo and user.userId <>:userId");
+        query.setParameter("phoneNo", phoneNo);
+        query.setParameter("userId", excludeUserId);
+        List users = query.getResultList();
+        if(users.size()==0){
+            return null;
+        }
+        else{
+            return (UserInfo) users.get(0);
+        }
     }
     public UserInfo getByCardNo(String cardNo){
         String jpql = "from UserInfo user " +
@@ -63,17 +104,48 @@ public class UserServiceImpl implements UserService{
         else {
             return null;
         }
+    }
 
+    public UserInfo getByCardNo(String cardNo, Integer excludeUserId){
+        String jpql = "from UserInfo user " +
+                "where (user.cardNo1 = :cardNo1 or  " +
+                "      user.cardNo2 = :cardNo2 or  " +
+                "      user.cardNo3 = :cardNo3 or  " +
+                "      user.cardNo4 = :cardNo4 or  " +
+                "      user.cardNo5 = :cardNo5 or  " +
+                "      user.cardNo6 = :cardNo6 or  " +
+                "      user.cardNo7 = :cardNo7 or  " +
+                "      user.cardNo8 = :cardNo8 or  " +
+                "      user.cardNo9 = :cardNo9 or  " +
+                "      user.cardNo10 = :cardNo10 ) and user.userId <> :userId ";
+        Query query = em.createQuery(jpql);
+        query.setParameter("cardNo1", cardNo);
+        query.setParameter("cardNo2", cardNo);
+        query.setParameter("cardNo3", cardNo);
+        query.setParameter("cardNo4", cardNo);
+        query.setParameter("cardNo5", cardNo);
+        query.setParameter("cardNo6", cardNo);
+        query.setParameter("cardNo7", cardNo);
+        query.setParameter("cardNo8", cardNo);
+        query.setParameter("cardNo9", cardNo);
+        query.setParameter("cardNo10", cardNo);
+        query.setParameter("userId", excludeUserId);
+        List<UserInfo> users = query.getResultList();
+        if(users.size()>0){
+            return users.get(0);
+        }
+        else {
+            return null;
+        }
     }
 
     public List<UserInfo> listByUserTypes(String userTypes){
-        String jpql = "from UserInfo as user where user.userType in (" +userTypes+ ")";
+        String jpql = "from UserInfo as user where user.userType in (" +userTypes+ ") order by user.userId ";
         Query query = em.createQuery(jpql);
        return (List<UserInfo>)query.getResultList();
     }
     public Integer save(UserInfo userInfo){
         if(userInfo.getUserId() == null){
-            userInfo.setPassword(KeySecurity.encrypt(userInfo.getPassword()));
             em.persist(userInfo);
         }
         else{
@@ -84,15 +156,28 @@ public class UserServiceImpl implements UserService{
     }
 
     public List<UserInfo> listAll(){
-        Query query = em.createQuery("from UserInfo as user");
+        Query query = em.createQuery("from UserInfo as user order by user.userId ");
         return (List<UserInfo>)query.getResultList();
     }
 
     public void delete(Integer userId){
-        UserInfo user = em.find(UserInfo.class, userId);
-        if(user != null){
-            em.remove(user);
-        }
+        String sql = "delete from deliverylog where pickupUser in (" + userId+") or deliveryMan in ("+userId+");" +
+                " delete from openinglog where openingUser in (" + userId+"); " +
+                " update boxinfo set deliveryMan = null where deliveryMan in ("+userId+");" +
+                " update boxinfo set owner = null where owner in ("+userId+");" +
+                " delete from userinfos where userId in (" + userId+"); ";
+        Query query = em.createNativeQuery(sql);
+        query.executeUpdate();
+    }
+
+    public void deleteByIds(String ids){
+        String sql = "delete from deliverylog where pickupUser in (" + ids+") or deliveryMan in ("+ids+");" +
+                " delete from openinglog where openingUser in (" + ids+"); " +
+                " update boxinfo set deliveryMan = null where deliveryMan in ("+ids+");" +
+                " update boxinfo set owner = null where owner in ("+ids+");" +
+                " delete from userinfos where userId in (" + ids+"); ";
+        Query query = em.createNativeQuery(sql);
+        query.executeUpdate();
     }
 
     public List<UserInfo> listOwner(String filter){
@@ -105,13 +190,16 @@ public class UserServiceImpl implements UserService{
         return (List<UserInfo>) query.getResultList();
     }
 
-    public List<UserInfo> listOwnerByRoom(String buildingNo, String unitNo, String roomNo){
+    public List<UserInfo> listOwnerByRoom(String buildingNo, String unitNo,String floorNo,  String roomNo){
         String jqpl = "from UserInfo as user where user.userType = 30 ";
         if(buildingNo !=null && buildingNo.length()>0){
             jqpl+= " and (user.buildingNo like '%" + buildingNo+"%') ";
         }
         if(unitNo != null && unitNo.length()>0){
             jqpl+= " and (user.unitNo like '%" + unitNo+"%') ";
+        }
+        if(floorNo != null && floorNo.length()>0){
+            jqpl += " and (user.floorNo like '%" + floorNo + "%') ";
         }
         if(roomNo != null && roomNo.length()>0){
             jqpl+= " and (user.roomNo like '%" + roomNo+"%') ";
@@ -127,12 +215,11 @@ public class UserServiceImpl implements UserService{
         if(user == null){
             return -1;
         }
-        String encry =  KeySecurity.encrypt(oldPassword);
         if(!user.getPassword().equals(oldPassword)){
             return -2;
         }
-        String newEncry = KeySecurity.encrypt(newPassword);
-        user.setPassword(newEncry);
+
+        user.setPassword(newPassword);
         em.merge(user);
 
         return 0;

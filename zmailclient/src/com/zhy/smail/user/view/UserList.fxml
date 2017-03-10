@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
@@ -28,10 +28,14 @@
           <Tab fx:id="ownerTab" text="业主">
             <content>
 
-                  <TableView fx:id="ownerTable" minHeight="700.0">
+                  <TableView fx:id="ownerTable" editable="true" minHeight="700.0">
                       <columns>
+                          <TableColumn fx:id="tcChecked" prefWidth="80">
+
+                          </TableColumn>
                           <TableColumn fx:id="tcBuildingNo" prefWidth="150" text="栋" />
                           <TableColumn fx:id="tcUnitNo" prefWidth="150" text="单元" />
+                          <TableColumn fx:id="tcFloorNo" prefWidth="150" text="楼层" />
                           <TableColumn fx:id="tcRoomNo" prefWidth="155.0" text="房号" />
                           <TableColumn fx:id="tcPhoneNo" prefWidth="228.0" text="手机" />
                           <TableColumn fx:id="tcCardNo1" prefWidth="319.0" text="卡号1" />
@@ -53,8 +57,9 @@
           <Tab fx:id="deliveryTab" text="投递员">
             <content>
 
-                <TableView fx:id="deliveryTable" minHeight="700.0">
+                <TableView fx:id="deliveryTable" editable="true" minHeight="700.0">
                     <columns>
+                        <TableColumn fx:id="tcdChecked" prefWidth="80" />
                         <TableColumn fx:id="tcDelivery" prefWidth="150" text="快递员" />
                         <TableColumn fx:id="tcdPhoneNo" prefWidth="228.0" text="手机" />
                         <TableColumn fx:id="tcdCardNo1" prefWidth="319.0" text="卡号1" />
@@ -75,8 +80,9 @@
             <Tab fx:id="managerTab" text="管理员">
                 <content>
 
-                    <TableView fx:id="managerTable" minHeight="700.0">
+                    <TableView fx:id="managerTable" editable="true" minHeight="700.0">
                         <columns>
+                            <TableColumn fx:id="tcmChecked" prefWidth="80" />
                             <TableColumn fx:id="tcUserName" prefWidth="150" text="名称" />
                             <TableColumn fx:id="tcmPhoneNo" prefWidth="228.0" text="手机" />
                             <TableColumn fx:id="tcmCardNo1" prefWidth="319.0" text="卡号1" />
@@ -98,6 +104,7 @@
       </TabPane>
       <ToolBar prefHeight="40.0" prefWidth="200.0">
         <items>
+            <CheckBox fx:id="chkSelectAll" mnemonicParsing="false" onAction="#onSelectAllAction" text="全选" />
           <Button mnemonicParsing="false" onAction="#onAddUserAction" text="增加" />
             <Button mnemonicParsing="false" onAction="#onDeleteAction" text="删除" />
             <Button mnemonicParsing="false" onAction="#onEditAction" text="修改" />

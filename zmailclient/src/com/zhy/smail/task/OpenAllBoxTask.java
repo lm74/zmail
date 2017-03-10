@@ -2,6 +2,7 @@ package com.zhy.smail.task;
 
 import com.zhy.smail.cabinet.entity.BoardEntry;
 import com.zhy.smail.cabinet.entity.CabinetEntry;
+import com.zhy.smail.common.utils.SystemUtil;
 import com.zhy.smail.config.GlobalOption;
 import com.zhy.smail.lcp.BoxEntry;
 import com.zhy.smail.lcp.LcProtocol;
@@ -21,6 +22,16 @@ import java.util.concurrent.TimeUnit;
 public class OpenAllBoxTask  extends Task<Integer> {
     private CabinetEntry cabinet;
 
+    public String getOpenedBoxNos() {
+        return openedBoxNos;
+    }
+
+    public void setOpenedBoxNos(String openedBoxNos) {
+        this.openedBoxNos = openedBoxNos;
+    }
+
+    private String openedBoxNos;
+
     public CabinetEntry getCabinet() {
         return cabinet;
     }
@@ -31,10 +42,16 @@ public class OpenAllBoxTask  extends Task<Integer> {
 
     public OpenAllBoxTask(CabinetEntry cabinet){
         this.cabinet = cabinet;
+        openedBoxNos = "";
     }
     @Override
     protected Integer call() throws Exception {
         updateMessage("正在打开箱门...");
+        if(!SystemUtil.canUse()){
+            updateMessage("开箱失败，请联系厂家(9999)。");
+            updateValue(-1);
+            return -1;
+        }
         List<BoardEntry> boards = cabinet.getBoards();
         for(int i=0; i<boards.size(); i++){
             BoardEntry boardEntry = boards.get(i);
@@ -42,6 +59,9 @@ public class OpenAllBoxTask  extends Task<Integer> {
             openBoardBoxes(boardEntry);
         }
         cabinet.setValue(1);
+        if(openedBoxNos.length()>0){
+            openedBoxNos = openedBoxNos.substring(1);
+        }
         return 0;
     }
 
@@ -74,6 +94,7 @@ public class OpenAllBoxTask  extends Task<Integer> {
 
                 } else {
                     if (result.getErrorNo() == LcResult.SUCCESS) {
+                        openedBoxNos += "," + boxEntry.getSequence();
                         OpeningLogService.save(GlobalOption.currentUser.getUserId(),  boxEntry.getBoxId(), "开箱成功", new DefaultRestfulResult());
                         continue;
                     } else {

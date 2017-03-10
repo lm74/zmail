@@ -36,9 +36,7 @@ import javafx.scene.layout.Region;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -59,6 +57,8 @@ public class PickupController  implements Initializable {
     private Label lblOpenMessage;
     @FXML
     private Label lblNotify;
+    @FXML
+    private Label lblBoxList;
 
     private MainApp app;
     private List<DeliveryLog> logs;
@@ -70,7 +70,7 @@ public class PickupController  implements Initializable {
     }
 
     public void initialize(URL location, ResourceBundle resources) {
-        setBoxNumber(0);
+        setBoxNumber(0, "");
         lblOpenMessage.setVisible(false);
         HBox.setHgrow(topLeft, Priority.ALWAYS);
         HBox.setHgrow(topRight, Priority.ALWAYS);
@@ -80,15 +80,24 @@ public class PickupController  implements Initializable {
         DeliveryLogService.listByOwner(GlobalOption.currentCabinet.getCabinetId(), GlobalOption.currentUser.getUserId(), new RestfulResult() {
             @Override
             public void doResult(RfResultEvent event) {
+
                 logs.clear();
+
+                Set<Integer> boxSetNos = new HashSet<Integer>();
                 if(event.getData()!=null){
+
                     List<DeliveryLog> newLogs = (List<DeliveryLog>) event.getData();
                     logs.addAll(newLogs);
+                    for(int i=0; i<newLogs.size(); i++){
+                        DeliveryLog log = newLogs.get(i);
+                        boxSetNos.add(log.getBoxInfo().getSequence());
+                    }
                 }
+                final String boxNos= boxSetNos.toString();
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
-                        setBoxNumber(logs.size());
+                        setBoxNumber(logs.size(), boxNos);
                     }
                 });
             }
@@ -127,13 +136,17 @@ public class PickupController  implements Initializable {
 
     }
 
-    private void setBoxNumber(Integer boxNumber){
-        lblBoxNumber.setText("您有"+ boxNumber.toString()+"信包。");
+    private void setBoxNumber(Integer boxNumber, String boxNos){
+
         if(boxNumber == 0){
+            lblBoxNumber.setText("您有0信包。");
             openDoorButton.setDisable(true);
+            lblBoxList.setVisible(false);
             Speaker.noPacket();
         }
         else{
+            lblBoxNumber.setText("您有"+ boxNumber.toString()+"信包。箱号如下：");
+            lblBoxList.setVisible(true);
             openDoorButton.setDisable(false);
         }
     }
@@ -157,6 +170,7 @@ public class PickupController  implements Initializable {
                 if (newValue != 0) return;
 
                 lblOpenMessage.setVisible(true);
+                lblOpenMessage.setText(task.getOpenedBoxNos()+"号箱门已经打开，请取出物品后关好箱门。");
                 Speaker.openBoxSound();
                 Speaker.doorOpened();
                 for (int i = 0; i < logs.size(); i++) {

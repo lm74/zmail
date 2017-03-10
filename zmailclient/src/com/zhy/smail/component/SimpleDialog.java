@@ -160,6 +160,82 @@ public class SimpleDialog {
         dial.showDialog();
     }
 
+    public static void showAutoCloseError(Stage owner, String message){
+        showAutocloseDialog(owner, message, 3000, false);
+    }
+
+    public static void showAutoCloseInfo(Stage owner, String message){
+        showAutocloseDialog(owner, message, 1000, true);
+    }
+
+    public static void showAutocloseDialog(Stage owner, String message, Integer waitTime, boolean success){
+        Task<Integer> task = new Task<Integer>() {
+            @Override
+            protected Integer call() throws Exception {
+                updateMessage(message);
+                try {
+                    Thread.sleep(waitTime);
+                }
+                catch (Exception e){
+
+                }
+                updateValue(0);
+                return 0;
+            }
+        };
+
+        VBox vb = new VBox();
+        Scene scene = new Scene(vb);
+
+        final Dialog dialog = new Dialog("", owner, scene);
+        vb.setPadding(new Insets(10, 10, 10, 10));
+        vb.setSpacing(10);
+        Button okButton = new Button("确定");
+        okButton.setAlignment(Pos.CENTER);
+        okButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                dialog.close();
+            }
+        });
+        BorderPane bp = new BorderPane();
+        bp.setCenter(okButton);
+        okButton.setVisible(false);
+
+        HBox msg = new HBox();
+        msg.setSpacing(30);
+        ImageView headIcon = new ImageView();
+        if(success) {
+            headIcon.setImage(new Image(dialog.getClass().getResourceAsStream("/resources/images/button/check.png")));
+        }
+        else{
+            headIcon.setImage(new Image(dialog.getClass().getResourceAsStream("/resources/images/button/error.png")));
+        }
+        msg.getChildren().add(headIcon);
+        Message text = new Message(message);
+        msg.getChildren().add(text);
+        vb.getChildren().addAll(msg, bp);
+        text.textProperty().bind(task.messageProperty());
+
+        task.valueProperty().addListener(new ChangeListener() {
+            @Override
+            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+                if(newValue == null) return;
+
+                Integer realValue = (Integer) newValue;
+                if(realValue >= 0){
+                    dialog.close();
+                }
+                else if(realValue == -1){
+                    okButton.setVisible(true);
+                }
+            }
+        });
+
+        new Thread(task).start();
+        dialog.showDialog();
+    }
+
     public static void showDialog(Stage owner, Task task, String message, String title){
         VBox vb = new VBox();
         Scene scene = new Scene(vb);

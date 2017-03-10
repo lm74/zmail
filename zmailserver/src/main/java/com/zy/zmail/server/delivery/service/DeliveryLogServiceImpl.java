@@ -63,6 +63,18 @@ public class DeliveryLogServiceImpl implements DeliveryLogService {
         return query.getResultList();
     }
 
+    public List<DeliveryLog> listByOwner(Integer ownerId){
+        String jqpl = "from DeliveryLog as log left join fetch log.boxInfo as box " +
+                " left join fetch log.pickupUser as user "+
+                " where box.cabinetId = :cabinetId and user.userId=:ownerId";
+
+            jqpl += " and log.pickupTime is null";
+
+        Query query = em.createQuery(jqpl);
+        query.setParameter("ownerId", ownerId);
+        return query.getResultList();
+    }
+
     public List<CabinetNode> listAllByOwner(Integer ownerId, Integer pickuped){
         String sql = " select c.cabinetId, c.cabinetNo, count(log.logId) as count " +
                 "from DeliveryLog as log left join  boxInfo as box on log.boxId = box.boxId " +

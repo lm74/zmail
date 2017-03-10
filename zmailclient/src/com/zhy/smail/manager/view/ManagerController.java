@@ -32,6 +32,16 @@ public class ManagerController implements Initializable{
     private Button userListButton;
     @FXML
     private  Button settingButton;
+    @FXML
+    private Button exitButton;
+    @FXML
+    private Button cabinetButton;
+    @FXML
+    private Button openingButton;
+    @FXML
+    private Button boxButton;
+    @FXML
+    private Button deliveryButton;
 
     private MainApp app;
     private Integer userType;
@@ -44,18 +54,31 @@ public class ManagerController implements Initializable{
     public void initialize(URL location, ResourceBundle resources){
         UserInfo user = GlobalOption.currentUser;
         userType = user.getUserType();
+        if(GlobalOption.runMode == 1){
+            userListButton.setVisible(false);
+            cabinetButton.setVisible(false);
+            openingButton.setVisible(false);
+            deliveryButton.setVisible(false);
+            boxButton.setVisible(false);
+        }
         if(user.getUserType() == UserInfo.FACTORY_USER) return;
 
-        userListButton.setText("帐号信息");
+
         if(userType == UserInfo.ADMIN){
+            userListButton.setText("帐号信息");
             settingButton.setVisible(false);
+            exitButton.setVisible(false);
+            cabinetButton.setVisible(false);
+        }
+        if(userType == UserInfo.ADVANCED_ADMIN){
+            cabinetButton.setVisible(false);
         }
     }
 
 
     @FXML
     public void onUserListAction(ActionEvent actionEvent) throws IOException{
-        if(userType != UserInfo.FACTORY_USER){
+        if(userType == UserInfo.ADMIN){
             app.goUserView();
             GlobalOption.parents.push("manager");
         }
@@ -66,7 +89,8 @@ public class ManagerController implements Initializable{
 
     @FXML
     public void onBoxListAction(ActionEvent actionEvent) throws IOException{
-       app.goBoxList();
+       BoxListController controller = app.goBoxList();
+        controller.createCabinetList(0);
     }
 
     @FXML

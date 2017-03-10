@@ -1,6 +1,7 @@
 package com.zhy.smail.user.view;
 
 import com.zhy.smail.MainApp;
+import com.zhy.smail.common.utils.KeySecurity;
 import com.zhy.smail.component.SimpleDialog;
 import com.zhy.smail.config.GlobalOption;
 import com.zhy.smail.restful.RestfulResult;
@@ -129,11 +130,19 @@ public class ChangePasswordController  implements Initializable {
             txtNewPassword.requestFocus();
             return;
         }
-
-        UserService.changePassword(user.getUserId(), txtOldPassword.getText(), txtNewPassword.getText(), new RestfulResult() {
+        String oldPassword="";
+        if(txtOldPassword.isDisable()){
+            oldPassword = user.getPassword();
+        }
+        else {
+            oldPassword = KeySecurity.encrypt(txtOldPassword.getText());
+        }
+        String newPasword = KeySecurity.encrypt(txtNewPassword.getText());
+        UserService.changePassword(user.getUserId(), oldPassword, newPasword, new RestfulResult() {
             @Override
             public void doResult(RfResultEvent event) {
                 if(event.getResult() == 0){
+                    SimpleDialog.showAutoCloseInfo(app.getRootStage(), "密码修改成功。");
                     onBackAction(null);
                 }
                 else if(event.getResult() == -2){

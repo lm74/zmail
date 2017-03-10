@@ -82,6 +82,21 @@ public class OptionService {
                             case SystemOption.DELIVERY_SAME_MAIL_ID:
                                 GlobalOption.deliverySameMail = option;
                                 break;
+                            case SystemOption.DOOR_PROTOCOL_ID:
+                                GlobalOption.doorProtocol = option;
+                                break;
+                            case SystemOption.BUILDING_NO_ID:
+                                GlobalOption.buildingNo = option;
+                                break;
+                            case SystemOption.UNIT_NO_ID:
+                                GlobalOption.unitNo = option;
+                                break;
+                            case SystemOption.USE_DAYS_ID:
+                                GlobalOption.useDays = option;
+                                break;
+                            case SystemOption.USE_START_ID:
+                                GlobalOption.useStart = option;
+                                break;
 
                         }
 
@@ -118,5 +133,11 @@ public class OptionService {
         catch (Exception e){
 
         }
+    }
+
+    public static void testDoorSystem(Integer protocolType, String serverIp, Integer portNo, RestfulResult result){
+        String url = GlobalOption.getServerUrl() +"/setting/option/testDoorSystem?protocolType="+protocolType+
+                "&serverIp=" + serverIp+"&serverPort="+portNo;
+        HttpOperator.get(url,result);
     }
 }

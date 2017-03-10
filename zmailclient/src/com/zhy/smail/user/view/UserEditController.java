@@ -2,8 +2,10 @@ package com.zhy.smail.user.view;
 
 import com.sun.corba.se.spi.orbutil.fsm.Action;
 import com.zhy.smail.MainApp;
+import com.zhy.smail.common.utils.KeySecurity;
 import com.zhy.smail.component.SimpleDialog;
 import com.zhy.smail.component.keyboard.control.VkProperties;
+import com.zhy.smail.config.GlobalOption;
 import com.zhy.smail.restful.RestfulResult;
 import com.zhy.smail.restful.RfFaultEvent;
 import com.zhy.smail.restful.RfResultEvent;
@@ -13,10 +15,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToolBar;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
@@ -27,6 +26,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by wenliz on 2017/2/14.
@@ -51,6 +51,10 @@ public class UserEditController implements Initializable{
     private TextField txtUnitNo;
     @FXML
     private Label lblUnitNo;
+    @FXML
+    private TextField txtFloorNo;
+    @FXML
+    private Label lblFloorNo;
     @FXML
     private TextField txtRoomNo;
     @FXML
@@ -87,6 +91,8 @@ public class UserEditController implements Initializable{
     private RadioButton rdoFactory;
     @FXML
     private HBox userNameTool;
+    @FXML
+    private Button saveAndAddButton;
 
     private UserInfo user;
     private int userClass;
@@ -117,6 +123,7 @@ public class UserEditController implements Initializable{
         txtBuildingNo.setPrefWidth(100);
         txtBuildingNo.requestFocus();
         txtUnitNo.setPrefWidth(100);
+        txtFloorNo.setPrefWidth(100);
         txtRoomNo.setPrefWidth(150);
 
         userNameTool.getChildren().remove(rdoAdvanceManager);
@@ -139,13 +146,20 @@ public class UserEditController implements Initializable{
         lblUserType.setVisible(true);
         rdoManager.setVisible(true);
         rdoAdvanceManager.setVisible(true);
-        rdoFactory.setVisible(true);
+        if(GlobalOption.currentUser.getUserType() == UserInfo.FACTORY_USER) {
+            rdoFactory.setVisible(true);
+        }
+        else{
+            rdoFactory.setVisible(false);
+        }
     }
 
     private void hideOwner(){
         lblBuildingNo.setText("用户名:");
         userNameTool.getChildren().remove(lblRoomNo);
         userNameTool.getChildren().remove(lblUnitNo);
+        userNameTool.getChildren().remove(lblFloorNo);
+        userNameTool.getChildren().remove(txtFloorNo);
         userNameTool.getChildren().remove(txtRoomNo);
         userNameTool.getChildren().remove(txtUnitNo);
 
@@ -160,6 +174,11 @@ public class UserEditController implements Initializable{
     public void setUser(UserInfo user) {
         this.user = user;
         lblTitle.setText("修改用户");
+        txtBuildingNo.setDisable(true);
+        txtUnitNo.setDisable(true);
+        txtFloorNo.setDisable(true);
+        txtRoomNo.setDisable(true);
+        saveAndAddButton.setVisible(false);
         showUser();
     }
 
@@ -170,12 +189,18 @@ public class UserEditController implements Initializable{
     public void setApp(MainApp app) {
         this.app = app;
         app.createTimeout(lblTimer);
+        txtBuildingNo.requestFocus();
+    }
+
+    private UserInfo createNewUser(){
+        UserInfo userInfo = new UserInfo();
+        userInfo.setUserId(-1);
+        userInfo.setPassword(KeySecurity.encrypt("123456"));
+        return userInfo;
     }
 
     public void initialize(URL location, ResourceBundle resources){
-        user = new UserInfo();
-        user.setUserId(-1);
-        user.setPassword("123456");
+        user = createNewUser();
         HBox.setHgrow(topLeft, Priority.ALWAYS);
         HBox.setHgrow(topRight, Priority.ALWAYS);
         txtCards.add(txtCard1No);
@@ -192,6 +217,7 @@ public class UserEditController implements Initializable{
 
         txtBuildingNo.getProperties().put(VkProperties.VK_TYPE, VkProperties.VK_TYPE_NUMERIC);
         txtUnitNo.getProperties().put(VkProperties.VK_TYPE, VkProperties.VK_TYPE_NUMERIC);
+        txtFloorNo.getProperties().put(VkProperties.VK_TYPE, VkProperties.VK_TYPE_NUMERIC);
         txtRoomNo.getProperties().put(VkProperties.VK_TYPE, VkProperties.VK_TYPE_NUMERIC);
         txtPhoneNo.getProperties().put(VkProperties.VK_TYPE, VkProperties.VK_TYPE_NUMERIC);
         for(int i=0; i<txtCards.size(); i++){
@@ -225,14 +251,66 @@ public class UserEditController implements Initializable{
 
     @FXML
     private void onSave(ActionEvent event){
-        assignUser();
+        saveUser(false);
+    }
+    @FXML
+    private void onSaveAndAdd(ActionEvent event){
+        saveUser(true);
+    }
+
+    private void saveUser(boolean addNew){
+        if(!assignUser()) return;
+
         UserService.save(user, new RestfulResult() {
             @Override
             public void doResult(RfResultEvent event) {
                 if(event.getResult() == 0) {
-                    UserListController controller = app.goUserList();
-                    controller.selectTab(userClass);
+                    SimpleDialog.showAutoCloseInfo(app.getRootStage(), "保存成功");
+                    if(addNew){
+                       addNewUser();
+                    }
+                    else {
+                        UserListController controller = app.goUserList();
+                        controller.selectTab(userClass);
+                    }
                 }
+                else if(event.getResult() == -2){
+                    SimpleDialog.showMessageDialog(app.getRootStage(), "用户名" + user.getUserName()+"已经存在，保存失败。", "保存出错");
+
+                }
+                else if(event.getResult() == -3){
+                    SimpleDialog.showMessageDialog(app.getRootStage(), "电话" + user.getPhoneNo()+"已经是属于其它用户，保存失败。", "保存出错");
+                }
+                else if(event.getResult() == -11){
+                    SimpleDialog.showMessageDialog(app.getRootStage(), "卡号" + user.getCardNo1()+"已经是属于其它用户，保存失败。", "保存出错");
+                }
+                else if(event.getResult() == -12){
+                    SimpleDialog.showMessageDialog(app.getRootStage(), "卡号" + user.getCardNo2()+"已经是属于其它用户，保存失败。", "保存出错");
+                }
+                else if(event.getResult() == -13){
+                    SimpleDialog.showMessageDialog(app.getRootStage(), "卡号" + user.getCardNo3()+"已经是属于其它用户，保存失败。", "保存出错");
+                }
+                else if(event.getResult() == -14){
+                    SimpleDialog.showMessageDialog(app.getRootStage(), "卡号" + user.getCardNo4()+"已经是属于其它用户，保存失败。", "保存出错");
+                }
+                else if(event.getResult() == -15){
+                    SimpleDialog.showMessageDialog(app.getRootStage(), "卡号" + user.getCardNo5()+"已经是属于其它用户，保存失败。", "保存出错");
+                }
+                else if(event.getResult() == -16){
+                    SimpleDialog.showMessageDialog(app.getRootStage(), "卡号" + user.getCardNo6()+"已经是属于其它用户，保存失败。", "保存出错");
+                }else if(event.getResult() == -17){
+                    SimpleDialog.showMessageDialog(app.getRootStage(), "卡号" + user.getCardNo7()+"已经是属于其它用户，保存失败。", "保存出错");
+                }
+                else if(event.getResult() == -18){
+                    SimpleDialog.showMessageDialog(app.getRootStage(), "卡号" + user.getCardNo8()+"已经是属于其它用户，保存失败。", "保存出错");
+                }
+                else if(event.getResult() == -19){
+                    SimpleDialog.showMessageDialog(app.getRootStage(), "卡号" + user.getCardNo9()+"已经是属于其它用户，保存失败。", "保存出错");
+                }
+                else if(event.getResult() == -20){
+                    SimpleDialog.showMessageDialog(app.getRootStage(), "卡号" + user.getCardNo10()+"已经是属于其它用户，保存失败。", "保存出错");
+                }
+
                 else{
                     SimpleDialog.showMessageDialog(app.getRootStage(), event.getMessage(), "保存出错");
                 }
@@ -245,13 +323,41 @@ public class UserEditController implements Initializable{
         });
     }
 
-    private void assignUser(){
+    private void addNewUser(){
+        UserInfo newUser = createNewUser();
+        newUser.setBuildingNo(user.getBuildingNo());
+        newUser.setUnitNo(user.getUnitNo());
+        newUser.setFloorNo(user.getFloorNo());
+        if((user.getRoomNo()==null) || (user.getRoomNo().length()==0)){
+            newUser.setRoomNo("1");
+        }
+        else{
+            try {
+                Integer roomId = Integer.valueOf(user.getRoomNo()) + 1;
+                newUser.setRoomNo(String.valueOf(roomId));
+            }
+            catch (Exception e){
+                newUser.setRoomNo("1");
+            }
+
+        }
+        user = newUser;
+        showUser();
+    }
+
+    private boolean assignUser(){
         switch (userClass){
             case 0:
                 user.setBuildingNo(txtBuildingNo.getText());
                 user.setUnitNo(txtUnitNo.getText());
+                user.setFloorNo(txtFloorNo.getText());
                 user.setRoomNo(txtRoomNo.getText());
-                user.setUserName(user.getBuildingNo()+user.getUnitNo()+user.getRoomNo());
+                user.setUserName(user.getBuildingNo()+user.getUnitNo()+user.getFloorNo()+user.getRoomNo());
+                if(user.getUserName()==null || user.getUserName().length()==0){
+                    SimpleDialog.showMessageDialog(app.getRootStage(), "栋、单元、楼层、房号不能全部为空。","");
+                    txtRoomNo.requestFocus();
+                    return false;
+                }
                 user.setUserType(UserInfo.OWNER);
                 break;
             case 1:
@@ -262,6 +368,12 @@ public class UserEditController implements Initializable{
                     user.setUserType(UserInfo.MAILMAN);
                 }
                 user.setUserName(txtBuildingNo.getText());
+                String phoneNo = txtPhoneNo.getText();
+                if(phoneNo == null || phoneNo.length() == 0){
+                    SimpleDialog.showMessageDialog(app.getRootStage(), "电话不能为空。","");
+                    txtPhoneNo.requestFocus();
+                    return false;
+                }
                 break;
             case 2:
                 if(rdoManager.isSelected()){
@@ -276,6 +388,10 @@ public class UserEditController implements Initializable{
                 user.setUserName(txtBuildingNo.getText());
                 break;
         }
+        if(user.getUserName()==null || user.getUserName().length()==0){
+            SimpleDialog.showMessageDialog(app.getRootStage(), "用户名不能为空。","");
+            txtBuildingNo.requestFocus();
+        }
         user.setPhoneNo(txtPhoneNo.getText());
         user.setCardNo1(txtCard1No.getText());
         user.setCardNo2(txtCard2No.getText());
@@ -287,6 +403,7 @@ public class UserEditController implements Initializable{
         user.setCardNo8(txtCard8No.getText());
         user.setCardNo9(txtCard9No.getText());
         user.setCardNo10(txtCard10No.getText());
+        return true;
     }
 
     private void showUser(){
@@ -295,6 +412,7 @@ public class UserEditController implements Initializable{
             case 0:
                 txtBuildingNo.setText(user.getBuildingNo());
                 txtUnitNo.setText(user.getUnitNo());
+                txtFloorNo.setText(user.getFloorNo());
                 txtRoomNo.setText(user.getRoomNo());
                 break;
             case 1:

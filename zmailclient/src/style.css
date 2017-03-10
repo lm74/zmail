@@ -17,6 +17,10 @@
     -fx-font-size: 125%;
 }
 
+.offline{
+    -fx-text-fill: red;
+}
+
 
 
 .full-button{

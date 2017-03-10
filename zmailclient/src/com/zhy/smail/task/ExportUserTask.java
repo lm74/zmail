@@ -138,8 +138,9 @@ public class ExportUserTask extends Task<Integer> {
             Label buildingNo = new Label(0, 0,"栋", wcf);
             sheet.addCell(buildingNo);
             sheet.addCell(new Label(1, 0, "单元",wcf));
-            sheet.addCell(new Label(2, 0, "房号",wcf));
-            index = 2;
+            sheet.addCell(new Label(2, 0, "楼层",wcf));
+            sheet.addCell(new Label(3, 0, "房号",wcf));
+            index = 3;
         }
         else if(userType == UserInfo.DELIVERY){
             sheet.addCell(new Label(0, 0, "投递员",wcf));
@@ -181,8 +182,9 @@ public class ExportUserTask extends Task<Integer> {
                 Label buildingNo = new Label(0, i+1,user.getBuildingNo(), wcf);
                 sheet.addCell(buildingNo);
                 sheet.addCell(new Label(1, i+1, user.getUnitNo(),wcf));
-                sheet.addCell(new Label(2, i+1, user.getRoomNo(),wcf));
-                index = 2;
+                sheet.addCell(new Label(2, i+1, user.getFloorNo(),wcf));
+                sheet.addCell(new Label(3, i+1, user.getRoomNo(),wcf));
+                index = 3;
             }
             else if(userType == UserInfo.DELIVERY){
                 sheet.addCell(new Label(0, i+1, user.getUserName(),wcf));

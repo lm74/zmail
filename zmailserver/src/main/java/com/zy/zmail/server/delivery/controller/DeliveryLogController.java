@@ -10,13 +10,20 @@ import com.zy.zmail.server.common.json.JsonResult;
 import com.zy.zmail.server.delivery.entity.DeliveryLog;
 import com.zy.zmail.server.delivery.entity.LogBrief;
 import com.zy.zmail.server.delivery.service.DeliveryLogService;
+import com.zy.zmail.server.north.DoorMessage;
+import com.zy.zmail.server.north.DoorSystemRunner;
+import com.zy.zmail.server.north.util.StringUtil;
+import com.zy.zmail.server.north.zytcp.command.ZytcpCommand;
+import com.zy.zmail.server.user.entity.UserInfo;
+import com.zy.zmail.server.user.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Date;
+
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -32,6 +39,8 @@ public class DeliveryLogController {
     DeliveryLogService deliveryLogService;
     @Autowired
     BoxService boxService;
+    @Autowired
+    UserService userService;
 
      @RequestMapping(value="/byCabinetId", method = RequestMethod.GET)
     public JsonResult listByCabinetId(@RequestParam Integer cabinetId, Integer periodType){
@@ -95,11 +104,22 @@ public class DeliveryLogController {
         brief.setPickupUser(ownerId);
         deliveryLogService.save(brief);
 
+        DoorMessage message = new DoorMessage();
+        UserInfo user = userService.getByUserId(ownerId);
+        message.setBuildingNo(StringUtil.getInteger(user.getBuildingNo()));
+        message.setUnitNo(StringUtil.getInteger(user.getUnitNo()));
+        message.setFloorNo(StringUtil.getInteger(user.getFloorNo()));
+        message.setRoomNo(StringUtil.getInteger(user.getRoomNo()));
+        message.setCommandNo(ZytcpCommand.DELIVERY);
+        message.setDeliveryTime(new Date());
+        message.setOperateType((byte)0);
+        DoorSystemRunner.messages.add(message);
+
         return result;
     }
 
     @RequestMapping(value="/pickup", method = RequestMethod.GET)
-    public JsonResult putdown(@RequestParam Integer logId, @RequestParam Integer pickupUser, @RequestParam Integer pickupType){
+    public JsonResult pickup(@RequestParam Integer logId, @RequestParam Integer pickupUser, @RequestParam Integer pickupType){
 
         JsonResult result = JsonResult.getInstance();
          LogBrief log = deliveryLogService.getBriefByLogId(logId);
@@ -113,6 +133,18 @@ public class DeliveryLogController {
         log.setPickupType(pickupType);
         log.setPickupUser(pickupUser);
         deliveryLogService.save(log);
+
+        DoorMessage message = new DoorMessage();
+        UserInfo user = userService.getByUserId(pickupUser);
+        message.setBuildingNo(StringUtil.getInteger(user.getBuildingNo()));
+        message.setUnitNo(StringUtil.getInteger(user.getUnitNo()));
+        message.setFloorNo(StringUtil.getInteger(user.getFloorNo()));
+        message.setRoomNo(StringUtil.getInteger(user.getRoomNo()));
+        message.setCommandNo(ZytcpCommand.PICKUP);
+        message.setDeliveryTime(new Date());
+        message.setOperateType((byte)0);
+        DoorSystemRunner.messages.add(message);
+
 
         return result;
     }

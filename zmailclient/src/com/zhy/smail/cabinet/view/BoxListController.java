@@ -7,6 +7,7 @@ import com.zhy.smail.cabinet.entity.CabinetEntry;
 import com.zhy.smail.cabinet.entity.CabinetInfo;
 import com.zhy.smail.cabinet.service.BoxService;
 import com.zhy.smail.cabinet.service.CabinetService;
+import com.zhy.smail.common.controller.RootController;
 import com.zhy.smail.component.SimpleDialog;
 import com.zhy.smail.config.GlobalOption;
 import com.zhy.smail.config.LocalConfig;
@@ -32,14 +33,15 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 /**
  * Created by wenliz on 2017/1/17.
  */
-public class BoxListController  implements Initializable {
-    private MainApp app;
+public class BoxListController extends RootController implements Initializable {
     private CabinetInfo currentCabinet;
     private  int currentCabinetIndex=0;
     private List<CabinetInfo> cabinets;
@@ -48,16 +50,31 @@ public class BoxListController  implements Initializable {
 
     @FXML
     private CheckBox chkOpenBoxTest;
+    @FXML
+    private Button openAllButton;
+    @FXML
+    private Button clearAllButton;
+    @FXML
+    private Button refreshButton;
 
-    public MainApp getApp() {
-        return app;
-    }
+    @FXML
+    private Label lblTimer;
+
+    @FXML
+    private FlowPane boxesFlow;
+    @FXML
+    private ChoiceBox<String> cabinetList;
+    private Map<Integer, Button> buttonMap = new HashMap<>();
+
+
 
     public void setApp(MainApp app) {
         this.app = app;
 
         app.createTimeout(lblTimer);
+    }
 
+    public void createCabinetList(Integer selectedCabinetId){
         CabinetService.listAll(new RestfulResult() {
             @Override
             public void doResult(RfResultEvent event) {
@@ -68,13 +85,24 @@ public class BoxListController  implements Initializable {
 
                 for(int i=0; i<cabinets.size(); i++){
                     CabinetInfo cabinetInfo = (CabinetInfo)cabinets.get(i);
-                    if(cabinetInfo.getCabinetNo().equals(LocalConfig.getInstance().getLocalCabinet())){
+                    if (cabinetInfo.getCabinetNo().equals(LocalConfig.getInstance().getLocalCabinet())) {
                         cabinetList.getItems().add("本柜");
-                        currentCabinet = cabinetInfo;
-                        currentCabinetIndex =i;
+                    }
+                    else{
+                        cabinetList.getItems().add(cabinetInfo.getCabinetNo());
+                    }
+
+                    if(selectedCabinetId>0){
+                        if(cabinetInfo.getCabinetId().equals(selectedCabinetId)){
+                            currentCabinet = cabinetInfo;
+                            currentCabinetIndex = i;
+                        }
                     }
                     else {
-                        cabinetList.getItems().add(cabinetInfo.getCabinetNo());
+                        if (cabinetInfo.getCabinetNo().equals(LocalConfig.getInstance().getLocalCabinet())) {
+                            currentCabinet = cabinetInfo;
+                            currentCabinetIndex = i;
+                        }
                     }
                 }
                 cabinetList.getSelectionModel().select(currentCabinetIndex);
@@ -83,6 +111,7 @@ public class BoxListController  implements Initializable {
                     public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                         currentCabinetIndex = newValue.intValue();
                         currentCabinet = cabinets.get(currentCabinetIndex);
+
                         onRefreshBoxes();
                     }
                 });
@@ -95,13 +124,7 @@ public class BoxListController  implements Initializable {
             }
         });
     }
-    @FXML
-    private Label lblTimer;
 
-    @FXML
-    private FlowPane boxesFlow;
-    @FXML
-    private ChoiceBox<String> cabinetList;
 
 
     public void initialize(URL location, ResourceBundle resources){
@@ -117,6 +140,13 @@ public class BoxListController  implements Initializable {
         onRefreshBoxes();
     }
 
+    private void setButtonVisible(boolean b){
+        openAllButton.setVisible(b);
+        clearAllButton.setVisible(b);
+        chkOpenBoxTest.setVisible(b);
+        refreshButton.setVisible(b);
+    }
+
     private void onRefreshBoxes(){
         currentCabinet = cabinets.get(currentCabinetIndex);
         BoxService.listByCabinetId(currentCabinet.getCabinetId(), new RestfulResult() {
@@ -126,50 +156,56 @@ public class BoxListController  implements Initializable {
 
                 boxes = (List<BoxInfo>)event.getData();
                 CabinetEntry cabinetEntry = new CabinetEntry();
+                buttonMap.clear();
                 boxesFlow.getChildren().remove(0, boxesFlow.getChildren().size());
                 for(int i=0; i<boxes.size(); i++){
                     BoxInfo boxInfo = boxes.get(i);
-                    createButton(boxInfo);
+                    Button button = createButton(boxInfo);
+                    buttonMap.put(boxInfo.getBoxId(), button);
 
                     cabinetEntry.addBox(boxInfo);
                 }
 
-                if((currentCabinet.getCabinetId().equals( GlobalOption.currentCabinet.getCabinetId()))  && (!checked)){
-                    checked = true;
-                    GetCabinetStatus  task = new GetCabinetStatus(cabinetEntry);
-                    task.valueProperty().addListener(new ChangeListener<Integer>() {
-                        @Override
-                        public void changed(ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) {
-                            if(newValue != 0) return;
+                if((currentCabinet.getCabinetId().equals( GlobalOption.currentCabinet.getCabinetId())) ){
+                    setButtonVisible(true);
+                    if(!checked) {
+                        checked = true;
+                        GetCabinetStatus task = new GetCabinetStatus(cabinetEntry);
+                        task.valueProperty().addListener(new ChangeListener<Integer>() {
+                            @Override
+                            public void changed(ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) {
+                                if (newValue != 0) return;
 
-                            boolean changed = false;
-                            for(int i=0; i<boxes.size(); i++){
-                                BoxInfo boxInfo = boxes.get(i);
-                                BoxEntry boxEntry = task.getCabinet().getBoxEntry(boxInfo.getControlCardId(), boxInfo.getControlSequence());
-                                if(boxEntry== null ) continue;
+                                boolean changed = false;
+                                for (int i = 0; i < boxes.size(); i++) {
+                                    BoxInfo boxInfo = boxes.get(i);
+                                    BoxEntry boxEntry = task.getCabinet().getBoxEntry(boxInfo.getControlCardId(), boxInfo.getControlSequence());
+                                    if (boxEntry == null) continue;
 
-                                if(boxInfo.isOpened() && boxEntry.getStatus()  == 0){
-                                    boxInfo.setOpened(false);
-                                    saveBox(boxInfo);
-                                    changed = true;
+                                    if (boxInfo.isOpened() && boxEntry.getStatus() == 0) {
+                                        boxInfo.setOpened(false);
+                                        saveBox(boxInfo);
+                                        changed = true;
+                                    } else if (!boxInfo.isOpened() && boxEntry.getStatus() == 1) {
+                                        boxInfo.setOpened(true);
+                                        saveBox(boxInfo);
+                                        changed = true;
+                                    }
                                 }
-                                else if(!boxInfo.isOpened() && boxEntry.getStatus() == 1){
-                                    boxInfo.setOpened(true);
-                                    saveBox(boxInfo);
-                                    changed = true;
-                                }
+                                onRefreshBoxes();
                             }
-                            onRefreshBoxes();
-                        }
 
-                    });
-                    SimpleDialog.showDialog(app.getRootStage(), task, "", "");
-
+                        });
+                        SimpleDialog.showDialog(app.getRootStage(), task, "", "");
+                    }
+                }
+                else{
+                    setButtonVisible(false);
                 }
 
             }
 
-            private void createButton(BoxInfo boxInfo) {
+            private Button createButton(BoxInfo boxInfo) {
                 Button button = boxInfo.createButton();
                 boxesFlow.getChildren().add(button);
 
@@ -193,6 +229,8 @@ public class BoxListController  implements Initializable {
                         }
                     }
                 });
+
+                return button;
             }
 
             @Override
@@ -231,6 +269,8 @@ public class BoxListController  implements Initializable {
                 if(newValue!=null && newValue == 0){
                     saveBox(boxInfo);
 
+                    Button button = buttonMap.get(boxInfo.getBoxId());
+                    button.setText("开门");
                 }
             }
         });

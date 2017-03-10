@@ -12,7 +12,13 @@ public class SystemOption {
     public static final int APP_TITLE_ID = 150;
     public static final int DOOR_SERVER_IP_ID = 100;
     public static final int DOOR_SERVER_PORT_ID = 101;
+    public static final int DOOR_PROTOCOL_ID = 102;
+
     public static final int TIMEOUT_ID = 120;
+    public static final int BUILDING_NO_ID = 121;
+    public static final int UNIT_NO_ID = 122;
+    public static final int USE_DAYS_ID = 125;
+    public static final int USE_START_ID = 126;
     public static final int MAIN_TITLE_ID = 150;
     public static final int NO_NEED_PASSWORD_ID = 200;
     public static final int DELIVERY_SAME_MAIL_ID = 201;

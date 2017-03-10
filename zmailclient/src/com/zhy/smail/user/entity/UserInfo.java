@@ -1,7 +1,10 @@
 package com.zhy.smail.user.entity;
 
 import com.zhy.smail.common.utils.MapUtils;
+import com.zhy.smail.component.SimpleDialog;
+import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.ReadOnlyStringProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import sun.java2d.pipe.SpanShapeRenderer;
 
@@ -18,6 +21,8 @@ public class UserInfo {
     public final static int MAILMAN = 21;
     public final static int OWNER = 30;
 
+
+    private SimpleBooleanProperty checked;
     private Integer userId;
     private String userName;
     private SimpleStringProperty userNameProperty;
@@ -30,7 +35,21 @@ public class UserInfo {
         this.userType = OWNER;
         this.userId = -1;
         this.password = "123456";
+        checked = new SimpleBooleanProperty(false);
     }
+
+    public boolean isChecked() {
+        return checked.get();
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked.set(checked);
+    }
+
+    public SimpleBooleanProperty checkedProperty(){
+        return checked;
+    }
+
 
     public String getPhoneNo() {
         return phoneNo;
@@ -166,6 +185,26 @@ public class UserInfo {
     public ReadOnlyStringProperty unitNoProperty(){
         return this.unitNoProperty;
     }
+
+
+    public String getFloorNo() {
+        return floorNo;
+    }
+
+    public void setFloorNo(String floorNo) {
+        this.floorNo = floorNo;
+        if(floorNo == null){
+            this.floorNoProperty = new SimpleStringProperty(this, "floorNo", "");
+        }
+        else{
+            this.floorNoProperty = new SimpleStringProperty(this, "floorNo", this.floorNo);
+        }
+    }
+
+    public ReadOnlyStringProperty floorNoProperty(){
+        return this.floorNoProperty;
+    }
+
 
     public String getRoomNo() {
         return roomNo;
@@ -371,6 +410,8 @@ public class UserInfo {
     private SimpleStringProperty buildingNoProperty;
     private String unitNo;
     private SimpleStringProperty unitNoProperty;
+    private String floorNo;
+    private SimpleStringProperty floorNoProperty;
     private String roomNo;
     private SimpleStringProperty roomNoProperty;
     private String cardNo1;

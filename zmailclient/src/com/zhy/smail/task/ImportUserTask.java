@@ -80,8 +80,9 @@ public class ImportUserTask extends Task<Integer> {
         if(userType == UserInfo.OWNER){
             user.setBuildingNo(getString(row, "栋"));
             user.setUnitNo(getString(row, "单元"));
+            user.setFloorNo(getString(row, "楼层"));
             user.setRoomNo(getString(row, "房号"));
-            user.setUserName(user.getBuildingNo()+user.getUnitNo()+user.getRoomNo());
+            user.setUserName(user.getBuildingNo()+user.getUnitNo()+user.getFloorNo()+user.getRoomNo());
         }
         else if(userType == UserInfo.DELIVERY){
             user.setUserName(getString(row, "投递员"));

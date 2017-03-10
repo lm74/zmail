@@ -34,6 +34,7 @@
                     </columnConstraints>
                     <rowConstraints>
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
                         <Label fx:id="lblBoxNumber" text="您有3个信包" GridPane.halignment="CENTER">
@@ -42,6 +43,7 @@
                             </padding>
                         </Label>
                         <Button mnemonicParsing="false" onAction="#onUserView" prefHeight="43.0" prefWidth="309.0" text="帐户信息" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.valignment="CENTER" />
+                  <Label fx:id="lblBoxList" text="Label" GridPane.rowIndex="1" />
                     </children>
                 </GridPane>
             </children>

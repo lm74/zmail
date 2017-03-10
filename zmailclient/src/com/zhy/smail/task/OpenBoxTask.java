@@ -1,6 +1,7 @@
 package com.zhy.smail.task;
 
 import com.zhy.smail.cabinet.entity.BoxInfo;
+import com.zhy.smail.common.utils.SystemUtil;
 import com.zhy.smail.component.SimpleDialog;
 import com.zhy.smail.config.GlobalOption;
 import com.zhy.smail.lcp.LcProtocol;
@@ -34,6 +35,11 @@ public class OpenBoxTask extends Task<Integer> {
         updateMessage(message);
         ResponseManager.response.clear();
         try {
+            if(!SystemUtil.canUse()){
+                updateMessage("开箱失败，请联系厂家(9999)。");
+                updateValue(-1);
+                return -1;
+            }
             LcProtocol protocol = new LcProtocol();
             byte[] packet = protocol.pack(LcCommand.OPEN_BOX, box.getControlCardId(), boxList);
             SendManager.gateway.sendMessage(packet);

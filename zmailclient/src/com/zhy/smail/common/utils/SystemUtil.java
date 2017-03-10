@@ -1,6 +1,10 @@
 package com.zhy.smail.common.utils;
 
+import com.zhy.smail.config.GlobalOption;
+
 import java.net.*;
+import java.sql.Timestamp;
+import java.util.Calendar;
 
 /**
  * Created by wenliz on 2017/3/6.
@@ -43,5 +47,22 @@ public class SystemUtil {
         String encry = KeySecurity.encrypt(mac);
         String serialNo = encry.substring(0,12);
         return serialNo;
+    }
+
+    public static boolean canUse(){
+        if(GlobalOption.useDays!=null && GlobalOption.useDays.getIntValue()>0){
+            if(GlobalOption.useStart != null && GlobalOption.useStart.getDateValue() != null){
+                Timestamp useStart = GlobalOption.useStart.getDateValue();
+                Integer useDays = GlobalOption.useDays.getIntValue();
+                Calendar start = Calendar.getInstance();
+                start.setTime(useStart);
+                Calendar now = Calendar.getInstance();
+                start.add(Calendar.DAY_OF_MONTH, useDays);
+                if(start.getTimeInMillis()<now.getTimeInMillis()){
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }

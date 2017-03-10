@@ -45,6 +45,8 @@
                             <Insets left="20.0" />
                         </HBox.margin></Label>
                     <TextField fx:id="txtUnitNo" prefHeight="23.0" prefWidth="99.0" />
+               <Label text="楼层:" />
+               <TextField fx:id="txtFloorNo" />
                     <Label fx:id="lblRoomNo" text="房号:">
                         <HBox.margin>
                             <Insets left="20.0" />
@@ -61,6 +63,7 @@
                 <columns>
                     <TableColumn fx:id="tcBuildingNo" prefWidth="150" text="栋" />
                     <TableColumn fx:id="tcUnitNo" prefWidth="150" text="单元" />
+                    <TableColumn fx:id="tcFloorNo" prefWidth="150" text="楼层" />
                     <TableColumn fx:id="tcRoomNo" prefWidth="155.0" text="房号" />
                     <TableColumn fx:id="tcPhoneNo" prefWidth="228.0" text="手机" />
                     <TableColumn fx:id="tcCardNo1" prefWidth="319.0" text="卡号1" />
