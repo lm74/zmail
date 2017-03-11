@@ -118,7 +118,7 @@ public class BoxInfo {
         return String.valueOf(this.controlSequence);
     }
 
-    public Button createButton(){
+    public Button createButton(boolean checked){
         String styleClass;
         String title = String.valueOf(getSequence()) + " ";
         if(isLocked()){
@@ -142,7 +142,14 @@ public class BoxInfo {
         switch (getBoxType()){
             case BoxInfo.BOX_TYPE_MAIL:
                 height = 40;
-                Image image = new Image(getClass().getResourceAsStream("/resources/images/button/check.png"));
+                Image image;
+                if(checked) {
+                    image =new Image(getClass().getResourceAsStream("/resources/images/button/check.png"));
+                }
+                else{
+                    image = new  Image(getClass().getResourceAsStream("/resources/images/button/email.png"));
+                }
+
                 ImageView imageView = new ImageView();
                 imageView.setImage(image);
                 button = new Button(title, imageView);

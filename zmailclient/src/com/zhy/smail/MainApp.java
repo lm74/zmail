@@ -150,6 +150,8 @@ public class MainApp extends Application {
 
     public void testConnection(){
         Task<Integer> testTask = new Task<Integer>() {
+            private Integer resultValue;
+
             @Override
             protected Integer call() throws Exception {
                 updateMessage("正在连接服务器...");
@@ -161,10 +163,12 @@ public class MainApp extends Application {
                         setOffline(false);
 
                         loadSetting();
+                        resultValue = 0;
                     }
 
                     @Override
                     public void doFault(RfFaultEvent event) {
+                        resultValue = -1;
                         updateValue(-1);
                         if(event.getErrorNo() == -1){
                             updateMessage(event.getMessage());
@@ -177,7 +181,7 @@ public class MainApp extends Application {
                         }
                     }
                 });
-                return -1;
+                return resultValue;
 
             }
         };

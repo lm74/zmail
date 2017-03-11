@@ -206,7 +206,7 @@ public class BoxListController extends RootController implements Initializable {
             }
 
             private Button createButton(BoxInfo boxInfo) {
-                Button button = boxInfo.createButton();
+                Button button = boxInfo.createButton(false);
                 boxesFlow.getChildren().add(button);
 
                 button.addEventHandler(ActionEvent.ACTION, (ActionEvent actionEvent)-> {

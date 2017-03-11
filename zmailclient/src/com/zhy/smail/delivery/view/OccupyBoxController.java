@@ -79,7 +79,7 @@ public class OccupyBoxController extends RootController implements Initializable
             }
 
             private void createButton(BoxInfo boxInfo) {
-                Button button = boxInfo.createButton();
+                Button button = boxInfo.createButton(true);
                 boxesFlow.getChildren().add(button);
 
                 button.addEventHandler(ActionEvent.ACTION, (ActionEvent actionEvent)-> {

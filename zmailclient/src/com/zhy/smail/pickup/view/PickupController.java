@@ -147,6 +147,7 @@ public class PickupController  implements Initializable {
         else{
             lblBoxNumber.setText("您有"+ boxNumber.toString()+"信包。箱号如下：");
             lblBoxList.setVisible(true);
+            lblBoxList.setText(boxNos);
             openDoorButton.setDisable(false);
         }
     }
