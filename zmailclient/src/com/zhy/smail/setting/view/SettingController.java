@@ -164,7 +164,12 @@ public class SettingController extends RootController implements Initializable {
                     }
                     txtMainTitle.setText(GlobalOption.mainTitle.getCharValue());
                     txtUseDays.setText(GlobalOption.useDays.getIntValue().toString());
-                    txtRemainTime.setText(GlobalOption.remainTime.getIntValue().toString());
+                    if(GlobalOption.remainTime == null || GlobalOption.remainTime.getIntValue() == null){
+                        txtRemainTime.setText("0");
+                    }
+                    else {
+                        txtRemainTime.setText(GlobalOption.remainTime.getIntValue().toString());
+                    }
 
                     currentProtocolIndex = GlobalOption.doorProtocol.getIntValue();
 

@@ -453,6 +453,10 @@ public class MainApp extends Application {
         return (OpeningLogController)loadFxml("manager/view/openingLog.fxml");
     }
 
+    public SplashController goSplash(){
+        return (SplashController)loadFxml("user/view/splash.fxml");
+    }
+
     public void goRegister(){
         loadFxml("user/view/register.fxml");
     }

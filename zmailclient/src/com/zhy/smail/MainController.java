@@ -16,6 +16,7 @@ import com.zhy.smail.setting.service.OptionService;
 import com.zhy.smail.user.entity.UserInfo;
 import com.zhy.smail.user.service.UserService;
 import com.zhy.smail.user.view.LoginController;
+import com.zhy.smail.user.view.SplashController;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -29,6 +30,8 @@ import javafx.scene.input.KeyEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainController implements Initializable{
     @FXML
@@ -37,12 +40,16 @@ public class MainController implements Initializable{
     private Label lblAppTitle;
     @FXML
     private  Label lblOffline;
+    private int perTotal = 0;
+    private int totalNumber = 0;
 
     private String typedStr;
     private boolean startGetTyped;
+    private Timer timer;
 
 
     public void initialize(URL location, ResourceBundle resources){
+        timer = null;
         OptionService.loadOptions(new RestfulResult() {
             @Override
             public void doResult(RfResultEvent event) {
@@ -62,6 +69,40 @@ public class MainController implements Initializable{
         startGetTyped = false;
         lblOffline.setVisible(false);
 
+
+        timer = new Timer();
+        perTotal = GlobalOption.remainTime.getIntValue();
+        if(perTotal == 0) return;
+        if(LocalConfig.getInstance().getVideoFile() == null &&
+                LocalConfig.getInstance().getVideoFile().length() ==0) return;
+
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                perTotal--;
+
+                if(perTotal == 0){
+                    timer.cancel();
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            SplashController controller = app.goSplash();
+                            if(!controller.play()){
+                                app.goHome();
+                            };
+                        }
+                    });
+                }
+            }
+        }, 0, 1000);
+
+    }
+
+    private void destoryTimer(){
+        if(timer!=null){
+            timer.cancel();
+        }
+        timer = null;
     }
 
 
@@ -99,21 +140,25 @@ public class MainController implements Initializable{
     @FXML
     private void onLoginAction(ActionEvent event) throws IOException {
        app.goLogin(3);
+        destoryTimer();
     }
 
     @FXML
     private void onDeliveryAction(ActionEvent event) throws IOException{
         app.goLogin(2);
+        destoryTimer();
     }
 
     @FXML
     private void onManagerAction(ActionEvent event){
         app.goLogin(1);
+        destoryTimer();
     }
 
     @FXML
     private void onHelpAction(ActionEvent event) throws IOException{
         app.goHelp();
+        destoryTimer();
     }
 
     @FXML
@@ -169,6 +214,8 @@ public class MainController implements Initializable{
                         loginController.passwordFocus();
                     }
                 }
+
+                destoryTimer();
 
             }
 
