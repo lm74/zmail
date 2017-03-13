@@ -78,6 +78,7 @@ public class DeliveryLogServiceImpl implements DeliveryLogService {
         else {
             jqpl += " and log.pickupTime is null";
         }
+        jqpl += " order by log.deliveryTime desc ";
         Query query = em.createQuery(jqpl);
         query.setParameter("cabinetId", cabinetId);
         query.setParameter("ownerId", ownerId);

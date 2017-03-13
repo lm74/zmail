@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="center" prefHeight="1024.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.76-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zhy.smail.pickup.view.PickupLogController">
+    <children>
+        <ToolBar prefHeight="40.0" prefWidth="1240.0">
+            <items>
+                <Button mnemonicParsing="false" onAction="#onBackAction" text="返回" />
+                <Pane HBox.hgrow="ALWAYS" />
+                <Label text="记录查询" GridPane.halignment="CENTER" />
+                <Pane HBox.hgrow="ALWAYS" />
+                <Label fx:id="lblTimer" text="99" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
+
+
+            </items>
+        </ToolBar>
+
+        <GridPane hgap="10.0" prefHeight="90.0" prefWidth="1280.0" VBox.vgrow="SOMETIMES">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="948.0" minWidth="10.0" prefWidth="900.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="948.0" minWidth="10.0" prefWidth="300.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="956.0" minWidth="10.0" prefWidth="20.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+                <CheckBox fx:id="chkPickuped" mnemonicParsing="false" text="已取件" GridPane.columnIndex="1" />
+            <Button mnemonicParsing="false" onAction="#onAllLogAction" text="刷新" GridPane.halignment="CENTER" />
+            </children>
+        </GridPane>
+
+        <ScrollPane>
+            <content>
+                <TableView fx:id="logTable" prefHeight="860.0" prefWidth="1800.0">
+                    <columns>
+                        <TableColumn fx:id="tcPickupTime" prefWidth="380.0" text="取件时间" />
+                        <TableColumn fx:id="tcPickupUser" prefWidth="150.0" text="取件用户" />
+                        <TableColumn fx:id="tcDeliveryType" prefWidth="150.0" text="投件类型" />
+                        <TableColumn fx:id="tcBoxSequence" prefWidth="150.0" text="箱门号" />
+                        <TableColumn fx:id="tcDeliveryTime" prefWidth="380.0" text="投递时间" />
+                        <TableColumn fx:id="tcDeliveryMan" prefWidth="150.0" text="投递员" />
+                    </columns>
+                </TableView>
+            </content>
+        </ScrollPane>
+    </children>
+</VBox>

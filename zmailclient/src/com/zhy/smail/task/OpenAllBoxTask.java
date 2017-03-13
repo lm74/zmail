@@ -13,6 +13,7 @@ import com.zhy.smail.restful.DefaultRestfulResult;
 import javafx.concurrent.Task;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -31,6 +32,15 @@ public class OpenAllBoxTask  extends Task<Integer> {
     }
 
     private String openedBoxNos;
+    private List<Integer> openedBoxList;
+
+    public List<Integer> getOpenedBoxList() {
+        return openedBoxList;
+    }
+
+    public void setOpenedBoxList(List<Integer> openedBoxList) {
+        this.openedBoxList = openedBoxList;
+    }
 
     public CabinetEntry getCabinet() {
         return cabinet;
@@ -52,10 +62,10 @@ public class OpenAllBoxTask  extends Task<Integer> {
             updateValue(-1);
             return -1;
         }
+        openedBoxList = new ArrayList<>();
         List<BoardEntry> boards = cabinet.getBoards();
         for(int i=0; i<boards.size(); i++){
             BoardEntry boardEntry = boards.get(i);
-
             openBoardBoxes(boardEntry);
         }
         cabinet.setValue(1);
@@ -95,6 +105,7 @@ public class OpenAllBoxTask  extends Task<Integer> {
                 } else {
                     if (result.getErrorNo() == LcResult.SUCCESS) {
                         openedBoxNos += "," + boxEntry.getSequence();
+                        openedBoxList.add(boxEntry.getSequence());
                         OpeningLogService.save(GlobalOption.currentUser.getUserId(),  boxEntry.getBoxId(), "开箱成功", new DefaultRestfulResult());
                         continue;
                     } else {

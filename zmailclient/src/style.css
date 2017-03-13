@@ -14,6 +14,9 @@
     -fx-font-size: 150%;
     -fx-text-fill: red;
 }
+.label-middle{
+    -fx-font-size: 125%;
+}
 .button-label{
     -fx-font-size: 125%;
 }

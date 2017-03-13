@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="center" prefHeight="1024.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zhy.smail.pickup.view.PickupController">
+<VBox alignment="center" prefHeight="1024.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.76-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zhy.smail.pickup.view.PickupController">
     <children>
         <ToolBar prefHeight="40.0" prefWidth="1260.0">
             <items>
@@ -24,26 +24,27 @@
                 <Label fx:id="lblTimer" text="99" />
             </items>
         </ToolBar>
-        <HBox prefHeight="200.0" prefWidth="200.0">
+        <HBox prefHeight="200.0" prefWidth="1200.0">
             <children>
-                <GridPane prefHeight="100.0" prefWidth="1135.0">
+                <GridPane prefHeight="100.0" prefWidth="1200.0">
                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="494.0" minWidth="10.0" prefWidth="494.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="322.0" minWidth="10.0" prefWidth="48.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="322.0" minWidth="10.0" prefWidth="304.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="50.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="1200.0" minWidth="10.0" prefWidth="1100.0" />
+                  <ColumnConstraints />
+                  <ColumnConstraints />
+
                     </columnConstraints>
                     <rowConstraints>
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <Label fx:id="lblBoxNumber" text="您有3个信包" GridPane.halignment="CENTER">
+                        <Label fx:id="lblMailBoxNumber" styleClass="label-middle" text="您有3个信包" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="LEFT">
                             <padding>
                                 <Insets top="30.0" />
                             </padding>
                         </Label>
-                        <Button mnemonicParsing="false" onAction="#onUserView" prefHeight="43.0" prefWidth="309.0" text="帐户信息" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.valignment="CENTER" />
-                  <Label fx:id="lblBoxList" text="Label" GridPane.rowIndex="1" />
+                  <Label fx:id="lblPacketBoxNumber" styleClass="label-middle"  text="您有0个包裹" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
                     </children>
                 </GridPane>
             </children>
@@ -51,11 +52,11 @@
 
         <GridPane prefHeight="764.0" prefWidth="1230.0">
             <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="161.0" minWidth="10.0" prefWidth="45.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="381.0" minWidth="10.0" prefWidth="355.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="400.0" minWidth="10.0" prefWidth="365.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="337.0" minWidth="10.0" prefWidth="337.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="170.0" minWidth="10.0" prefWidth="31.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="161.0" minWidth="10.0" prefWidth="50.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="550.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="550.0" />
+
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="170.0" minWidth="10.0" prefWidth="50.0" />
             </columnConstraints>
             <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -64,7 +65,7 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <Button fx:id="openDoorButton" contentDisplay="TOP" mnemonicParsing="false" onAction="#openDoorAction" prefHeight="214.0" prefWidth="331.0" text="开门" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                <Button fx:id="openMailDoorButton" contentDisplay="TOP" mnemonicParsing="false" onAction="#openMailDoorAction" prefHeight="214.0" prefWidth="331.0" text="开信箱" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                     <graphic>
                         <ImageView fitHeight="127.0" fitWidth="107.0" pickOnBounds="true" preserveRatio="true">
                             <image>
@@ -73,6 +74,17 @@
                         </ImageView>
                     </graphic></Button>
             <Label fx:id="lblOpenMessage" styleClass="label-title" text="箱门已经打开，请取出物品后关好箱门。" GridPane.columnIndex="1" GridPane.columnSpan="3" />
+            <Button fx:id="openPacketDoorButton" contentDisplay="TOP" mnemonicParsing="false" onAction="#openPacketDoorAction" prefHeight="214.0" prefWidth="331.0" text="开包裹箱" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                <graphic>
+                    <ImageView fitHeight="127.0" fitWidth="107.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@/resources/images/button/pickuppacket.png" />
+                        </image>
+                    </ImageView>
+                </graphic>
+                    </Button>
+                  <Button mnemonicParsing="false" onAction="#onUserView" prefHeight="43.0" prefWidth="271.0" text="帐户信息" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+            <Button mnemonicParsing="false" onAction="#onPickupLogAction" prefHeight="43.0" prefWidth="271.0" text="投取件记录" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
             </children>
         </GridPane>
       <Label fx:id="lblNotify" />

@@ -3,8 +3,6 @@ package com.zy.zmail.server.north.zytcp;
 import com.zy.zmail.server.north.DoorMessage;
 import com.zy.zmail.server.north.DoorResult;
 import com.zy.zmail.server.north.zytcp.command.ZytcpCommand;
-import com.zy.zmail.server.north.zyudp.ZyudpProtocol;
-import com.zy.zmail.server.north.zyudp.command.ZyudpCommand;
 
 /**
  * Created by wenliz on 2017/3/7.

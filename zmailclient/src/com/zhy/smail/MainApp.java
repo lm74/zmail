@@ -477,6 +477,10 @@ public class MainApp extends Application {
         return (SelectRoomController)loadFxml("delivery/view/selectRoom.fxml");
     }
 
+    public void goPickupLog(){
+        loadFxml("pickup/view/pickuplog.fxml");
+    }
+
     public LogListController goLogList( ){
         return (LogListController)loadFxml("manager/view/LogList.fxml");
     }

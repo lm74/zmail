@@ -4,12 +4,17 @@ import com.zhy.smail.MainApp;
 import com.zhy.smail.cabinet.entity.CabinetInfo;
 import com.zhy.smail.cabinet.service.CabinetService;
 import com.zhy.smail.common.controller.RootController;
+import com.zhy.smail.config.GlobalOption;
 import com.zhy.smail.config.LocalConfig;
 import com.zhy.smail.manager.entity.DeliveryLog;
 import com.zhy.smail.manager.service.DeliveryLogService;
 import com.zhy.smail.restful.RestfulResult;
 import com.zhy.smail.restful.RfFaultEvent;
 import com.zhy.smail.restful.RfResultEvent;
+import javafx.beans.property.ReadOnlyIntegerProperty;
+import javafx.beans.property.ReadOnlyIntegerWrapper;
+import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -23,8 +28,14 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
+import javafx.util.Callback;
 
 import java.net.URL;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -63,6 +74,16 @@ public class LogListController extends RootController implements Initializable {
         if(this.pickedup == 1){
             this.periodType = 0;
             toggleContainer.setVisible(false);
+            tcPickupTime.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<DeliveryLog, String>, ObservableValue<String>>() {
+                @Override
+                public ObservableValue<String> call(TableColumn.CellDataFeatures<DeliveryLog, String> param) {
+                    Timestamp deliveryTime = param.getValue().getDeliveryTime();
+                    long inteval =  System.currentTimeMillis() - deliveryTime.getTime();
+                    Long value = Long.valueOf(inteval/1000/60/60 - GlobalOption.timeout.getIntValue());
+                    return new ReadOnlyStringWrapper( value.toString());
+                }
+            });
+            tcPickupTime.setText("超时时间（小时）");
         }
         else{
             toggleContainer.setVisible(true);

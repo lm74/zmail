@@ -1,6 +1,7 @@
 package com.zhy.smail.manager.entity;
 
 import com.zhy.smail.cabinet.entity.BoxInfo;
+import com.zhy.smail.config.GlobalOption;
 import com.zhy.smail.user.entity.UserInfo;
 import javafx.beans.property.*;
 
@@ -17,6 +18,7 @@ public class DeliveryLog {
     public final static int THIS_MONTH = 3;
     public final static int RECENT_ONE_MONTH = 4;
     public final static int RECENT_THREE_MONTH = 5;
+    public final static int DELIVERY_TYPE_MAIL = 0;
 
     private Integer logId;
     private SimpleIntegerProperty logIdProperty;
@@ -26,6 +28,17 @@ public class DeliveryLog {
     private SimpleStringProperty deliveryManProperty;
     private Integer deliveryType;
     private SimpleStringProperty deliveryTypeProperty;
+    /*private SimpleIntegerProperty overTime;
+
+    public int getOverTime() {
+        return overTime.get();
+    }
+
+    public SimpleIntegerProperty overTimeProperty() {
+        return overTime;
+    }*/
+
+
 
     public Integer getLogId() {
         return logId;
@@ -52,9 +65,17 @@ public class DeliveryLog {
         }
         else{
 
-            DateFormat format = SimpleDateFormat.getDateTimeInstance();
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             deliveryTimeProperty = new SimpleStringProperty(this, "deliveryTime", format.format(deliveryTime));
         }
+
+        /*if(GlobalOption.timeout.getIntValue() ==0){
+            overTime.set(0);
+        }
+        else{
+            long inteval = deliveryTime.getTime() - System.currentTimeMillis();
+            overTime.set(Long.valueOf(inteval /1000/60/60).intValue());
+        }*/
     }
 
     public ReadOnlyStringProperty delivertyTimeProperty(){
@@ -130,7 +151,7 @@ public class DeliveryLog {
             pickupTimeProperty = new SimpleStringProperty(this, "pickupTime", "");
         }
         else{
-            DateFormat format = DateFormat.getDateTimeInstance();
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             pickupTimeProperty = new SimpleStringProperty(this, "pickupTime", format.format(pickupTime));
         }
     }

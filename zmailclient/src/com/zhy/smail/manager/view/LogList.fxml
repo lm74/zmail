@@ -90,7 +90,7 @@
                 <TableColumn fx:id="tcDeliveryType" prefWidth="160.0" text="投件类型" />
                 <TableColumn fx:id="tcBoxSequence" prefWidth="120.0" text="箱门号" />
                 <TableColumn fx:id="tcPickupUser" prefWidth="200.0" text="取件用户" />
-                <TableColumn fx:id="tcPickupTime" prefWidth="400.0" text="取件时间" />
+                <TableColumn fx:id="tcPickupTime" prefWidth="450.0" text="取件时间" />
 
             </columns>
         </TableView>

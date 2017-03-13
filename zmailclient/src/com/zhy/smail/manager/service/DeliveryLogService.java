@@ -18,8 +18,8 @@ public class DeliveryLogService {
         HttpOperator.get(url,getDefaultResultResult(result));
     }
 
-    public static void listByOwner(Integer cabinetId, Integer ownerId, RestfulResult result){
-        String url = GlobalOption.getServerUrl() +"/deliveryLog/byOwner?cabinetId=" + cabinetId+"&ownerId="+ownerId+"&pickuped=0";
+    public static void listByOwner(Integer cabinetId, Integer ownerId,  Integer packuped, RestfulResult result){
+        String url = GlobalOption.getServerUrl() +"/deliveryLog/byOwner?cabinetId=" + cabinetId+"&ownerId="+ownerId+"&pickuped="+packuped;
         HttpOperator.get(url,getDefaultResultResult(result));
     }
 

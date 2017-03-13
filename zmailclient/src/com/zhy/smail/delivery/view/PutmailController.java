@@ -68,7 +68,7 @@ public class PutmailController extends RootController implements Initializable {
         this.user = user;
         txtRoomNo.setText(user.getUserName());
         if(GlobalOption.deliverySameMail.getIntValue() == 1){
-            DeliveryLogService.listByOwner(GlobalOption.currentCabinet.getCabinetId(), user.getUserId(), new RestfulResult() {
+            DeliveryLogService.listByOwner(GlobalOption.currentCabinet.getCabinetId(), user.getUserId(),0, new RestfulResult() {
                 @Override
                 public void doResult(RfResultEvent event) {
                     if(event.getResult() == RfResultEvent.OK && event.getData()!= null){
