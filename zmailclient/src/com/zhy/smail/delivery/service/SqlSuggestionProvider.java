@@ -102,6 +102,12 @@ public class SqlSuggestionProvider<T>   implements Callback<AutoCompletionBindin
                                     }
                                     item += "单元:" + user.getUnitNo();
                                 }
+                                if(user.getFloorNo() != null && user.getFloorNo().length()>0){
+                                    if(hasPrevious){
+                                        item+=",";
+                                    }
+                                    item += "楼层:" + user.getFloorNo();
+                                }
                                 if(user.getRoomNo() != null && user.getRoomNo().length()>0){
                                     if(hasPrevious){
                                         item+=",";

@@ -35,13 +35,9 @@ public class ManagerController implements Initializable{
     @FXML
     private Button exitButton;
     @FXML
-    private Button cabinetButton;
-    @FXML
-    private Button openingButton;
-    @FXML
     private Button boxButton;
     @FXML
-    private Button deliveryButton;
+    private Button queryRecordButton;
 
     private MainApp app;
     private Integer userType;
@@ -56,10 +52,8 @@ public class ManagerController implements Initializable{
         userType = user.getUserType();
         if(GlobalOption.runMode == 1){
             userListButton.setVisible(false);
-            cabinetButton.setVisible(false);
-            openingButton.setVisible(false);
-            deliveryButton.setVisible(false);
             boxButton.setVisible(false);
+            queryRecordButton.setVisible(false);
         }
         if(user.getUserType() == UserInfo.FACTORY_USER) return;
 
@@ -68,10 +62,10 @@ public class ManagerController implements Initializable{
             userListButton.setText("帐号信息");
             settingButton.setVisible(false);
             exitButton.setVisible(false);
-            cabinetButton.setVisible(false);
+
         }
         if(userType == UserInfo.ADVANCED_ADMIN){
-            cabinetButton.setVisible(false);
+
         }
     }
 
@@ -94,16 +88,8 @@ public class ManagerController implements Initializable{
     }
 
     @FXML
-    public void onLogListAction(ActionEvent actionEvent) throws IOException{
-        FXMLLoader fxmlLoader;
-
-        fxmlLoader = new FXMLLoader(getClass().getResource("LogList.fxml"));
-
-
-        Parent root = fxmlLoader.load();
-        LogListController controller = fxmlLoader.getController();
-        controller.setApp(app);
-        app.getRootStage().getScene().setRoot(root);
+    public void onQueryRecordAction(ActionEvent actionEvent) throws IOException{
+       app.goQueryRecord();
     }
 
     @FXML

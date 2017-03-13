@@ -281,6 +281,10 @@ public class BoxListController extends RootController implements Initializable {
 
     @FXML
     private void onOpenAllBox(ActionEvent event){
+        String message = "确认要全开箱门吗？";
+        SimpleDialog.Response  response = SimpleDialog.showConfirmDialog(app.getRootStage(),message ,"确认");
+        if(response == SimpleDialog.Response.NO) return;
+
         CabinetEntry cabinetEntry = getCabinetEntry();
 
         OpenAllBoxTask task = new OpenAllBoxTask(cabinetEntry);
@@ -316,6 +320,10 @@ public class BoxListController extends RootController implements Initializable {
 
     @FXML
     private void onClearAllBox(ActionEvent event){
+        String message = "确认要全清箱门吗？";
+        SimpleDialog.Response  response = SimpleDialog.showConfirmDialog(app.getRootStage(),message ,"确认");
+        if(response == SimpleDialog.Response.NO) return;
+
         CabinetEntry cabinetEntry = getCabinetEntry();
 
         OpenAllBoxTask task = new OpenAllBoxTask(cabinetEntry);

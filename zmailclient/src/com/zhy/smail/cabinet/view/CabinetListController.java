@@ -118,7 +118,7 @@ public class CabinetListController implements Initializable {
 
     @FXML
     private void onBackAction(ActionEvent event){
-        app.goManager();
+        app.goSetting();
     }
 
     @FXML

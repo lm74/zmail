@@ -78,6 +78,7 @@ public class DeliveryController implements Initializable{
 
     @FXML
     public void onRecordAction(ActionEvent actionEvent) throws  IOException{
+        GlobalOption.parents.push("delivery");
         FXMLLoader fxmlLoader;
 
         fxmlLoader = new FXMLLoader(getClass().getResource("deliveryLog.fxml"));

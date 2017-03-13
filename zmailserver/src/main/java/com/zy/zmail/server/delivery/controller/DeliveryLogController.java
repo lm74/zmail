@@ -14,6 +14,8 @@ import com.zy.zmail.server.north.DoorMessage;
 import com.zy.zmail.server.north.DoorSystemRunner;
 import com.zy.zmail.server.north.util.StringUtil;
 import com.zy.zmail.server.north.zytcp.command.ZytcpCommand;
+import com.zy.zmail.server.setting.entity.SystemOption;
+import com.zy.zmail.server.setting.service.OptionService;
 import com.zy.zmail.server.user.entity.UserInfo;
 import com.zy.zmail.server.user.service.UserService;
 import org.slf4j.Logger;
@@ -41,16 +43,24 @@ public class DeliveryLogController {
     BoxService boxService;
     @Autowired
     UserService userService;
+    @Autowired
+    OptionService optionService;
 
      @RequestMapping(value="/byCabinetId", method = RequestMethod.GET)
-    public JsonResult listByCabinetId(@RequestParam Integer cabinetId, Integer periodType){
+    public JsonResult listByCabinetId(@RequestParam Integer cabinetId, Integer periodType, Integer pickedup){
         JsonResult result = JsonResult.getInstance();
          List<DeliveryLog> logs;
+         if(pickedup == 1){
+             SystemOption timeout = optionService.getById(SystemOption.TIME_OUT_ID);
+             if(timeout != null){
+                 pickedup = timeout.getIntValue();
+             }
+         }
         if(periodType==null || periodType>5 || periodType<=0){
-            logs =deliveryLogService.listByCabinetId(cabinetId);
+            logs =deliveryLogService.listByCabinetId(cabinetId, pickedup);
         }
         else{
-            logs = deliveryLogService.listByCabinetId(cabinetId, periodType);
+            logs = deliveryLogService.listByCabinetId(cabinetId, periodType, pickedup);
         }
         result.setData(logs);
         return result;

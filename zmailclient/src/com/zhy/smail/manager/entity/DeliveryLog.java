@@ -6,6 +6,7 @@ import javafx.beans.property.*;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 /**
  * Created by wenliz on 2017/2/14.
@@ -50,7 +51,8 @@ public class DeliveryLog {
             deliveryTimeProperty = new SimpleStringProperty(this, "deliveryTime", "");
         }
         else{
-            DateFormat format = DateFormat.getDateTimeInstance();
+
+            DateFormat format = SimpleDateFormat.getDateTimeInstance();
             deliveryTimeProperty = new SimpleStringProperty(this, "deliveryTime", format.format(deliveryTime));
         }
     }

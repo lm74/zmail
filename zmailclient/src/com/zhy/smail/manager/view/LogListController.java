@@ -3,6 +3,7 @@ package com.zhy.smail.manager.view;
 import com.zhy.smail.MainApp;
 import com.zhy.smail.cabinet.entity.CabinetInfo;
 import com.zhy.smail.cabinet.service.CabinetService;
+import com.zhy.smail.common.controller.RootController;
 import com.zhy.smail.config.LocalConfig;
 import com.zhy.smail.manager.entity.DeliveryLog;
 import com.zhy.smail.manager.service.DeliveryLogService;
@@ -21,6 +22,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
 
 import java.net.URL;
 import java.util.List;
@@ -29,15 +31,13 @@ import java.util.ResourceBundle;
 /**
  * Created by wenliz on 2017/1/17.
  */
-public class LogListController   implements Initializable {
+public class LogListController extends RootController implements Initializable {
 
     private MainApp app;
     @FXML
     private Label lblTimer;
 
-    public MainApp getApp() {
-        return app;
-    }
+
 
     public void setApp(MainApp app) {
         this.app = app;
@@ -50,6 +50,25 @@ public class LogListController   implements Initializable {
     private CabinetInfo currentCabinet;
     private int currentCabinetIndex = 0;
     private int periodType = 1;
+    private int pickedup = 0;
+    @FXML
+    private HBox toggleContainer;
+
+    public int getPickedup() {
+        return pickedup;
+    }
+
+    public void setPickedup(int pickedup) {
+        this.pickedup = pickedup;
+        if(this.pickedup == 1){
+            this.periodType = 0;
+            toggleContainer.setVisible(false);
+        }
+        else{
+            toggleContainer.setVisible(true);
+        }
+        initCabinet();
+    }
 
     @FXML
     private TableView<DeliveryLog> logTable;
@@ -80,6 +99,10 @@ public class LogListController   implements Initializable {
         logList = FXCollections.observableArrayList();
         logTable.setItems(logList);
 
+
+    }
+
+    private void initCabinet(){
         CabinetService.listAll(new RestfulResult() {
             @Override
             public void doResult(RfResultEvent event) {
@@ -151,7 +174,7 @@ public class LogListController   implements Initializable {
 
     private void onRefreshAction(){
         logList.clear();
-        DeliveryLogService.listByCabinetId(currentCabinet.getCabinetId(), periodType, new RestfulResult() {
+        DeliveryLogService.listByCabinetId(currentCabinet.getCabinetId(), periodType,pickedup, new RestfulResult() {
             @Override
             public void doResult(RfResultEvent event) {
                 if(event.getData() != null){
@@ -170,7 +193,7 @@ public class LogListController   implements Initializable {
 
     @FXML
     private void onBackAction(ActionEvent event){
-        app.goManager();
+        app.goQueryRecord();
     }
 }
 

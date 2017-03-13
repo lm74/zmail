@@ -12,6 +12,7 @@ import com.zhy.smail.component.music.Speaker;
 import com.zhy.smail.config.GlobalOption;
 import com.zhy.smail.config.LocalConfig;
 import com.zhy.smail.delivery.view.*;
+import com.zhy.smail.manager.view.LogListController;
 import com.zhy.smail.manager.view.ManagerController;
 import com.zhy.smail.manager.view.OpeningLogController;
 import com.zhy.smail.pickup.view.PickupController;
@@ -104,6 +105,7 @@ public class MainApp extends Application {
         //primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.show();
         rootScene.getWindow().centerOnScreen();
+
         initVK(rootStage);
 
         openCom();
@@ -305,13 +307,13 @@ public class MainApp extends Application {
 
     }
 
-    public LoginController goLogin(boolean isDelivery){
+    public LoginController goLogin(Integer loginType){
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("user/view/login.fxml"));
             Parent root = fxmlLoader.load();
             LoginController controller = fxmlLoader.getController();
             getRootScene().setRoot(root);
-            controller.setDelivery(isDelivery);
+            controller.setLoginType(loginType);
             controller.setApp(this);
             return controller;
         }
@@ -459,6 +461,22 @@ public class MainApp extends Application {
         loadFxml("setting/view/Setting.fxml");
     }
 
+    public void goQueryRecord( ){
+       loadFxml("manager/view/queryRecord.fxml");
+    }
+
+    public  CommonDeliveryController goCommonDelivery(){
+        return (CommonDeliveryController) loadFxml("delivery/view/commonDelivery.fxml");
+    }
+
+    public SelectRoomController goSelectRoom(){
+        return (SelectRoomController)loadFxml("delivery/view/selectRoom.fxml");
+    }
+
+    public LogListController goLogList( ){
+        return (LogListController)loadFxml("manager/view/LogList.fxml");
+    }
+
     private RootController loadFxml(String path){
         try {
             FXMLLoader fxmlLoader;
@@ -499,10 +517,14 @@ public class MainApp extends Application {
     };
 
     public void createTimeout(Label lblTimer){
+        createTimeout(lblTimer, GlobalOption.TimeoutTotal);
+    }
+
+    public void createTimeout(Label lblTimer, Integer timeout){
         if(timer !=null){
-           timer.cancel();
+            timer.cancel();
         }
-        timer = new TimeoutTimer(lblTimer, GlobalOption.TimeoutTotal, new TimeoutTimer.TimeoutCallback() {
+        timer = new TimeoutTimer(lblTimer,timeout, new TimeoutTimer.TimeoutCallback() {
             @Override
             public void run() {
                 goHome();

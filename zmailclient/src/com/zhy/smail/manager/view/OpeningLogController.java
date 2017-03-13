@@ -166,7 +166,7 @@ public class OpeningLogController extends RootController implements Initializabl
 
     @FXML
     private void onBackAction(ActionEvent event){
-        app.goManager();
+        app.goQueryRecord();
     }
 }
 

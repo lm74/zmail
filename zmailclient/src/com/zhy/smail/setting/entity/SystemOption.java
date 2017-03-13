@@ -22,6 +22,8 @@ public class SystemOption {
     public static final int MAIN_TITLE_ID = 150;
     public static final int NO_NEED_PASSWORD_ID = 200;
     public static final int DELIVERY_SAME_MAIL_ID = 201;
+    public static final int REMAIN_TIME_ID = 210;
+
 
 
     private Integer optionId;

@@ -17,13 +17,13 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="center" prefHeight="1024.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.76-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zhy.smail.manager.view.LogListController">
+<VBox alignment="center" prefHeight="1024.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zhy.smail.manager.view.LogListController">
     <children>
         <ToolBar prefHeight="40.0" prefWidth="200.0">
             <items>
                 <Button mnemonicParsing="false" onAction="#onBackAction" text="返回" />
                 <Pane HBox.hgrow="ALWAYS" />
-                <Label text="记录查询" GridPane.halignment="CENTER" />
+                <Label text="投递记录" GridPane.halignment="CENTER" />
                 <Pane HBox.hgrow="ALWAYS" />
                 <Label fx:id="lblTimer" text="99" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
 
@@ -41,9 +41,9 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <HBox prefHeight="189.0" prefWidth="956.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                <HBox fx:id="toggleContainer" prefHeight="189.0" prefWidth="956.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                     <children>
-                        <ToggleButton mnemonicParsing="false" onAction="#onThisDateAction" text="本日">
+                        <ToggleButton mnemonicParsing="false" onAction="#onThisDateAction" text="今日">
                             <HBox.margin>
                                 <Insets top="10.0" />
                             </HBox.margin>
@@ -85,12 +85,13 @@
 <content>
         <TableView fx:id="logTable" prefHeight="860.0" prefWidth="1800.0">
             <columns>
-                <TableColumn fx:id="tcDeliveryTime" prefWidth="400.0" text="投递时间" />
-                <TableColumn fx:id="tcDeliveryMan" prefWidth="200.0" text="投递员" />
-                <TableColumn fx:id="tcDeliveryType" prefWidth="200.0" text="投件类型" />
-                <TableColumn fx:id="tcBoxSequence" prefWidth="150.0" text="箱门号" />
-                <TableColumn fx:id="tcPickupTime" prefWidth="400.0" text="取件时间" />
+                <TableColumn fx:id="tcDeliveryTime" prefWidth="360.0" text="投递时间" />
+                <TableColumn fx:id="tcDeliveryMan" prefWidth="150.0" text="投递员" />
+                <TableColumn fx:id="tcDeliveryType" prefWidth="160.0" text="投件类型" />
+                <TableColumn fx:id="tcBoxSequence" prefWidth="120.0" text="箱门号" />
                 <TableColumn fx:id="tcPickupUser" prefWidth="200.0" text="取件用户" />
+                <TableColumn fx:id="tcPickupTime" prefWidth="400.0" text="取件时间" />
+
             </columns>
         </TableView>
 </content>

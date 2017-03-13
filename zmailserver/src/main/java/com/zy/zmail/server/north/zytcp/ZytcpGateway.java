@@ -4,14 +4,11 @@ import com.zy.zmail.server.north.DoorMessage;
 import com.zy.zmail.server.north.DoorResult;
 import com.zy.zmail.server.north.util.StringUtil;
 import com.zy.zmail.server.north.zytcp.command.ZytcpCommand;
-import com.zy.zmail.server.setting.entity.SystemOption;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.mina.core.service.IoHandlerAdapter;
-import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 
 import java.io.*;
-import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;

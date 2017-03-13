@@ -149,6 +149,14 @@ public class DeliveryLogController  implements Initializable {
 
     @FXML
     private void onBackAction(ActionEvent event){
-        app.goDelivery();
+        String parent = GlobalOption.parents.pop();
+        if(parent == null || parent.equals("delivery")){
+            app.goDelivery();
+        }
+        else {
+            app.goCommonDelivery();
+        }
+
+
     }
 }

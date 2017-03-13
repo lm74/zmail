@@ -31,6 +31,7 @@ public class GlobalOption {
     public static SystemOption doorServerPort;
     public static SystemOption cardNeedPassword;
     public static SystemOption deliverySameMail;
+    public static SystemOption remainTime;
 
 
 

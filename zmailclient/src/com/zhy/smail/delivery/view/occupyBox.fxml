@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="center" prefHeight="1024.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.76-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zhy.smail.delivery.view.OccupyBoxController">
+<VBox alignment="center" prefHeight="1024.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zhy.smail.delivery.view.OccupyBoxController">
     <children>
         <ToolBar prefHeight="60.0" prefWidth="1250.0">
             <items>
@@ -71,7 +71,7 @@
         </FlowPane>
         <ToolBar prefHeight="40.0" prefWidth="200.0">
             <items>
-               <Label text="选中箱门圈定箱门/取消圈定" />
+               <Label text="勾选表示圈定箱格为邮政专用信箱" />
             </items>
         </ToolBar>
     </children>

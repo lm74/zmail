@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="center" minWidth="1200.0" prefHeight="1024.0" xmlns="http://javafx.com/javafx/8.0.76-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zhy.smail.manager.view.ManagerController">
+<VBox alignment="center" minWidth="1200.0" prefHeight="1024.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zhy.smail.manager.view.ManagerController">
     <children>
         <ToolBar fx:id="topToolbar" prefHeight="40.0" prefWidth="1240.0">
             <items>
@@ -20,30 +20,19 @@
                 <Pane HBox.hgrow="ALWAYS" />
                 <Label text="系统管理" GridPane.halignment="CENTER" />
                 <Pane HBox.hgrow="ALWAYS" />
+                <Button fx:id="exitButton" mnemonicParsing="false" onAction="#onExitPlatform" text="关闭系统" GridPane.columnIndex="2">
+                    <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@/resources/images/button/logout.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
                 <Label fx:id="lblTimer" text="99" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
             </items>
         </ToolBar>
-        <GridPane prefHeight="100.0" prefWidth="880.0">
-            <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="438.0" minWidth="10.0" prefWidth="438.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="288.0" minWidth="10.0" prefWidth="229.0" />
-            </columnConstraints>
-            <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            </rowConstraints>
-         <children>
-            <Button fx:id="exitButton" mnemonicParsing="false" onAction="#onExitPlatform" text="退出系统" GridPane.columnIndex="2">
-                <graphic>
-                    <ImageView fitHeight="30.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                        <image>
-                            <Image url="@/resources/images/button/logout.png" />
-                        </image>
-                    </ImageView>
-                </graphic>
-                    </Button>
-         </children>
-        </GridPane>
+
 
         <GridPane prefHeight="935.0" prefWidth="1200.0">
             <columnConstraints>
@@ -58,7 +47,7 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <Button fx:id="userListButton" contentDisplay="TOP" mnemonicParsing="false" onAction="#onUserListAction" prefHeight="178.0" prefWidth="287.0" text="用户管理" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                <Button fx:id="userListButton" contentDisplay="TOP" mnemonicParsing="false" onAction="#onUserListAction" prefHeight="178.0" prefWidth="287.0" text="用户管理" GridPane.columnIndex="2" GridPane.halignment="CENTER">
                     <graphic>
                         <ImageView fitHeight="130.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true">
                             <image>
@@ -66,7 +55,7 @@
                             </image>
                         </ImageView>
                     </graphic></Button>
-                <Button contentDisplay="TOP" fx:id="deliveryButton" mnemonicParsing="false" onAction="#onLogListAction" prefHeight="178.0" prefWidth="287.0" text="投件记录" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0">
+                <Button fx:id="queryRecordButton" contentDisplay="TOP" mnemonicParsing="false" onAction="#onQueryRecordAction" prefHeight="178.0" prefWidth="287.0" text="记录查询" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0">
                     <graphic>
                         <ImageView fitHeight="130.0" fitWidth="123.0" pickOnBounds="true" preserveRatio="true">
                             <image>
@@ -74,7 +63,7 @@
                             </image>
                         </ImageView>
                     </graphic></Button>
-                <Button contentDisplay="TOP" fx:id="boxButton" mnemonicParsing="false" onAction="#onBoxListAction" prefHeight="178.0" prefWidth="287.0" text="箱门管理" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                <Button fx:id="boxButton" contentDisplay="TOP" mnemonicParsing="false" onAction="#onBoxListAction" prefHeight="178.0" prefWidth="287.0" text="箱门管理" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                     <graphic>
                         <ImageView fitHeight="130.0" fitWidth="123.0" pickOnBounds="true" preserveRatio="true">
                             <image>
@@ -83,29 +72,11 @@
                         </ImageView>
                     </graphic>
                 </Button>
-            <Button fx:id="settingButton" contentDisplay="TOP" mnemonicParsing="false" onAction="#onSettingtAction" prefHeight="178.0" prefWidth="287.0" text="系统设置" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+            <Button fx:id="settingButton" contentDisplay="TOP" mnemonicParsing="false" onAction="#onSettingtAction" prefHeight="178.0" prefWidth="287.0" text="系统设置" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                 <graphic>
                     <ImageView fitHeight="130.0" fitWidth="123.0" pickOnBounds="true" preserveRatio="true">
                         <image>
                             <Image url="@/resources/images/button/set.jpg" />
-                        </image>
-                    </ImageView>
-                </graphic>
-                    </Button>
-            <Button contentDisplay="TOP" fx:id="cabinetButton" mnemonicParsing="false" onAction="#onCabinetListAction" prefHeight="178.0" prefWidth="287.0" text="箱柜管理" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
-                <graphic>
-                    <ImageView fitHeight="130.0" fitWidth="123.0" pickOnBounds="true" preserveRatio="true">
-                        <image>
-                            <Image url="@/resources/images/button/wired.png" />
-                        </image>
-                    </ImageView>
-                </graphic>
-                    </Button>
-            <Button contentDisplay="TOP" fx:id="openingButton" mnemonicParsing="false" onAction="#onOpeningLogAction" prefHeight="178.0" prefWidth="287.0" text="开箱记录" GridPane.columnIndex="2" GridPane.halignment="CENTER">
-                <graphic>
-                    <ImageView fitHeight="130.0" fitWidth="123.0" pickOnBounds="true" preserveRatio="true">
-                        <image>
-                            <Image url="@/resources/images/button/opening.png" />
                         </image>
                     </ImageView>
                 </graphic>

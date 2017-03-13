@@ -46,7 +46,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable{
-    private boolean isDelivery;
+    private Integer loginType;
     private MainApp app;
     private TimeoutTimer timer;
 
@@ -85,7 +85,7 @@ public class LoginController implements Initializable{
 
         Stage stage = app.getRootStage();
         Scene scene = app.getRootScene();
-        app.createTimeout(lblTimer);
+        app.createTimeout(lblTimer,15);
         /*KeyBoardPopup popup = new KeyBoardPopup(kb);
 
         Bounds textNodeBounds = txtUserName.localToScreen(txtUserName.getBoundsInLocal());
@@ -121,10 +121,13 @@ public class LoginController implements Initializable{
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
                 if(newValue){
-                    if(isDelivery()){
+                    if(loginType == 1){
+
+                    }
+                    else if(loginType == 2){
                         Speaker.inputUserName();
                     }
-                    else {
+                    else if(loginType == 3){
                         Speaker.inputRoom();
                     }
                 }
@@ -145,12 +148,12 @@ public class LoginController implements Initializable{
         });
     }
 
-    public boolean isDelivery() {
-        return isDelivery;
+    public Integer getLoginType() {
+        return loginType;
     }
 
-    public void setDelivery(boolean delivery) {
-        isDelivery = delivery;
+    public void setLoginType(Integer loginType) {
+        this.loginType = loginType;
     }
 
     @FXML
@@ -207,12 +210,39 @@ public class LoginController implements Initializable{
                 goManager();
                 break;
             case UserInfo.DELIVERY:
+                goCommonDelivery();
+                break;
             case UserInfo.MAILMAN:
                 goDelivery();
                 break;
             case UserInfo.OWNER:
                 goOwner();
                 break;
+        }
+    }
+    private void goCommonDelivery(){
+        String localCabinet = LocalConfig.getInstance().getLocalCabinet();
+        if(localCabinet == null || localCabinet.length()==0){
+            SimpleDialog.showMessageDialog(app.getRootStage(), "本地箱柜号没有设置,请联系系统管理员。","错误");
+        }
+        else{
+            CabinetService.getByCabinetNo(localCabinet, new RestfulResult() {
+                @Override
+                public void doResult(RfResultEvent event) {
+                    if(event.getResult() == RfResultEvent.OK){
+                        GlobalOption.currentCabinet = (CabinetInfo)event.getData();
+                        app.goCommonDelivery();
+                    }
+                    else{
+                        SimpleDialog.showMessageDialog(app.getRootStage(), "本地箱柜号没有设置,请联系系统管理员。","错误");
+                    }
+                }
+
+                @Override
+                public void doFault(RfFaultEvent event) {
+
+                }
+            });
         }
     }
 

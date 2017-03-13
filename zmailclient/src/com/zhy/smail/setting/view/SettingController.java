@@ -27,7 +27,9 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
+import javafx.stage.FileChooser;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -86,6 +88,10 @@ public class SettingController extends RootController implements Initializable {
     private Button testButton;
     @FXML
     private Label lblOffline;
+    @FXML
+    private TextField txtVideoFile;
+    @FXML
+    private TextField txtRemainTime;
 
     private int currentProtocolIndex;
 
@@ -113,6 +119,7 @@ public class SettingController extends RootController implements Initializable {
         txtDoorPort.getProperties().put(VkProperties.VK_TYPE, VkProperties.VK_TYPE_NUMERIC);
         txtBuildingNo.getProperties().put(VkProperties.VK_TYPE, VkProperties.VK_TYPE_NUMERIC);
         txtUnitNo.getProperties().put(VkProperties.VK_TYPE, VkProperties.VK_TYPE_NUMERIC);
+        txtRemainTime.getProperties().put(VkProperties.VK_TYPE, VkProperties.VK_TYPE_NUMERIC);
         if(GlobalOption.currentUser.getUserType()!= UserInfo.FACTORY_USER){
             factoryTab.setDisable(true);
             //userTabPane.getTabs().remove(factoryTab);
@@ -131,6 +138,7 @@ public class SettingController extends RootController implements Initializable {
             rdoSlave.setSelected(true);
             txtServerIP.setDisable(false);
         }
+        txtVideoFile.setText(config.getVideoFile());
         comPortList.getItems().addAll(SerialPortInfo.getPortList());
         comPortList.getSelectionModel().select(config.getSerialPortInfo().getPortName());
         OptionService.loadOptions(new RestfulResult() {
@@ -156,6 +164,7 @@ public class SettingController extends RootController implements Initializable {
                     }
                     txtMainTitle.setText(GlobalOption.mainTitle.getCharValue());
                     txtUseDays.setText(GlobalOption.useDays.getIntValue().toString());
+                    txtRemainTime.setText(GlobalOption.remainTime.getIntValue().toString());
 
                     currentProtocolIndex = GlobalOption.doorProtocol.getIntValue();
 
@@ -183,9 +192,7 @@ public class SettingController extends RootController implements Initializable {
         app.goManager();
     }
 
-    @FXML
-    private void onFactoryAction(ActionEvent event){
-        lblFMessage.setText("");
+    private void saveFactory(){
         LocalConfig config = LocalConfig.getInstance();
         int useDays = getInteger(txtUseDays);
         if(useDays != GlobalOption.useDays.getIntValue()){
@@ -202,9 +209,42 @@ public class SettingController extends RootController implements Initializable {
             }
             app.openCom();
         }
+        String cabinetNo = txtLocalCabinetNo.getText();
+        if(cabinetNo != null && cabinetNo.length()>0){
+            config.setLocalCabinet(cabinetNo);
+        }
+
+        GlobalOption.mainTitle.setCharValue(txtMainTitle.getText());
+        app.setAppTitle(GlobalOption.mainTitle.getCharValue());
+        saveOption(GlobalOption.mainTitle);
 
         config.saveProperties();
-        lblFMessage.setText("保存成功！");
+        SimpleDialog.showAutoCloseInfo(app.getRootStage(), "保存成功");
+    }
+
+    @FXML
+    private void onFactoryAction(ActionEvent event){
+        LocalConfig config = LocalConfig.getInstance();
+
+        int appMode = rdoMaster.isSelected()?0:1;
+        if(appMode != config.getAppMode()){
+            config.setAppMode(appMode);
+            GlobalOption.appMode = appMode;
+        }
+
+        String ip = txtServerIP.getText();
+        if(!ip.equals(config.getServerIP())) {
+            config.setServerIP(ip);
+            GlobalOption.serverIP = ip;
+            testConnection(ip);
+        }
+        else{
+            saveFactory();
+        }
+
+
+
+
     }
 
     @FXML
@@ -229,7 +269,7 @@ public class SettingController extends RootController implements Initializable {
                         updateValue(0);
                         updateMessage("连接服务器"+ip+"成功，系统恢复到正常工作状态。");
                         app.setOffline(false);
-                        saveGeneral();
+                        saveFactory();
                         app.loadSetting();
                     }
 
@@ -255,34 +295,28 @@ public class SettingController extends RootController implements Initializable {
     }
 
     @FXML
+    private void onSelectFileAction(ActionEvent event){
+        FileChooser openFileChoose = new FileChooser();
+        openFileChoose.setTitle("选择文件(mp4)");
+        openFileChoose.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("MP4文件","*.mp4"));
+        File file = openFileChoose.showOpenDialog(app.getRootStage());
+        if(file != null){
+            txtVideoFile.setText(file.getAbsolutePath());
+        }
+
+    }
+
+    @FXML
     private void onGeneralSaveAction(ActionEvent event){
-        LocalConfig config = LocalConfig.getInstance();
-
-        int appMode = rdoMaster.isSelected()?0:1;
-        if(appMode != config.getAppMode()){
-            config.setAppMode(appMode);
-            GlobalOption.appMode = appMode;
-        }
-
-        String ip = txtServerIP.getText();
-        if(!ip.equals(config.getServerIP())) {
-            config.setServerIP(ip);
-            GlobalOption.serverIP = ip;
-            testConnection(ip);
-        }
-        else{
-            saveGeneral();
-        }
+        saveGeneral();
     }
 
     private void saveGeneral(){
         LocalConfig config = LocalConfig.getInstance();
 
-        String cabinetNo = txtLocalCabinetNo.getText();
-        if(cabinetNo != null && cabinetNo.length()>0){
-            config.setLocalCabinet(cabinetNo);
-        }
 
+        config.setVideoFile(txtVideoFile.getText());
         config.saveProperties();
 
         Integer timeout = getInteger(txtTimeout);
@@ -300,10 +334,13 @@ public class SettingController extends RootController implements Initializable {
             GlobalOption.unitNo.setIntValue(unitNo);
             saveOption(GlobalOption.unitNo);
         }
+        Integer remainTime = getInteger(txtRemainTime);
+        if(remainTime != GlobalOption.remainTime.getIntValue()){
+            GlobalOption.remainTime.setIntValue(remainTime);
+            saveOption(GlobalOption.remainTime);
+        }
 
-        GlobalOption.mainTitle.setCharValue(txtMainTitle.getText());
-        app.setAppTitle(GlobalOption.mainTitle.getCharValue());
-        saveOption(GlobalOption.mainTitle);
+
         if(chkNeedPasswordForCard.isSelected()){
             GlobalOption.cardNeedPassword.setIntValue(1);
         }
@@ -361,6 +398,12 @@ public class SettingController extends RootController implements Initializable {
             GlobalOption.doorProtocol.setIntValue(currentProtocolIndex);
             saveOption(GlobalOption.doorProtocol);
         }
+        SimpleDialog.showAutoCloseInfo(app.getRootStage(), "保存成功");
+    }
+
+    @FXML
+    private void  onCabinetListAction(ActionEvent event){
+        app.goCabinetList();
     }
 
     @FXML

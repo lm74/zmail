@@ -12,8 +12,9 @@ import java.util.List;
  * Created by wenliz on 2017/2/14.
  */
 public class DeliveryLogService {
-    public static void listByCabinetId(Integer cabinetId, Integer periodType, RestfulResult result){
-        String url = GlobalOption.getServerUrl() +"/deliveryLog/byCabinetId?cabinetId=" + cabinetId+"&periodType="+periodType;
+    public static void listByCabinetId(Integer cabinetId, Integer periodType, Integer pickedup, RestfulResult result){
+        String url = GlobalOption.getServerUrl() +"/deliveryLog/byCabinetId?cabinetId=" + cabinetId+
+                "&periodType="+periodType+"&pickedup=" + pickedup;
         HttpOperator.get(url,getDefaultResultResult(result));
     }
 

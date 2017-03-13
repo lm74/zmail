@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1024.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.76-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zhy.smail.delivery.view.ConfirmDeliveryController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1024.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zhy.smail.delivery.view.ConfirmDeliveryController">
     <top>
         <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <items>
@@ -43,9 +43,10 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <Label fx:id="lblConfirmMessage" text="箱门已开，请放入物品后，点击确认投递。" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" />
-                <Button fx:id="confirmButton" mnemonicParsing="false" onAction="#onConfirmAction" text="确认投件" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-            <Button mnemonicParsing="false" onAction="#onBackAction" text="取消投件" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                <Label fx:id="lblConfirmMessage" text="箱门已开，请放入物品后，点击确认投递。" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                <Button fx:id="confirmButton" mnemonicParsing="false" onAction="#onConfirmAction" text="确认投件" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+            <Button mnemonicParsing="false" onAction="#onBackAction" text="取消投件" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+            <Label fx:id="lblLine1" styleClass="offline" text="投递 对象" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" />
             </children>
         </GridPane>
     </center>

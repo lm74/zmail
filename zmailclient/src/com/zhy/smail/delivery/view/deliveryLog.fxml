@@ -43,7 +43,7 @@
             <children>
                 <HBox prefHeight="189.0" prefWidth="956.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                     <children>
-                        <ToggleButton mnemonicParsing="false" onAction="#onThisDateAction" selected="true" text="本日">
+                        <ToggleButton mnemonicParsing="false" onAction="#onThisDateAction" selected="true" text="今日">
                             <HBox.margin>
                                 <Insets top="10.0" />
                             </HBox.margin>

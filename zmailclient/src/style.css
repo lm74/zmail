@@ -12,6 +12,7 @@
 
 .label-title{
     -fx-font-size: 150%;
+    -fx-text-fill: red;
 }
 .button-label{
     -fx-font-size: 125%;

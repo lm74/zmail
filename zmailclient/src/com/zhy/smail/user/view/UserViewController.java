@@ -80,6 +80,9 @@ public class UserViewController extends RootController implements Initializable 
         else if(parent.equals("delivery")){
             app.goDelivery();
         }
+        else if(parent.equals("commonDelivery")){
+            app.goCommonDelivery();
+        }
         else{
             app.goOwner();
         }

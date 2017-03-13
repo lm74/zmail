@@ -27,6 +27,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
 
 import java.io.*;
@@ -495,6 +496,8 @@ public class UserListController implements Initializable {
     @FXML
     private void onImportFile(ActionEvent event){
         File file = openFileChoose.showOpenDialog(app.getRootStage());
+        if(file ==  null) return;
+
         ImportUserTask task = new ImportUserTask(file, getUserType());
         task.valueProperty().addListener(new ChangeListener<Integer>() {
             @Override
@@ -511,6 +514,8 @@ public class UserListController implements Initializable {
     @FXML
     private void onExportFile(ActionEvent event){
         File file = saveFileChoose.showSaveDialog(app.getRootStage());
+        if(file == null) return;
+
         ExportUserTask task = new ExportUserTask(file, getUserType());
         SimpleDialog.showDialog(app.getRootStage(), task, "", "");
     }

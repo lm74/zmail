@@ -1,12 +1,14 @@
 package com.zhy.smail.user.view;
 
 import com.zhy.smail.MainApp;
+import com.zhy.smail.cabinet.entity.BoxInfo;
 import com.zhy.smail.common.controller.RootController;
 import com.zhy.smail.component.SimpleDialog;
 import com.zhy.smail.component.keyboard.control.VkProperties;
 import com.zhy.smail.config.GlobalOption;
 import com.zhy.smail.delivery.view.PutdownController;
 import com.zhy.smail.delivery.view.PutmailController;
+import com.zhy.smail.delivery.view.SelectRoomController;
 import com.zhy.smail.restful.RestfulResult;
 import com.zhy.smail.restful.RfFaultEvent;
 import com.zhy.smail.restful.RfResultEvent;
@@ -83,6 +85,15 @@ public class UserChoiceController extends RootController implements Initializabl
     private TextField txtFloorNo;
     @FXML
     private TextField txtRoomNo;
+    private BoxInfo box;
+
+    public BoxInfo getBox() {
+        return box;
+    }
+
+    public void setBox(BoxInfo box) {
+        this.box = box;
+    }
 
     public void setApp(MainApp app) {
         this.app = app;
@@ -180,7 +191,14 @@ public class UserChoiceController extends RootController implements Initializabl
                 controller.setUser(user);
             }
         }
-        else {
+        else if(parent != null && parent.equals("selectRoom")){
+            SelectRoomController controller = app.goSelectRoom();
+            if(controller !=null && user != null){
+                controller.setUser(user);
+                controller.setBox(box);
+            }
+        }
+        else{
             PutdownController controller = app.goPutdown();
             if(controller != null && user != null){
                 controller.setUser(user);

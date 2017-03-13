@@ -31,19 +31,40 @@ public class DeliveryLogServiceImpl implements DeliveryLogService {
     @PersistenceContext
     private EntityManager em;
 
-    public List<DeliveryLog> listByCabinetId(Integer cabinetId){
-        Query query = em.createQuery("from DeliveryLog as log left join fetch log.boxInfo as box where box.cabinetId = :cabinetId");
+    public List<DeliveryLog> listByCabinetId(Integer cabinetId, Integer pickedup){
+        String jqpl = " from DeliveryLog as log left join fetch log.boxInfo as box where box.cabinetId = :cabinetId ";
+
+        Calendar endTime = Calendar.getInstance();
+        if(pickedup > 0){
+            endTime.add(Calendar.HOUR_OF_DAY, -pickedup);
+
+            jqpl += " and  (log.pickupTime is null) and (log.deliveryTime<:endTime) ";
+        }
+        Query query = em.createQuery(jqpl);
         query.setParameter("cabinetId", cabinetId);
+        if(pickedup>0){
+            query.setParameter("endTime", endTime.getTime());
+        }
         return (List<DeliveryLog>)query.getResultList();
     }
-    public List<DeliveryLog> listByCabinetId(Integer cabinetId, Integer periodType){
+    public List<DeliveryLog> listByCabinetId(Integer cabinetId, Integer periodType, Integer pickedup){
         if(periodType>5 || periodType <1) return null;
 
         Date startTime =  getStartTime(periodType);
-        Query query = em.createQuery("from DeliveryLog as log  left join fetch log.boxInfo as box " +
-                "where log.deliveryTime>=:startTime and box.cabinetId = :cabinetId");
+        String jqpl = " from DeliveryLog as log  left join fetch log.boxInfo as box " +
+            "where log.deliveryTime>=:startTime and box.cabinetId = :cabinetId ";
+        Calendar endTime = Calendar.getInstance();
+        if(pickedup > 0){
+            endTime.add(Calendar.HOUR_OF_DAY, -pickedup);
+
+            jqpl += " and  (log.pickupTime is null) and (log.deliveryTime<:endTime) ";
+        }
+        Query query = em.createQuery(jqpl);
         query.setParameter("startTime", startTime);
         query.setParameter("cabinetId", cabinetId);
+        if(pickedup>0){
+            query.setParameter("endTime",  endTime.getTime());
+        }
         return (List<DeliveryLog>)query.getResultList();
     }
 
@@ -76,19 +97,19 @@ public class DeliveryLogServiceImpl implements DeliveryLogService {
     }
 
     public List<CabinetNode> listAllByOwner(Integer ownerId, Integer pickuped){
-        String sql = " select c.cabinetId, c.cabinetNo, count(log.logId) as count " +
+        String sql = " select c.cabinetId, c.cabinetNo, count(log.logId) as countNumber " +
                 "from DeliveryLog as log left join  boxInfo as box on log.boxId = box.boxId " +
                 " left join  cabinetInfo c on box.cabinetId = c.cabinetId   "+
-                " where  user.userId=:ownerId ";
+                " where  log.pickupUser=:ownerId ";
         if(pickuped==1){
             sql += " and  not (log.pickupTime is null)";
         }
         else {
             sql += " and log.pickupTime is null";
         }
-        sql += " group by c.cabinetId, c.cabinetNo having by count>0 ";
+        sql += " group by c.cabinetId, c.cabinetNo  ";
 
-        Query query = em.createQuery(sql);
+        Query query = em.createNativeQuery(sql);
         query.setParameter("ownerId", ownerId);
         List results = query.getResultList();
         List<CabinetNode> nodes = new ArrayList<>();
@@ -98,6 +119,7 @@ public class DeliveryLogServiceImpl implements DeliveryLogService {
             node.setCabinetId(Integer.valueOf(objects[0].toString()));
             node.setCabinetNo(Integer.valueOf(objects[1].toString()));
             node.setCount(Integer.valueOf(objects[2].toString()));
+            if(node.getCount()==0) continue;
             nodes.add(node);
         }
 

@@ -98,12 +98,17 @@ public class MainController implements Initializable{
 
     @FXML
     private void onLoginAction(ActionEvent event) throws IOException {
-       app.goLogin(false);
+       app.goLogin(3);
     }
 
     @FXML
     private void onDeliveryAction(ActionEvent event) throws IOException{
-        app.goLogin(true);
+        app.goLogin(2);
+    }
+
+    @FXML
+    private void onManagerAction(ActionEvent event){
+        app.goLogin(1);
     }
 
     @FXML
@@ -142,11 +147,11 @@ public class MainController implements Initializable{
                         case UserInfo.FACTORY_USER:
                         case UserInfo.ADMIN:
                         case UserInfo.ADVANCED_ADMIN:
-                            loginController = app.goLogin(false);
+                            loginController = app.goLogin(1);
                             break;
                         case UserInfo.DELIVERY:
                         case UserInfo.MAILMAN:
-                            loginController = app.goLogin(true);
+                            loginController = app.goLogin(2);
                             break;
                         case UserInfo.OWNER:
                             if(GlobalOption.cardNeedPassword.getIntValue() == 0) {
@@ -155,7 +160,7 @@ public class MainController implements Initializable{
                                 return;
                             }
                             else{
-                                loginController = app.goLogin(false);
+                                loginController = app.goLogin(3);
                             }
                             break;
                     }

@@ -97,6 +97,9 @@ public class OptionService {
                             case SystemOption.USE_START_ID:
                                 GlobalOption.useStart = option;
                                 break;
+                            case SystemOption.REMAIN_TIME_ID:
+                                GlobalOption.remainTime = option;
+                                break;
 
                         }
 

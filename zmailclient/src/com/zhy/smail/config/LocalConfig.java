@@ -37,6 +37,7 @@ public class LocalConfig {
     private final static String SERVER_URL = "serverUrl";
     private final static String LOCAL_URL = "localUrl";
     private final static String REGISTER_NO = "registerNo";
+    private final static String VIDEO_FILE = "videoFile";
 
     private Properties properties;
     private SerialPortInfo serialPortInfo;
@@ -44,6 +45,15 @@ public class LocalConfig {
     private Integer appMode;
     private String serverIP;
     private String registerNo;
+    private String videoFile;
+
+    public String getVideoFile() {
+        return videoFile;
+    }
+
+    public void setVideoFile(String videoFile) {
+        this.videoFile = videoFile;
+    }
 
     public String getRegisterNo() {
         return registerNo;
@@ -165,6 +175,7 @@ public class LocalConfig {
             setServerUrl(getString(SERVER_URL, ""));
             setLocalUrl(getString(LOCAL_URL, "http://127.0.0.1:8080/api"));
             setRegisterNo(getString(REGISTER_NO, "0000"));
+            setVideoFile(getString(VIDEO_FILE, ""));
 
 
 
@@ -221,7 +232,7 @@ public class LocalConfig {
             properties.setProperty(SERVER_URL, getServerUrl());
             properties.setProperty(LOCAL_URL, getLocalUrl());
             properties.setProperty(REGISTER_NO, getRegisterNo());
-
+            properties.setProperty(VIDEO_FILE, getVideoFile());
 
             FileOutputStream output=new FileOutputStream(file);
             properties.store(output, null);

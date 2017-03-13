@@ -49,6 +49,8 @@ public class ConfirmDeliveryController extends RootController implements Initial
     private Button confirmButton;
     @FXML
     private Label lblConfirmMessage;
+    @FXML
+    private Label lblLine1;
 
     private UserInfo user;
     private BoxInfo box;
@@ -113,6 +115,7 @@ public class ConfirmDeliveryController extends RootController implements Initial
                                 public void run() {
                                     confirmButton.setDisable(false);
                                     lblConfirmMessage.setVisible(true);
+                                    lblLine1.setText("投递对象:" + user.getBuildingNo()+"栋" + user.getUnitNo()+"单元"+user.getFloorNo()+user.getRoomNo()+"号房");
                                     lblConfirmMessage.setText(box.getSequence()+"号箱门已开，请放入物品后，点击确认投递。");
                                     OpeningLogService.save(GlobalOption.currentUser.getUserId(),  box.getBoxId(), "开箱成功", new DefaultRestfulResult());
                                     Speaker.delivery();
@@ -162,7 +165,7 @@ public class ConfirmDeliveryController extends RootController implements Initial
 
         String parent = GlobalOption.parents.getFirst();
         Integer deliveryType = 0;
-        if(parent.equals("putdown")){
+        if(parent.equals("putdown") || parent.equals("selectRoom")){
             deliveryType = 1;
         }
         Integer deliveryMan = GlobalOption.currentUser.getUserId();
@@ -171,7 +174,12 @@ public class ConfirmDeliveryController extends RootController implements Initial
             public void doResult(RfResultEvent event) {
                 if(event.getResult() == RfResultEvent.OK){
                     Speaker.deliverySucess();
-                    app.goDelivery();
+                    if(parent.equals("selectRoom")){
+                        app.goCommonDelivery();
+                    }
+                    else {
+                        app.goDelivery();
+                    }
                 }
                 else {
                     Speaker.deliveryFail();
