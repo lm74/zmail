@@ -18,175 +18,199 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1024.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zhy.smail.setting.view.SettingController">
-   <top>
-      <ToolBar fx:id="topToolBar" prefHeight="40.0" prefWidth="1260.0" BorderPane.alignment="CENTER">
-        <items>
-          <Button mnemonicParsing="false" onAction="#onBackAction" text="返回" />
-            <Region fx:id="topLeft" />
-            <Label text="系统设置" />
-            <Region fx:id="topRight" />
-            <Label fx:id="lblOffline" styleClass="offline" text="脱机" />
-            <Label fx:id="lblTimer" text="99" />
-        </items>
-      </ToolBar>
-   </top>
-   <center>
-      <TabPane fx:id="userTabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
-        <tabs>
-          <Tab text="通用设置">
-               <content>
-                  <GridPane>
-                    <columnConstraints>
-                        <ColumnConstraints />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                     <children>
-                        <TextField fx:id="txtVideoFile" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="3" />
-                        <Label text="视频文件:" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
-                         <Label text="超时时间:" GridPane.columnIndex="3" GridPane.halignment="RIGHT" />
-                         <Label text="小时" GridPane.columnIndex="5" />
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1024.0"
+            prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.zhy.smail.setting.view.SettingController">
+    <top>
+        <ToolBar fx:id="topToolBar" prefHeight="40.0" prefWidth="1260.0" BorderPane.alignment="CENTER">
+            <items>
+                <Button mnemonicParsing="false" onAction="#onBackAction" text="返回"/>
+                <Region fx:id="topLeft"/>
+                <Label text="系统设置"/>
+                <Region fx:id="topRight"/>
+                <Label fx:id="lblOffline" styleClass="offline" text="脱机"/>
+                <Label fx:id="lblTimer" text="99"/>
+            </items>
+        </ToolBar>
+    </top>
+    <center>
+        <TabPane fx:id="userTabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE"
+                 BorderPane.alignment="CENTER">
+            <tabs>
+                <Tab text="通用设置">
+                    <content>
+                        <GridPane>
+                            <columnConstraints>
+                                <ColumnConstraints/>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0"/>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0"/>
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                            </rowConstraints>
+                            <children>
+                                <TextField fx:id="txtVideoFile" GridPane.columnIndex="2" GridPane.columnSpan="2"
+                                           GridPane.rowIndex="3"/>
+                                <Label text="视频文件：" GridPane.columnIndex="1" GridPane.halignment="RIGHT"
+                                       GridPane.rowIndex="3"/>
+                                <Label text="超时时间：" GridPane.columnIndex="3" GridPane.halignment="RIGHT"/>
+                                <Label text="小时" GridPane.columnIndex="5"/>
 
-                        <TextField fx:id="txtTimeout" GridPane.columnIndex="4" />
+                                <TextField fx:id="txtTimeout" GridPane.columnIndex="4"/>
 
-                        <Button mnemonicParsing="false" onAction="#onGeneralSaveAction" text="保存" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+                                <Button mnemonicParsing="false" onAction="#onGeneralSaveAction" text="保存"
+                                        GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="5"/>
 
-                        <CheckBox fx:id="chkNeedPasswordForCard" mnemonicParsing="false" text="刷卡登录需要密码" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="2" />
-                        <CheckBox fx:id="chkDeliverSameMail" mnemonicParsing="false" text="投信选择已投未取件信箱" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+                                <CheckBox fx:id="chkNeedPasswordForCard" mnemonicParsing="false" text="刷卡登录需要密码"
+                                          GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="2"/>
+                                <CheckBox fx:id="chkDeliverSameMail" mnemonicParsing="false" text="投信选择已投未取件信箱"
+                                          GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="2"/>
 
-                        <Label text="本柜所在栋号:" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
-                        <Label text="本柜所在单元号:" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                        <TextField fx:id="txtBuildingNo" GridPane.columnIndex="2" />
-                        <TextField fx:id="txtUnitNo" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                        <Button mnemonicParsing="false" onAction="#onSelectFileAction" text="选择" GridPane.columnIndex="4" GridPane.rowIndex="3" />
-                        <Label text="主界面待机停留:" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
-                        <TextField fx:id="txtRemainTime" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-                        <Label text="秒" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                                <Label text="本柜所在栋号：" GridPane.columnIndex="1" GridPane.halignment="RIGHT"/>
+                                <Label text="本柜所在单元号：" GridPane.columnIndex="1" GridPane.halignment="RIGHT"
+                                       GridPane.rowIndex="1"/>
+                                <TextField fx:id="txtBuildingNo" GridPane.columnIndex="2"/>
+                                <TextField fx:id="txtUnitNo" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+                                <Button mnemonicParsing="false" onAction="#onSelectFileAction" text="选择"
+                                        GridPane.columnIndex="4" GridPane.rowIndex="3"/>
+                                <Label text="主界面待机停留：" GridPane.columnIndex="1" GridPane.halignment="RIGHT"
+                                       GridPane.rowIndex="4"/>
+                                <TextField fx:id="txtRemainTime" GridPane.columnIndex="2" GridPane.rowIndex="4"/>
+                                <Label text="秒" GridPane.columnIndex="3" GridPane.rowIndex="4"/>
 
-                     </children>
-                  </GridPane>
-               </content>
-          </Tab>
-          <Tab text="对接门禁">
-               <content>
-                  <GridPane>
-                    <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="40.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="40.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                     <children>
-                        <Label text="门禁系统服务器IP:" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                        <Label text="门禁系统服务器端口:" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-                        <TextField fx:id="txtDoorIP" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <TextField fx:id="txtDoorPort" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <Label text="对接协议:" GridPane.halignment="RIGHT" />
-                        <ChoiceBox fx:id="protocolList" prefHeight="23.0" prefWidth="321.0" GridPane.columnIndex="1" />
-                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                           <children>
-                              <Button mnemonicParsing="false" onAction="#onDoorSaveAction" text="保存" />
-                              <Button fx:id="testButton" mnemonicParsing="false" onAction="#onTestAction" text="测试" />
-                           </children>
-                           <GridPane.margin>
-                              <Insets />
-                           </GridPane.margin>
-                        </HBox>
-                        <Label fx:id="lblDMessage" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" />
-                     </children>
-                  </GridPane>
-               </content>
-          </Tab>
-            <Tab fx:id="factoryTab" text="出厂设置">
-                <content>
-                    <GridPane>
-                        <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="80.0" />
-                        <ColumnConstraints />
-
-                        </columnConstraints>
-                        <rowConstraints>
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        </rowConstraints>
-                        <children>
-                            <Label text="主从模式:" GridPane.halignment="RIGHT" />
-                            <Label text="服务器IP:" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                            <TextField fx:id="txtLocalCabinetNo" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                            <Label text="本地箱柜号:" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-                            <Label text="主界面标题:" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
-                            <TextField fx:id="txtMainTitle" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="3" />
-                            <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1">
-                                <children>
-                                    <RadioButton fx:id="rdoMaster" mnemonicParsing="false" onAction="#onMasterAction" selected="true" text="主机">
-                                        <toggleGroup>
-                                            <ToggleGroup fx:id="masterSlave" />
-                                        </toggleGroup></RadioButton>
-                                    <RadioButton fx:id="rdoSlave" mnemonicParsing="false" onAction="#onSlaveAction" text="从机" toggleGroup="$masterSlave" />
-                                </children>
-                                <GridPane.margin>
-                                    <Insets top="10.0" />
-                                </GridPane.margin>
-                            </HBox>
-                            <TextField fx:id="txtServerIP" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                            <ChoiceBox fx:id="comPortList" prefHeight="23.0" prefWidth="227.0" GridPane.columnIndex="3" />
-                            <Button mnemonicParsing="false" onAction="#onFactoryAction" text="保存" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
-                        <Label text="串口:" GridPane.columnIndex="2" GridPane.halignment="RIGHT" />
-                        <Label text="使用天数:" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                        <TextField fx:id="txtUseDays" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                        <Label text="0表示不限制使用天数" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="2" />
-                        <Label fx:id="lblFMessage" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                        <Button mnemonicParsing="false" onAction="#onCabinetListAction" text="箱柜管理" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
-                           
-                        </children>
-                    </GridPane>
-                </content>
-            </Tab>
-        </tabs>
-      </TabPane>
-   </center>
+                            </children>
+                        </GridPane>
+                    </content>
+                </Tab>
+                <Tab text="对接门禁/可视对讲">
+                    <content>
+                        <GridPane>
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="510.0" minWidth="10.0"
+                                                   prefWidth="460.0"/>
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="733.0" minWidth="10.0"
+                                                   prefWidth="710.0"/>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="60.0"/>
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                            </rowConstraints>
+                            <children>
+                                <Label text="门禁/可视对讲系统服务器IP：" GridPane.halignment="RIGHT" GridPane.rowIndex="1"/>
+                                <Label text="门禁/可视对讲系统服务器端口：" GridPane.halignment="RIGHT" GridPane.rowIndex="2"/>
+                                <TextField fx:id="txtDoorIP" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                                <TextField fx:id="txtDoorPort" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                                <Label text="对接协议：" GridPane.halignment="RIGHT"/>
+                                <ChoiceBox fx:id="protocolList" prefHeight="26.0" prefWidth="289.0"
+                                           GridPane.columnIndex="1"/>
+                                <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1"
+                                      GridPane.rowIndex="4">
+                                    <children>
+                                        <Button mnemonicParsing="false" onAction="#onDoorSaveAction" text="保存"/>
+                                        <Button fx:id="testButton" mnemonicParsing="false" onAction="#onTestAction"
+                                                text="测试"/>
+                                    </children>
+                                    <GridPane.margin>
+                                        <Insets/>
+                                    </GridPane.margin>
+                                </HBox>
+                                <Label fx:id="lblDMessage" GridPane.columnIndex="1" GridPane.columnSpan="2"
+                                       GridPane.rowIndex="3"/>
+                            </children>
+                        </GridPane>
+                    </content>
+                </Tab>
+                <Tab fx:id="factoryTab" text="出厂设置">
+                    <content>
+                        <GridPane>
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0"/>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0"/>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="80.0"/>
+                                <ColumnConstraints/>
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                            </rowConstraints>
+                            <children>
+                                <Label text="主从模式：" GridPane.halignment="RIGHT"/>
+                                <Label text="服务器IP：" GridPane.halignment="RIGHT" GridPane.rowIndex="1"/>
+                                <TextField fx:id="txtLocalCabinetNo" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                                <Label text="本地箱柜号：" GridPane.halignment="RIGHT" GridPane.rowIndex="2"/>
+                                <Label text="主界面标题：" GridPane.halignment="RIGHT" GridPane.rowIndex="3"/>
+                                <TextField fx:id="txtMainTitle" GridPane.columnIndex="1" GridPane.columnSpan="3"
+                                           GridPane.rowIndex="3"/>
+                                <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1">
+                                    <children>
+                                        <RadioButton fx:id="rdoMaster" mnemonicParsing="false"
+                                                     onAction="#onMasterAction" selected="true" text="主机">
+                                            <toggleGroup>
+                                                <ToggleGroup fx:id="masterSlave"/>
+                                            </toggleGroup>
+                                        </RadioButton>
+                                        <RadioButton fx:id="rdoSlave" mnemonicParsing="false" onAction="#onSlaveAction"
+                                                     text="从机" toggleGroup="$masterSlave"/>
+                                    </children>
+                                    <GridPane.margin>
+                                        <Insets top="10.0"/>
+                                    </GridPane.margin>
+                                </HBox>
+                                <TextField fx:id="txtServerIP" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                                <ChoiceBox fx:id="comPortList" prefHeight="23.0" prefWidth="227.0"
+                                           GridPane.columnIndex="3"/>
+                                <Button mnemonicParsing="false" onAction="#onFactoryAction" text="保存"
+                                        GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4"/>
+                                <Label text="串口：" GridPane.columnIndex="2" GridPane.halignment="RIGHT"/>
+                                <Label text="使用天数：" GridPane.columnIndex="2" GridPane.halignment="RIGHT"
+                                       GridPane.rowIndex="1"/>
+                                <TextField fx:id="txtUseDays" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
+                                <Label text="0表示不限制使用天数" textFill="#262525" GridPane.columnIndex="3"
+                                       GridPane.columnSpan="2" GridPane.rowIndex="2"/>
+                                <Label fx:id="lblFMessage" GridPane.columnIndex="3" GridPane.rowIndex="2"/>
+                                <Button mnemonicParsing="false" onAction="#onCabinetListAction" text="箱柜管理"
+                                        GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4"/>
+                            </children>
+                        </GridPane>
+                    </content>
+                </Tab>
+            </tabs>
+        </TabPane>
+    </center>
 </BorderPane>

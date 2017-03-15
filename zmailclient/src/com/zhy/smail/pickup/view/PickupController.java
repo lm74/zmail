@@ -150,7 +150,7 @@ public class PickupController  implements Initializable {
 
     private void setBoxNumber(String mailBoxNos, String packetBoxNos){
         if(mailLogs.size() == 0 && packetLogs.size()==0){
-            Speaker.noPacket();
+//            Speaker.noPacket();
         }
 
         if(mailLogs.size() ==0){

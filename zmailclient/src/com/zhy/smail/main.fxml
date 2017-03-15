@@ -7,19 +7,16 @@
 <?import javafx.scene.layout.Pane?>
 
 <Pane onKeyPressed="#onKeyPressed" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zhy.smail.MainController">
-    <ImageView layoutX="-11.0" pickOnBounds="true" preserveRatio="true">
+    <ImageView layoutX="120.0" layoutY="-6.0" pickOnBounds="true" preserveRatio="true">
         <image>
             <Image url="@../../../images/firstMainBack.jpg" />
         </image>
     </ImageView>
-
     <Label fx:id="lblAppTitle" layoutX="457.0" layoutY="48.0" styleClass="label-title" text="智能信包箱系统" />
-
     <Button layoutX="86.0" layoutY="908.0" mnemonicParsing="false" onAction="#onDeliveryAction" opacity="0.0" prefHeight="113.0" prefWidth="174.0" text="投件" />
     <Button layoutX="359.0" layoutY="911.0" mnemonicParsing="false" onAction="#onLoginAction" opacity="0.0" prefHeight="107.0" prefWidth="222.0" text="取件" />
     <Button layoutX="685.0" layoutY="909.0" mnemonicParsing="false" onAction="#onManagerAction" opacity="0.0" prefHeight="113.0" prefWidth="222.0" text="管理员" />
     <Button layoutX="998.0" layoutY="910.0" mnemonicParsing="false" onAction="#onHelpAction" opacity="0.0" prefHeight="113.0" prefWidth="197.0" text="使用帮助" />
-
     <Label fx:id="lblMessage" layoutX="1190.0" layoutY="48.0" prefHeight="18.0" prefWidth="25.0" />
-   <Label fx:id="lblOffline" layoutX="1065.0" layoutY="48.0" styleClass="offline" text="脱机" />
+    <Label fx:id="lblOffline" layoutX="1065.0" layoutY="48.0" styleClass="offline" text="脱机" />
 </Pane>

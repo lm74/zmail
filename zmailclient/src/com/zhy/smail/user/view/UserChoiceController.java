@@ -114,60 +114,49 @@ public class UserChoiceController extends RootController implements Initializabl
     }
 
 
-    private void createOwnerTable(){
+    private void createOwnerTable() {
         tcBuildingNo.setCellValueFactory(new PropertyValueFactory("buildingNo"));
         tcUnitNo.setCellValueFactory(new PropertyValueFactory<UserInfo, String>("unitNo"));
         tcFloorNo.setCellValueFactory(new PropertyValueFactory<UserInfo, String>("floorNo"));
         tcRoomNo.setCellValueFactory(new PropertyValueFactory<UserInfo, String>("roomNo"));
         tcPhoneNo.setCellValueFactory(new PropertyValueFactory<UserInfo, String>("phoneNo"));
-        tcCardNo1.setCellValueFactory(new PropertyValueFactory<UserInfo, String>("cardNo1"));
-        tcCardNo2.setCellValueFactory(new PropertyValueFactory<UserInfo, String>("cardNo2"));
-        tcCardNo3.setCellValueFactory(new PropertyValueFactory<UserInfo, String>("cardNo3"));
-        tcCardNo4.setCellValueFactory(new PropertyValueFactory<UserInfo, String>("cardNo4"));
-        tcCardNo5.setCellValueFactory(new PropertyValueFactory<UserInfo, String>("cardNo5"));
-        tcCardNo6.setCellValueFactory(new PropertyValueFactory<UserInfo, String>("cardNo6"));
-        tcCardNo7.setCellValueFactory(new PropertyValueFactory<UserInfo, String>("cardNo7"));
-        tcCardNo8.setCellValueFactory(new PropertyValueFactory<UserInfo, String>("cardNo8"));
-        tcCardNo9.setCellValueFactory(new PropertyValueFactory<UserInfo, String>("cardNo9"));
-        tcCardNo10.setCellValueFactory(new PropertyValueFactory<UserInfo, String>("cardNo10"));
         ownerList = FXCollections.observableArrayList();
         ownerTable.setItems(ownerList);
-
     }
 
-    public void onRefresh(){
+    public void onRefresh() {
         ownerList.clear();
 
         UserService.listOwnerByRoom(txtBuildingNo.getText(), txtUnitNo.getText(), txtFloorNo.getText(), txtRoomNo.getText(),
                 new RestfulResult() {
-            @Override
-            public void doResult(RfResultEvent event) {
-                List<UserInfo> users = (List<UserInfo>)event.getData();
-                if(users == null) return;
+                    @Override
+                    public void doResult(RfResultEvent event) {
+                        List<UserInfo> users = (List<UserInfo>) event.getData();
+                        if (users == null) return;
 
-                for(int i=0; i<users.size(); i++){
-                    UserInfo user = users.get(i);
+                        for (int i = 0; i < users.size(); i++) {
+                            UserInfo user = users.get(i);
 
-                    ownerList.add(user);
+                            ownerList.add(user);
 
-                }
-            }
+                        }
+                    }
 
-            @Override
-            public void doFault(RfFaultEvent event) {
+                    @Override
+                    public void doFault(RfFaultEvent event) {
 
-            }
-        });
+                    }
+                });
     }
 
-    public void onQueryAction(ActionEvent event){
+    public void onQueryAction(ActionEvent event) {
         onRefresh();
     }
 
     @FXML
-    public void onOkAction(ActionEvent event){
+    public void onOkAction(ActionEvent event) {
         UserInfo user = ownerTable.getSelectionModel().getSelectedItem();
-        if(user == null){
+        if (user == null) {
             SimpleDialog.showMessageDialog(app.getRootStage(), "请选择用户.", "删除出错");
             return;
         }
@@ -177,30 +166,30 @@ public class UserChoiceController extends RootController implements Initializabl
     }
 
     @FXML
-    private void onBackAction(ActionEvent event){
+    private void onBackAction(ActionEvent event) {
 
         backToParent(null);
 
     }
 
-    private void backToParent(UserInfo user){
+    private void backToParent(UserInfo user) {
         String parent = GlobalOption.parents.pop();
-        if(parent != null  && parent.equals("putmail")){
+        if (parent != null && parent.equals("putmail")) {
             PutmailController controller = app.goPutmail();
-            if(controller!= null && user != null){
+            if (controller != null && user != null) {
                 controller.setUser(user);
             }
-        }
-        else if(parent != null && parent.equals("selectRoom")){
+        } else if (parent != null && parent.equals("selectRoom")) {
             SelectRoomController controller = app.goSelectRoom();
-            if(controller !=null && user != null){
+            if (controller != null && user != null) {
                 controller.setUser(user);
                 controller.setBox(box);
+            } else if (controller != null && user == null) {
+                controller.setBox(box);
             }
-        }
-        else{
+        } else {
             PutdownController controller = app.goPutdown();
-            if(controller != null && user != null){
+            if (controller != null && user != null) {
                 controller.setUser(user);
             }
         }
