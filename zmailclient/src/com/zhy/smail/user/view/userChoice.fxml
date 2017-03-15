@@ -76,21 +76,11 @@
             </HBox>
             <TableView fx:id="ownerTable" minHeight="700.0" VBox.vgrow="ALWAYS">
                 <columns>
-                    <TableColumn fx:id="tcBuildingNo" prefWidth="150" text="楼栋号"/>
-                    <TableColumn fx:id="tcUnitNo" prefWidth="150" text="单元号"/>
-                    <TableColumn fx:id="tcFloorNo" prefWidth="150" text="楼层号"/>
-                    <TableColumn fx:id="tcRoomNo" prefWidth="155.0" text="房号"/>
-                    <TableColumn fx:id="tcPhoneNo" prefWidth="228.0" text="手机号码"/>
-                    <TableColumn fx:id="tcCardNo1" prefWidth="319.0" text="卡号1"/>
-                    <TableColumn fx:id="tcCardNo2" prefWidth="327.0" text="卡号2"/>
-                    <TableColumn fx:id="tcCardNo3" prefWidth="300.0" text="卡号3"/>
-                    <TableColumn fx:id="tcCardNo4" prefWidth="300.0" text="卡号4"/>
-                    <TableColumn fx:id="tcCardNo5" prefWidth="300.0" text="卡号5"/>
-                    <TableColumn fx:id="tcCardNo6" prefWidth="300.0" text="卡号6"/>
-                    <TableColumn fx:id="tcCardNo7" prefWidth="300.0" text="卡号7"/>
-                    <TableColumn fx:id="tcCardNo8" prefWidth="300.0" text="卡号8"/>
-                    <TableColumn fx:id="tcCardNo9" prefWidth="300.0" text="卡号9"/>
-                    <TableColumn fx:id="tcCardNo10" prefWidth="300.0" text="卡号10"/>
+                    <TableColumn fx:id="tcBuildingNo" prefWidth="250" text="楼栋号"/>
+                    <TableColumn fx:id="tcUnitNo" prefWidth="250" text="单元号"/>
+                    <TableColumn fx:id="tcFloorNo" prefWidth="250" text="楼层号"/>
+                    <TableColumn fx:id="tcRoomNo" prefWidth="250.0" text="房号"/>
+                    <TableColumn fx:id="tcPhoneNo" prefWidth="300.0" text="手机号码"/>
                 </columns>
             </TableView>
         </VBox>
@@ -98,5 +88,4 @@
     <bottom>
         <Button mnemonicParsing="false" onAction="#onOkAction" text="选择" BorderPane.alignment="CENTER"/>
     </bottom>
-
 </BorderPane>

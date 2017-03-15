@@ -24,7 +24,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
-import javafx.scene.text.Text;
 
 import java.net.URL;
 import java.util.List;
@@ -107,10 +106,8 @@ public class UserChoiceController extends RootController implements Initializabl
         txtUnitNo.getProperties().put(VkProperties.VK_TYPE, VkProperties.VK_TYPE_NUMERIC);
         txtFloorNo.getProperties().put(VkProperties.VK_TYPE, VkProperties.VK_TYPE_NUMERIC);
         txtRoomNo.getProperties().put(VkProperties.VK_TYPE, VkProperties.VK_TYPE_NUMERIC);
-
         createOwnerTable();
         onRefresh();
-
     }
 
 
@@ -126,7 +123,6 @@ public class UserChoiceController extends RootController implements Initializabl
 
     public void onRefresh() {
         ownerList.clear();
-
         UserService.listOwnerByRoom(txtBuildingNo.getText(), txtUnitNo.getText(), txtFloorNo.getText(), txtRoomNo.getText(),
                 new RestfulResult() {
                     @Override
@@ -136,9 +132,7 @@ public class UserChoiceController extends RootController implements Initializabl
 
                         for (int i = 0; i < users.size(); i++) {
                             UserInfo user = users.get(i);
-
                             ownerList.add(user);
-
                         }
                     }
 
@@ -160,16 +154,12 @@ public class UserChoiceController extends RootController implements Initializabl
             SimpleDialog.showMessageDialog(app.getRootStage(), "请选择用户.", "删除出错");
             return;
         }
-
         backToParent(user);
-
     }
 
     @FXML
     private void onBackAction(ActionEvent event) {
-
         backToParent(null);
-
     }
 
     private void backToParent(UserInfo user) {
