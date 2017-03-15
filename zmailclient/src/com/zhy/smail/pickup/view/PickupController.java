@@ -110,6 +110,9 @@ public class PickupController  implements Initializable {
                     @Override
                     public void run() {
                         setBoxNumber(finalMailBoxNos, finalPacketBoxNos);
+                        if(mailLogs.size() == 0 && packetLogs.size()==0){
+                            Speaker.noPacket();
+                        }
                     }
                 });
             }
@@ -150,7 +153,7 @@ public class PickupController  implements Initializable {
 
     private void setBoxNumber(String mailBoxNos, String packetBoxNos){
         if(mailLogs.size() == 0 && packetLogs.size()==0){
-            Speaker.noPacket();
+//            Speaker.noPacket();
         }
 
         if(mailLogs.size() ==0){

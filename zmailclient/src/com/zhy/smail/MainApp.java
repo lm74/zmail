@@ -51,7 +51,7 @@ public class MainApp extends Application {
     private Scene rootScene;
     private Stage rootStage;
     private MainController mainController;
-    private TimeoutTimer timer=null;
+    private TimeoutTimer timer = null;
     private Thread responseThread;
     private ResponseManager responseManager;
     private SimpleBooleanProperty offline;
@@ -85,10 +85,8 @@ public class MainApp extends Application {
     }
 
 
-
-
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
         this.offline = new SimpleBooleanProperty(false);
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("main.fxml"));
@@ -121,10 +119,10 @@ public class MainApp extends Application {
         checkRegisterNo();
     }
 
-    private void checkRegisterNo(){
+    private void checkRegisterNo() {
         String registerNo = SystemUtil.getRegisterNo();
-        if(registerNo.equals(LocalConfig.getInstance().getRegisterNo())){
-           return;
+        if (registerNo.equals(LocalConfig.getInstance().getRegisterNo())) {
+            return;
         }
 
         goRegister();
@@ -132,12 +130,12 @@ public class MainApp extends Application {
 
     }
 
-    private void initVK(Stage primaryStage){
+    private void initVK(Stage primaryStage) {
         Screen screen = Screen.getPrimary();
         Rectangle2D bounds = screen.getVisualBounds();
         double height = rootScene.getWindow().getHeight();
         double width = rootScene.getWindow().getWidth();
-        double scale =Math.min(height/550, width/650);
+        double scale = Math.min(height / 550, width / 650);
 
         KeyBoardPopupBuilder builder = KeyBoardPopupBuilder.create();
         builder.initScale(scale);
@@ -150,7 +148,7 @@ public class MainApp extends Application {
         popup.addGlobalFocusListener();
     }
 
-    public void testConnection(){
+    public void testConnection() {
         Task<Integer> testTask = new Task<Integer>() {
             private Integer resultValue;
 
@@ -172,10 +170,9 @@ public class MainApp extends Application {
                     public void doFault(RfFaultEvent event) {
                         resultValue = -1;
                         updateValue(-1);
-                        if(event.getErrorNo() == -1){
+                        if (event.getErrorNo() == -1) {
                             updateMessage(event.getMessage());
-                        }
-                        else {
+                        } else {
                             updateMessage("连接服务器(" + GlobalOption.serverIP + ")失败.本机进入脱机状态，只有管理员才能登录.");
                             GlobalOption.serverIP = "127.0.0.1";
                             GlobalOption.runMode = 1;
@@ -187,15 +184,15 @@ public class MainApp extends Application {
 
             }
         };
-        SimpleDialog.showDialog(rootStage, testTask,"正在连接到服务器...", "连接");
+        SimpleDialog.showDialog(rootStage, testTask, "正在连接到服务器...", "连接");
     }
 
-    public void loadSetting(){
+    public void loadSetting() {
         OptionService.getById(SystemOption.APP_TITLE_ID, new RestfulResult() {
             @Override
             public void doResult(RfResultEvent event) {
-                SystemOption option = (SystemOption)event.getData();
-                if(option!=null){
+                SystemOption option = (SystemOption) event.getData();
+                if (option != null) {
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
@@ -213,39 +210,37 @@ public class MainApp extends Application {
         });
     }
 
-    public void setAppTitle(String title){
+    public void setAppTitle(String title) {
         mainController.setAppTitle(title);
     }
 
-    private void initUDP(){
-        if(SendManager.gateway==null) {
+    private void initUDP() {
+        if (SendManager.gateway == null) {
             SendManager.gateway = new UdpGateway(8010);
         }
-        if(SendManager.gateway.isOpened()) {
+        if (SendManager.gateway.isOpened()) {
             SendManager.gateway.close();
-        }
-        else {
+        } else {
             UdpGateway gateway = (UdpGateway) SendManager.gateway;
             try {
                 gateway.startGateway();
                 responseManager = new ResponseManager();
                 responseThread = new Thread(responseManager);
                 responseThread.start();
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
 
-    public void closeCom(){
-        if(SendManager.gateway == null) return;
+    public void closeCom() {
+        if (SendManager.gateway == null) return;
 
-        if(SendManager.gateway.isOpened()) {
+        if (SendManager.gateway.isOpened()) {
             SendManager.gateway.close();
         }
 
-        if(responseManager!=null) {
+        if (responseManager != null) {
             responseManager.setCanceled(true);
             try {
                 responseThread.join();
@@ -255,14 +250,13 @@ public class MainApp extends Application {
         }
     }
 
-    public void openCom(){
-        if(SendManager.gateway==null) {
+    public void openCom() {
+        if (SendManager.gateway == null) {
             SendManager.gateway = new SerialGateway();
         }
-        if(SendManager.gateway.isOpened()) {
+        if (SendManager.gateway.isOpened()) {
             SendManager.gateway.close();
-        }
-        else {
+        } else {
             SerialGateway gateway = (SerialGateway) SendManager.gateway;
             String portName = gateway.getPortName();
             try {
@@ -274,7 +268,7 @@ public class MainApp extends Application {
 
 
             } catch (GatewayException e) {
-                SimpleDialog.showMessageDialog(getRootStage(), "打开端口"+portName+"出错:" + e.getMessage(), "打开失败");
+                SimpleDialog.showMessageDialog(getRootStage(), "打开端口" + portName + "出错:" + e.getMessage(), "打开失败");
             }
         }
     }
@@ -283,31 +277,29 @@ public class MainApp extends Application {
     public static void main(String[] args) {
         LocalConfig local = LocalConfig.getInstance();
         GlobalOption.appMode = local.getAppMode();
-        if(local.getAppMode() == LocalConfig.APP_MASTER){
+        if (local.getAppMode() == LocalConfig.APP_MASTER) {
             GlobalOption.serverIP = "127.0.0.1";
-        }
-        else{
+        } else {
             GlobalOption.serverIP = local.getServerIP();
         }
         launch(args);
 
     }
 
-    public void goHome(){
+    public void goHome() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("main.fxml"));
             Parent root = fxmlLoader.load();
             mainController = fxmlLoader.getController();
             mainController.setApp(this);
             rootScene.setRoot(root);
-        }
-        catch (Exception e){
-            SimpleDialog.showMessageDialog(getRootStage(),e.getMessage(),"错误");
+        } catch (Exception e) {
+            SimpleDialog.showMessageDialog(getRootStage(), e.getMessage(), "错误");
         }
 
     }
 
-    public LoginController goLogin(Integer loginType){
+    public LoginController goLogin(Integer loginType) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("user/view/login.fxml"));
             Parent root = fxmlLoader.load();
@@ -316,14 +308,13 @@ public class MainApp extends Application {
             controller.setLoginType(loginType);
             controller.setApp(this);
             return controller;
-        }
-        catch (Exception e){
-            SimpleDialog.showMessageDialog(getRootStage(),e.getMessage(),"错误");
+        } catch (Exception e) {
+            SimpleDialog.showMessageDialog(getRootStage(), e.getMessage(), "错误");
         }
         return null;
     }
 
-    public void goManager(){
+    public void goManager() {
         try {
             FXMLLoader fxmlLoader;
             fxmlLoader = new FXMLLoader(getClass().getResource("manager/view/manager.fxml"));
@@ -332,13 +323,12 @@ public class MainApp extends Application {
             getRootStage().getScene().setRoot(root);
             controller.setApp(this);
 
-        }
-        catch (Exception e){
-            SimpleDialog.showMessageDialog(getRootStage(),e.getMessage(),"错误");
+        } catch (Exception e) {
+            SimpleDialog.showMessageDialog(getRootStage(), e.getMessage(), "错误");
         }
     }
 
-    public void goOwner(){
+    public void goOwner() {
         try {
             FXMLLoader fxmlLoader;
             fxmlLoader = new FXMLLoader(getClass().getResource("pickup/view/pickup.fxml"));
@@ -347,28 +337,26 @@ public class MainApp extends Application {
             PickupController controller = fxmlLoader.getController();
             controller.setApp(this);
 
-        }
-        catch (Exception e){
-            SimpleDialog.showMessageDialog(this.getRootStage(),e.getMessage(),"错误");
+        } catch (Exception e) {
+            SimpleDialog.showMessageDialog(this.getRootStage(), e.getMessage(), "错误");
         }
     }
 
-    public void goDelivery(){
+    public void goDelivery() {
         try {
             FXMLLoader fxmlLoader;
-            fxmlLoader = new FXMLLoader(getClass().getResource("delivery/view/delivery.fxml"));
+            fxmlLoader = new FXMLLoader(getClass().getResource("delivery/view/commonDelivery.fxml"));
             Parent root = fxmlLoader.load();
             getRootStage().getScene().setRoot(root);
             DeliveryController controller = fxmlLoader.getController();
             controller.setApp(this);
 
-        }
-        catch (Exception e){
-            SimpleDialog.showMessageDialog(this.getRootStage(),e.getMessage(),"错误");
+        } catch (Exception e) {
+            SimpleDialog.showMessageDialog(this.getRootStage(), e.getMessage(), "错误");
         }
     }
 
-    public ChangePasswordController goChangePassword(){
+    public ChangePasswordController goChangePassword() {
         try {
             FXMLLoader fxmlLoader;
             fxmlLoader = new FXMLLoader(getClass().getResource("user/view/ChangePassword.fxml"));
@@ -376,15 +364,14 @@ public class MainApp extends Application {
             getRootStage().getScene().setRoot(root);
             ChangePasswordController controller = fxmlLoader.getController();
             controller.setApp(this);
-            return  controller;
-        }
-        catch (Exception e){
-            SimpleDialog.showMessageDialog(this.getRootStage(),e.getMessage(),"错误");
+            return controller;
+        } catch (Exception e) {
+            SimpleDialog.showMessageDialog(this.getRootStage(), e.getMessage(), "错误");
             return null;
         }
     }
 
-    public void goCabinetList(){
+    public void goCabinetList() {
         try {
             FXMLLoader fxmlLoader;
             fxmlLoader = new FXMLLoader(getClass().getResource("cabinet/view/CabinetList.fxml"));
@@ -393,17 +380,16 @@ public class MainApp extends Application {
 
             getRootStage().getScene().setRoot(root);
             controller.setApp(this);
-        }
-        catch (Exception e){
-            SimpleDialog.showMessageDialog(getRootStage(),e.getMessage(),"错误");
+        } catch (Exception e) {
+            SimpleDialog.showMessageDialog(getRootStage(), e.getMessage(), "错误");
         }
     }
 
-    public BoxListController goBoxList(){
+    public BoxListController goBoxList() {
         return (BoxListController) loadFxml("cabinet/view/BoxList.fxml");
     }
 
-    public UserListController goUserList(){
+    public UserListController goUserList() {
         try {
             FXMLLoader fxmlLoader;
 
@@ -414,78 +400,78 @@ public class MainApp extends Application {
             controller.setApp(this);
             getRootStage().getScene().setRoot(root);
             return controller;
-        }
-        catch (Exception e){
-            SimpleDialog.showMessageDialog(getRootStage(),e.getMessage(),"错误");
+        } catch (Exception e) {
+            SimpleDialog.showMessageDialog(getRootStage(), e.getMessage(), "错误");
             return null;
         }
 
     }
-    public void goHelp(){
+
+    public void goHelp() {
         loadFxml("user/view/Help.fxml");
     }
 
-    public PutdownController goPutdown(){
-        return  (PutdownController) loadFxml("delivery/view/putdown.fxml");
+    public PutdownController goPutdown() {
+        return (PutdownController) loadFxml("delivery/view/putdown.fxml");
     }
 
-    public PutmailController goPutmail(){
-        return (PutmailController)loadFxml("delivery/view/putmail.fxml");
+    public PutmailController goPutmail() {
+        return (PutmailController) loadFxml("delivery/view/putmail.fxml");
     }
 
-    public UserChoiceController goUserChoice(){
+    public UserChoiceController goUserChoice() {
         return (UserChoiceController) loadFxml("user/view/userChoice.fxml");
     }
 
-    public ConfirmDeliveryController goConfirmDelivery(){
+    public ConfirmDeliveryController goConfirmDelivery() {
         return (ConfirmDeliveryController) loadFxml("delivery/view/confirmDelivery.fxml");
     }
 
-    public UserViewController goUserView(){
-        return (UserViewController)loadFxml("user/view/UserView.fxml");
+    public UserViewController goUserView() {
+        return (UserViewController) loadFxml("user/view/UserView.fxml");
     }
 
-    public OccupyBoxController goOccupyBox( ){
-        return (OccupyBoxController)loadFxml("delivery/view/occupyBox.fxml");
+    public OccupyBoxController goOccupyBox() {
+        return (OccupyBoxController) loadFxml("delivery/view/occupyBox.fxml");
     }
 
-    public OpeningLogController goOpeningLog( ){
-        return (OpeningLogController)loadFxml("manager/view/openingLog.fxml");
+    public OpeningLogController goOpeningLog() {
+        return (OpeningLogController) loadFxml("manager/view/openingLog.fxml");
     }
 
-    public SplashController goSplash(){
-        return (SplashController)loadFxml("user/view/splash.fxml");
+    public SplashController goSplash() {
+        return (SplashController) loadFxml("user/view/splash.fxml");
     }
 
-    public void goRegister(){
+    public void goRegister() {
         loadFxml("user/view/register.fxml");
     }
 
-    public void goSetting(){
+    public void goSetting() {
         loadFxml("setting/view/Setting.fxml");
     }
 
-    public void goQueryRecord( ){
-       loadFxml("manager/view/queryRecord.fxml");
+    public void goQueryRecord() {
+        loadFxml("manager/view/queryRecord.fxml");
     }
 
-    public  CommonDeliveryController goCommonDelivery(){
+    public CommonDeliveryController goCommonDelivery() {
         return (CommonDeliveryController) loadFxml("delivery/view/commonDelivery.fxml");
     }
 
-    public SelectRoomController goSelectRoom(){
-        return (SelectRoomController)loadFxml("delivery/view/selectRoom.fxml");
+    public SelectRoomController goSelectRoom() {
+        return (SelectRoomController) loadFxml("delivery/view/selectRoom.fxml");
     }
 
-    public void goPickupLog(){
+    public void goPickupLog() {
         loadFxml("pickup/view/pickuplog.fxml");
     }
 
-    public LogListController goLogList( ){
-        return (LogListController)loadFxml("manager/view/LogList.fxml");
+    public LogListController goLogList() {
+        return (LogListController) loadFxml("manager/view/LogList.fxml");
     }
 
-    private RootController loadFxml(String path){
+    private RootController loadFxml(String path) {
         try {
             FXMLLoader fxmlLoader;
 
@@ -496,19 +482,16 @@ public class MainApp extends Application {
             controller.setApp(this);
             getRootStage().getScene().setRoot(root);
             return controller;
-        }
-        catch (Exception e){
-            SimpleDialog.showMessageDialog(getRootStage(),e.getMessage(),"错误");
+        } catch (Exception e) {
+            SimpleDialog.showMessageDialog(getRootStage(), e.getMessage(), "错误");
             return null;
         }
     }
 
 
-
-
-    EventHandler<KeyEvent> keyEventEventHandler = new EventHandler<KeyEvent>(){
-        public  void handle(final KeyEvent keyEvent){
-            if(timer != null){
+    EventHandler<KeyEvent> keyEventEventHandler = new EventHandler<KeyEvent>() {
+        public void handle(final KeyEvent keyEvent) {
+            if (timer != null) {
                 timer.restart();
             }
             Speaker.keyTypeSound();
@@ -518,21 +501,21 @@ public class MainApp extends Application {
     EventHandler<MouseEvent> mouseEventEventHandler = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent event) {
-            if(timer !=null){
+            if (timer != null) {
                 timer.restart();
             }
         }
     };
 
-    public void createTimeout(Label lblTimer){
+    public void createTimeout(Label lblTimer) {
         createTimeout(lblTimer, GlobalOption.TimeoutTotal);
     }
 
-    public void createTimeout(Label lblTimer, Integer timeout){
-        if(timer !=null){
+    public void createTimeout(Label lblTimer, Integer timeout) {
+        if (timer != null) {
             timer.cancel();
         }
-        timer = new TimeoutTimer(lblTimer,timeout, new TimeoutTimer.TimeoutCallback() {
+        timer = new TimeoutTimer(lblTimer, timeout, new TimeoutTimer.TimeoutCallback() {
             @Override
             public void run() {
                 goHome();
@@ -541,19 +524,19 @@ public class MainApp extends Application {
         timer.start();
     }
 
-    public void stopApplication(){
+    public void stopApplication() {
 
         Platform.exit();
     }
 
     public void stop() throws Exception {
-        if(timer !=null){
+        if (timer != null) {
             timer.cancel();
 
             timer = null;
         }
 
-        if(responseManager!=null) {
+        if (responseManager != null) {
             responseManager.setCanceled(true);
             try {
                 responseThread.join();
@@ -561,8 +544,8 @@ public class MainApp extends Application {
 
             }
         }
-        if(SendManager.gateway != null ) {
-            if(SendManager.gateway.isOpened()) {
+        if (SendManager.gateway != null) {
+            if (SendManager.gateway.isOpened()) {
                 SendManager.gateway.close();
             }
             SendManager.gateway = null;
