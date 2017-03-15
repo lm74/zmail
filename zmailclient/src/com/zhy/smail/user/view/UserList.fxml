@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="center" prefHeight="1024.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.76-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zhy.smail.user.view.UserListController">
+<VBox alignment="center" prefHeight="1024.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zhy.smail.user.view.UserListController">
     <children>
         <ToolBar fx:id="topToolBar" prefHeight="40.0" prefWidth="200.0">
             <items>
@@ -107,8 +107,8 @@
             <CheckBox fx:id="chkSelectAll" mnemonicParsing="false" onAction="#onSelectAllAction" text="全选" />
           <Button mnemonicParsing="false" onAction="#onAddUserAction" text="增加" />
             <Button mnemonicParsing="false" onAction="#onDeleteAction" text="删除" />
-            <Button mnemonicParsing="false" onAction="#onEditAction" text="修改" />
-            <Button mnemonicParsing="false" onAction="#onSettingPasswordAction" text="设置密码" />
+            <Button fx:id="updateRecord" mnemonicParsing="false" onAction="#onEditAction" text="修改" />
+            <Button fx:id="setPassword" mnemonicParsing="false" onAction="#onSettingPasswordAction" text="设置密码" />
             <Button mnemonicParsing="false" onAction="#onImportFile" text="导入" />
             <Button mnemonicParsing="false" onAction="#onExportFile" text="导出" />
         </items>

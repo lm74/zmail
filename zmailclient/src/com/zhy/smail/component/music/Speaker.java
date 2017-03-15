@@ -101,7 +101,7 @@ public class Speaker {
    *没有物品寄存
     */
     public static void noPacket(){
-        playMusic("/music/13.wav");
+        playMusic("/music/21.wav");
     }
 
     /*
@@ -145,6 +145,17 @@ public class Speaker {
     public static void openBoxSound(){
         playMusic("/music/19.wav");
     }
+
+    /**
+     * 请输入管理员帐号
+     */
+    public static void inputManagerUser() {playMusic("/music/20.wav");}
+
+    /**
+     * 用户名或密码错
+     */
+    public  static  void userOrPasswordError(){playMusic("/music/22.wav");}
+
     private static void playMusic(String path){
         String music0 = Speaker.class.getResource(path).toString();
         Media media2 = new Media(music0);

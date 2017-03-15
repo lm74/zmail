@@ -46,7 +46,7 @@ public class UserListController implements Initializable {
     @FXML
     private ToolBar topToolBar;
     @FXML
-    private  Region topLeft;
+    private Region topLeft;
     @FXML
     private Region topRight;
 
@@ -163,31 +163,33 @@ public class UserListController implements Initializable {
     private TableColumn<UserInfo, String> tcmCardNo10;
     @FXML
     private CheckBox chkSelectAll;
+    @FXML
+    private Button updateRecord;
+    @FXML
+    private Button setPassword;
 
     private FileChooser openFileChoose;
     private FileChooser saveFileChoose;
 
-    public void onRefresh(){
+    public void onRefresh() {
         ownerList.clear();
         managerList.clear();
         deliveryList.clear();
         UserService.listAll(new RestfulResult() {
             @Override
             public void doResult(RfResultEvent event) {
-                List<UserInfo> users = (List<UserInfo>)event.getData();
-                if(users == null) return;
+                List<UserInfo> users = (List<UserInfo>) event.getData();
+                if (users == null) return;
 
                 Integer currentUserType = GlobalOption.currentUser.getUserType();
-                for(int i=0; i<users.size(); i++){
+                for (int i = 0; i < users.size(); i++) {
                     UserInfo user = users.get(i);
-                    if(user.getUserType() == UserInfo.OWNER){
+                    if (user.getUserType() == UserInfo.OWNER) {
                         ownerList.add(user);
-                    }
-                    else if(user.getUserType() == UserInfo.DELIVERY || user.getUserType() == UserInfo.MAILMAN){
+                    } else if (user.getUserType() == UserInfo.DELIVERY || user.getUserType() == UserInfo.MAILMAN) {
                         deliveryList.add(user);
-                    }
-                    else {
-                        if(user.getUserType()>=currentUserType) {
+                    } else {
+                        if (user.getUserType() >= currentUserType) {
                             managerList.add(user);
                         }
                     }
@@ -203,7 +205,7 @@ public class UserListController implements Initializable {
 
 
     @Override
-    public void initialize(URL location, ResourceBundle resources){
+    public void initialize(URL location, ResourceBundle resources) {
         initFileChooser();
         HBox.setHgrow(topLeft, Priority.ALWAYS);
         HBox.setHgrow(topRight, Priority.ALWAYS);
@@ -213,23 +215,22 @@ public class UserListController implements Initializable {
         onRefresh();
 
 
-
     }
 
-    private void initFileChooser(){
+    private void initFileChooser() {
         openFileChoose = new FileChooser();
         openFileChoose.setTitle("选择输入文件(XLS)");
         openFileChoose.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Excel文件","*.xls"));
+                new FileChooser.ExtensionFilter("Excel文件", "*.xls"));
 
         saveFileChoose = new FileChooser();
         saveFileChoose.setTitle("输入输出文件名(XLS)");
         saveFileChoose.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Excel文件","*.xls"));
+                new FileChooser.ExtensionFilter("Excel文件", "*.xls"));
     }
 
-    private void createOwnerTable(){
-        tcChecked.setCellFactory(tc->new CheckBoxTableCell<UserInfo, Boolean>());
+    private void createOwnerTable() {
+        tcChecked.setCellFactory(tc -> new CheckBoxTableCell<UserInfo, Boolean>());
         tcChecked.setCellValueFactory(new PropertyValueFactory<UserInfo, Boolean>("checked"));
         tcBuildingNo.setCellValueFactory(new PropertyValueFactory("buildingNo"));
         tcUnitNo.setCellValueFactory(new PropertyValueFactory<UserInfo, String>("unitNo"));
@@ -252,8 +253,8 @@ public class UserListController implements Initializable {
 
     }
 
-    private void createManagerTable(){
-        tcdChecked.setCellFactory(tc->new CheckBoxTableCell<UserInfo, Boolean>());
+    private void createManagerTable() {
+        tcdChecked.setCellFactory(tc -> new CheckBoxTableCell<UserInfo, Boolean>());
         tcdChecked.setCellValueFactory(new PropertyValueFactory<UserInfo, Boolean>("checked"));
         tcUserName.setCellValueFactory(new PropertyValueFactory("userName"));
         tcmPhoneNo.setCellValueFactory(new PropertyValueFactory<UserInfo, String>("phoneNo"));
@@ -271,8 +272,8 @@ public class UserListController implements Initializable {
         managerTable.setItems(managerList);
     }
 
-    private void createDeliveryTable(){
-        tcmChecked.setCellFactory(tc->new CheckBoxTableCell<UserInfo, Boolean>());
+    private void createDeliveryTable() {
+        tcmChecked.setCellFactory(tc -> new CheckBoxTableCell<UserInfo, Boolean>());
         tcmChecked.setCellValueFactory(new PropertyValueFactory<UserInfo, Boolean>("checked"));
         tcDelivery.setCellValueFactory(new PropertyValueFactory("userName"));
         tcdPhoneNo.setCellValueFactory(new PropertyValueFactory<UserInfo, String>("phoneNo"));
@@ -291,12 +292,12 @@ public class UserListController implements Initializable {
     }
 
     @FXML
-    private void onBackAction(ActionEvent event){
+    private void onBackAction(ActionEvent event) {
         app.goManager();
     }
 
     @FXML
-    private void onAddUserAction(ActionEvent event){
+    private void onAddUserAction(ActionEvent event) {
         Tab selectedTab = userContainer.getSelectionModel().getSelectedItem();
         UserEditController controller = loadUserEdit();
         controller.setUserClass(userContainer.getSelectionModel().getSelectedIndex());
@@ -304,9 +305,9 @@ public class UserListController implements Initializable {
     }
 
     @FXML
-    private void onEditAction(ActionEvent event){
+    private void onEditAction(ActionEvent event) {
         UserInfo user = getSelectedUserInfo();
-        if(user == null){
+        if (user == null) {
             SimpleDialog.showMessageDialog(app.getRootStage(), "请选择需要修改的用户.", "修改出错");
             return;
         }
@@ -318,61 +319,56 @@ public class UserListController implements Initializable {
     private UserInfo getSelectedUserInfo() {
         Tab selectedTab = userContainer.getSelectionModel().getSelectedItem();
         UserInfo user;
-        if(selectedTab == ownerTab){
+        if (selectedTab == ownerTab) {
             user = ownerTable.getSelectionModel().getSelectedItem();
-        }
-        else if(selectedTab == deliveryTab){
+        } else if (selectedTab == deliveryTab) {
             user = deliveryTable.getSelectionModel().getSelectedItem();
-        }
-        else{
+        } else {
             user = managerTable.getSelectionModel().getSelectedItem();
         }
         return user;
     }
 
-    private Integer getUserType(){
+    private Integer getUserType() {
         Tab selectedTab = userContainer.getSelectionModel().getSelectedItem();
 
-        if(selectedTab == ownerTab){
+        if (selectedTab == ownerTab) {
             return UserInfo.OWNER;
-        }
-        else if(selectedTab == deliveryTab){
+        } else if (selectedTab == deliveryTab) {
             return UserInfo.DELIVERY;
-        }
-        else{
+        } else {
             return UserInfo.ADMIN;
         }
     }
 
     @FXML
-    private void onDeleteAction(ActionEvent event){
+    private void onDeleteAction(ActionEvent event) {
         List<UserInfo> users = getSelectedUsers();
-        if(users.size() == 0){
-            users.add(getSelectedUserInfo());
-        }
-
-        if(users.size() == 0){
+//        if(users.size() == 0){
+//            users.add(getSelectedUserInfo());
+//        }
+        if (users.size() == 0) {
             SimpleDialog.showMessageDialog(app.getRootStage(), "请选择需要删除的用户.", "删除出错");
             return;
         }
-        String message = "你确认要删除你选择的" + users.size()+"个用户吗？";
-        SimpleDialog.Response  response = SimpleDialog.showConfirmDialog(app.getRootStage(),message ,"确认");
-        if(response == SimpleDialog.Response.NO) return;
+        String message = "你确认要删除你选择的" + users.size() + "个用户吗？";
+        SimpleDialog.Response response = SimpleDialog.showConfirmDialog(app.getRootStage(), message, "确认");
+        if (response == SimpleDialog.Response.NO) return;
 
-        for(int i=users.size()-1; i>=0; i--){
+        for (int i = users.size() - 1; i >= 0; i--) {
             UserInfo user = users.get(i);
-            if(user.getUserType() == UserInfo.FACTORY_USER && user.getUserName().equals("ADMIN")){
+            if (user.getUserType() == UserInfo.FACTORY_USER && user.getUserName().equals("ADMIN")) {
                 SimpleDialog.showAutoCloseError(app.getRootStage(), "超级用户ADMIN不能删除。");
                 users.remove(i);
             }
-            if(user.getUserId().equals(GlobalOption.currentUser.getUserId())){
+            if (user.getUserId().equals(GlobalOption.currentUser.getUserId())) {
                 SimpleDialog.showAutoCloseError(app.getRootStage(), "用户不能删除自己。");
                 users.remove(i);
             }
         }
-        if(users.size() == 0) return;
+        if (users.size() == 0) return;
 
-        if(users.size() == 1) {
+        if (users.size() == 1) {
             UserInfo user = users.get(0);
 
             UserService.delete(user.getUserId(), new RestfulResult() {
@@ -387,14 +383,13 @@ public class UserListController implements Initializable {
 
                 }
             });
-        }
-        else{
+        } else {
             String ids = getUserIds(users);
             UserService.deleteByIds(ids, new RestfulResult() {
                 @Override
                 public void doResult(RfResultEvent event) {
                     onRefresh();
-                    SimpleDialog.showMessageDialog(app.getRootStage(), "删除成功。","");
+                    SimpleDialog.showMessageDialog(app.getRootStage(), "删除成功。", "");
                 }
 
                 @Override
@@ -405,36 +400,39 @@ public class UserListController implements Initializable {
         }
     }
 
-    private String getUserIds(List<UserInfo> users){
+    private String getUserIds(List<UserInfo> users) {
         String ids = "";
-        for(int i=0; i<users.size(); i++){
+        for (int i = 0; i < users.size(); i++) {
             UserInfo user = users.get(i);
             ids += "," + user.getUserId();
         }
-        if(ids.length()>0){
+        if (ids.length() > 0) {
             ids = ids.substring(1);
         }
         return ids;
     }
 
     @FXML
-    private void onSelectAllAction(ActionEvent event){
+    private void onSelectAllAction(ActionEvent event) {
         ObservableList<UserInfo> users = getUserLists();
-        if(chkSelectAll.isSelected()){
-           selectAll(users, true);
-        }
-        else{
+        if (chkSelectAll.isSelected()) {
+            selectAll(users, true);
+            updateRecord.setDisable(true);
+            setPassword.setDisable(true);
+        } else {
             selectAll(users, false);
+            updateRecord.setDisable(false);
+            setPassword.setDisable(false);
         }
     }
 
-    private List<UserInfo> getSelectedUsers(){
+    private List<UserInfo> getSelectedUsers() {
         List<UserInfo> selectedUsers = new ArrayList<>();
 
         ObservableList<UserInfo> users = getUserLists();
-        for(int i=0; i<users.size(); i++){
+        for (int i = 0; i < users.size(); i++) {
             UserInfo user = users.get(i);
-            if(user.isChecked()){
+            if (user.isChecked()) {
                 selectedUsers.add(user);
             }
         }
@@ -442,28 +440,26 @@ public class UserListController implements Initializable {
         return selectedUsers;
     }
 
-    private ObservableList<UserInfo> getUserLists(){
+    private ObservableList<UserInfo> getUserLists() {
         Tab selectedTab = userContainer.getSelectionModel().getSelectedItem();
 
-        if(selectedTab == ownerTab){
+        if (selectedTab == ownerTab) {
             return ownerList;
-        }
-        else if(selectedTab == deliveryTab){
+        } else if (selectedTab == deliveryTab) {
             return deliveryList;
-        }
-        else{
+        } else {
             return managerList;
         }
     }
 
-    private void selectAll(ObservableList<UserInfo> users, Boolean checked){
-        for(int i=0; i<users.size(); i++){
-            UserInfo user = (UserInfo)users.get(i);
-            user.setChecked( checked);
+    private void selectAll(ObservableList<UserInfo> users, Boolean checked) {
+        for (int i = 0; i < users.size(); i++) {
+            UserInfo user = (UserInfo) users.get(i);
+            user.setChecked(checked);
         }
     }
 
-    private UserEditController loadUserEdit(){
+    private UserEditController loadUserEdit() {
         try {
             FXMLLoader fxmlLoader;
             fxmlLoader = new FXMLLoader(getClass().getResource("UserEdit.fxml"));
@@ -474,19 +470,18 @@ public class UserListController implements Initializable {
             controller.setApp(app);
             return controller;
 
-        }
-        catch (Exception e){
-            SimpleDialog.showMessageDialog(getApp().getRootStage(),e.getMessage(),"错误");
+        } catch (Exception e) {
+            SimpleDialog.showMessageDialog(getApp().getRootStage(), e.getMessage(), "错误");
             return null;
         }
     }
 
-    public void selectTab(int index){
+    public void selectTab(int index) {
         userContainer.getSelectionModel().select(index);
     }
 
     @FXML
-    private void onSettingPasswordAction(ActionEvent event){
+    private void onSettingPasswordAction(ActionEvent event) {
         ChangePasswordController controller = app.goChangePassword();
         controller.setUser(getSelectedUserInfo());
         GlobalOption.parents.push("userList");
@@ -494,27 +489,27 @@ public class UserListController implements Initializable {
     }
 
     @FXML
-    private void onImportFile(ActionEvent event){
+    private void onImportFile(ActionEvent event) {
         File file = openFileChoose.showOpenDialog(app.getRootStage());
-        if(file ==  null) return;
+        if (file == null) return;
 
         ImportUserTask task = new ImportUserTask(file, getUserType());
         task.valueProperty().addListener(new ChangeListener<Integer>() {
             @Override
             public void changed(ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) {
-                if(newValue == -1){
+                if (newValue == -1) {
                     onRefresh();
                 }
             }
         });
-        SimpleDialog.showDialog(app.getRootStage(), task, "","");
+        SimpleDialog.showDialog(app.getRootStage(), task, "", "");
 
     }
 
     @FXML
-    private void onExportFile(ActionEvent event){
+    private void onExportFile(ActionEvent event) {
         File file = saveFileChoose.showSaveDialog(app.getRootStage());
-        if(file == null) return;
+        if (file == null) return;
 
         ExportUserTask task = new ExportUserTask(file, getUserType());
         SimpleDialog.showDialog(app.getRootStage(), task, "", "");

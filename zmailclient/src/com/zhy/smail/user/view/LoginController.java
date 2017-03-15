@@ -122,7 +122,7 @@ public class LoginController implements Initializable{
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
                 if(newValue){
                     if(loginType == 1){
-
+                        Speaker.inputManagerUser();
                     }
                     else if(loginType == 2){
                         Speaker.inputUserName();
@@ -176,6 +176,7 @@ public class LoginController implements Initializable{
             @Override
             public void doResult(RfResultEvent event) {
                 if (event.getResult() != 0) {
+                    Speaker.userOrPasswordError();
                     SimpleDialog.showMessageDialog(app.getRootStage(), "帐号或密码错误，请重新输入", "错误");
                     txtUserName.requestFocus();
                     return;
