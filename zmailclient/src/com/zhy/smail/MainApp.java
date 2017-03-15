@@ -348,7 +348,7 @@ public class MainApp extends Application {
             fxmlLoader = new FXMLLoader(getClass().getResource("delivery/view/commonDelivery.fxml"));
             Parent root = fxmlLoader.load();
             getRootStage().getScene().setRoot(root);
-            DeliveryController controller = fxmlLoader.getController();
+            CommonDeliveryController controller = fxmlLoader.getController();
             controller.setApp(this);
 
         } catch (Exception e) {
