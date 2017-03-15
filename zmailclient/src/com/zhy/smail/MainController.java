@@ -71,7 +71,9 @@ public class MainController implements Initializable{
 
 
         timer = new Timer();
-        perTotal = GlobalOption.remainTime.getIntValue();
+        if(GlobalOption.remainTime!=null && GlobalOption.remainTime.getIntValue() != null) {
+            perTotal = GlobalOption.remainTime.getIntValue();
+        }
         if(perTotal == 0) return;
         if(LocalConfig.getInstance().getVideoFile() == null &&
                 LocalConfig.getInstance().getVideoFile().length() ==0) return;
