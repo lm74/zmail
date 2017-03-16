@@ -1,13 +1,11 @@
 package com.zhy.smail.user.view;
 
-import com.sun.corba.se.spi.orbutil.fsm.Action;
 import com.zhy.smail.MainApp;
 import com.zhy.smail.component.SimpleDialog;
 import com.zhy.smail.config.GlobalOption;
 import com.zhy.smail.restful.RestfulResult;
 import com.zhy.smail.restful.RfFaultEvent;
 import com.zhy.smail.restful.RfResultEvent;
-import com.zhy.smail.setting.service.OptionService;
 import com.zhy.smail.task.ExportUserTask;
 import com.zhy.smail.task.ImportUserTask;
 import com.zhy.smail.user.entity.UserInfo;
@@ -27,7 +25,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
-import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
 
 import java.io.*;
@@ -67,7 +64,6 @@ public class UserListController implements Initializable {
     private Tab deliveryTab;
     @FXML
     private Tab managerTab;
-
     @FXML
     private TableView<UserInfo> ownerTable;
     private ObservableList<UserInfo> ownerList;
@@ -167,7 +163,6 @@ public class UserListController implements Initializable {
     private Button updateRecord;
     @FXML
     private Button setPassword;
-
     private FileChooser openFileChoose;
     private FileChooser saveFileChoose;
 
@@ -179,8 +174,9 @@ public class UserListController implements Initializable {
             @Override
             public void doResult(RfResultEvent event) {
                 List<UserInfo> users = (List<UserInfo>) event.getData();
-                if (users == null) return;
-
+                if (users == null) {
+                    return;
+                }
                 Integer currentUserType = GlobalOption.currentUser.getUserType();
                 for (int i = 0; i < users.size(); i++) {
                     UserInfo user = users.get(i);
@@ -203,7 +199,6 @@ public class UserListController implements Initializable {
         });
     }
 
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initFileChooser();
@@ -213,8 +208,6 @@ public class UserListController implements Initializable {
         createManagerTable();
         createDeliveryTable();
         onRefresh();
-
-
     }
 
     private void initFileChooser() {
@@ -222,7 +215,6 @@ public class UserListController implements Initializable {
         openFileChoose.setTitle("选择输入文件(XLS)");
         openFileChoose.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Excel文件", "*.xls"));
-
         saveFileChoose = new FileChooser();
         saveFileChoose.setTitle("输入输出文件名(XLS)");
         saveFileChoose.getExtensionFilters().addAll(
@@ -248,9 +240,7 @@ public class UserListController implements Initializable {
         tcCardNo9.setCellValueFactory(new PropertyValueFactory<UserInfo, String>("cardNo9"));
         tcCardNo10.setCellValueFactory(new PropertyValueFactory<UserInfo, String>("cardNo10"));
         ownerList = FXCollections.observableArrayList();
-
         ownerTable.setItems(ownerList);
-
     }
 
     private void createManagerTable() {
@@ -301,7 +291,6 @@ public class UserListController implements Initializable {
         Tab selectedTab = userContainer.getSelectionModel().getSelectedItem();
         UserEditController controller = loadUserEdit();
         controller.setUserClass(userContainer.getSelectionModel().getSelectedIndex());
-
     }
 
     @FXML
@@ -343,18 +332,19 @@ public class UserListController implements Initializable {
 
     @FXML
     private void onDeleteAction(ActionEvent event) {
+        UserInfo userInfo = getSelectedUserInfo();
         List<UserInfo> users = getSelectedUsers();
-//        if(users.size() == 0){
-//            users.add(getSelectedUserInfo());
-//        }
-        if (users.size() == 0) {
+        if (userInfo == null) {
             SimpleDialog.showMessageDialog(app.getRootStage(), "请选择需要删除的用户.", "删除出错");
             return;
+        }else {
+            users.add(userInfo);
         }
         String message = "你确认要删除你选择的" + users.size() + "个用户吗？";
         SimpleDialog.Response response = SimpleDialog.showConfirmDialog(app.getRootStage(), message, "确认");
-        if (response == SimpleDialog.Response.NO) return;
-
+        if (response == SimpleDialog.Response.NO) {
+            return;
+        }
         for (int i = users.size() - 1; i >= 0; i--) {
             UserInfo user = users.get(i);
             if (user.getUserType() == UserInfo.FACTORY_USER && user.getUserName().equals("ADMIN")) {
@@ -366,11 +356,11 @@ public class UserListController implements Initializable {
                 users.remove(i);
             }
         }
-        if (users.size() == 0) return;
-
+        if (users.size() == 0) {
+            return;
+        }
         if (users.size() == 1) {
             UserInfo user = users.get(0);
-
             UserService.delete(user.getUserId(), new RestfulResult() {
                 @Override
                 public void doResult(RfResultEvent event) {
@@ -428,7 +418,6 @@ public class UserListController implements Initializable {
 
     private List<UserInfo> getSelectedUsers() {
         List<UserInfo> selectedUsers = new ArrayList<>();
-
         ObservableList<UserInfo> users = getUserLists();
         for (int i = 0; i < users.size(); i++) {
             UserInfo user = users.get(i);
@@ -436,13 +425,11 @@ public class UserListController implements Initializable {
                 selectedUsers.add(user);
             }
         }
-
         return selectedUsers;
     }
 
     private ObservableList<UserInfo> getUserLists() {
         Tab selectedTab = userContainer.getSelectionModel().getSelectedItem();
-
         if (selectedTab == ownerTab) {
             return ownerList;
         } else if (selectedTab == deliveryTab) {
@@ -465,11 +452,9 @@ public class UserListController implements Initializable {
             fxmlLoader = new FXMLLoader(getClass().getResource("UserEdit.fxml"));
             Parent root = fxmlLoader.load();
             UserEditController controller = (UserEditController) fxmlLoader.getController();
-
             getApp().getRootStage().getScene().setRoot(root);
             controller.setApp(app);
             return controller;
-
         } catch (Exception e) {
             SimpleDialog.showMessageDialog(getApp().getRootStage(), e.getMessage(), "错误");
             return null;
@@ -482,9 +467,9 @@ public class UserListController implements Initializable {
 
     @FXML
     private void onSettingPasswordAction(ActionEvent event) {
-        List<UserInfo> selectedUsers = new ArrayList<>();
-        if ((selectedUsers == null) || (selectedUsers.size() <= 0)) {
-            SimpleDialog.showMessageDialog(app.getRootStage(), "请选择一条记录！.", "");
+        UserInfo user = getSelectedUserInfo();
+        if (user == null) {
+            SimpleDialog.showMessageDialog(app.getRootStage(), "请选择一条需要设置密码的用户！", "");
             return;
         }
         ChangePasswordController controller = app.goChangePassword();
@@ -496,8 +481,9 @@ public class UserListController implements Initializable {
     @FXML
     private void onImportFile(ActionEvent event) {
         File file = openFileChoose.showOpenDialog(app.getRootStage());
-        if (file == null) return;
-
+        if (file == null) {
+            return;
+        }
         ImportUserTask task = new ImportUserTask(file, getUserType());
         task.valueProperty().addListener(new ChangeListener<Integer>() {
             @Override
@@ -508,17 +494,15 @@ public class UserListController implements Initializable {
             }
         });
         SimpleDialog.showDialog(app.getRootStage(), task, "", "");
-
     }
 
     @FXML
     private void onExportFile(ActionEvent event) {
         File file = saveFileChoose.showSaveDialog(app.getRootStage());
-        if (file == null) return;
-
+        if (file == null) {
+            return;
+        }
         ExportUserTask task = new ExportUserTask(file, getUserType());
         SimpleDialog.showDialog(app.getRootStage(), task, "", "");
     }
-
-
 }

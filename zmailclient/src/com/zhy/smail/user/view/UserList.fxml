@@ -97,7 +97,6 @@
                                 <TableColumn fx:id="tcmCardNo10" prefWidth="300.0" text="卡号10"/>
                             </columns>
                         </TableView>
-
                     </content>
                 </Tab>
             </tabs>

@@ -308,7 +308,6 @@ public class MainApp extends Application {
             ManagerController controller = fxmlLoader.getController();
             getRootStage().getScene().setRoot(root);
             controller.setApp(this);
-
         } catch (Exception e) {
             SimpleDialog.showMessageDialog(getRootStage(), e.getMessage(), "错误");
         }
@@ -322,7 +321,6 @@ public class MainApp extends Application {
             getRootStage().getScene().setRoot(root);
             PickupController controller = fxmlLoader.getController();
             controller.setApp(this);
-
         } catch (Exception e) {
             SimpleDialog.showMessageDialog(this.getRootStage(), e.getMessage(), "错误");
         }

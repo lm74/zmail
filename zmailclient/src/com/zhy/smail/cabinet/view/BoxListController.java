@@ -21,7 +21,6 @@ import com.zhy.smail.task.OpenBoxTask;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -43,11 +42,10 @@ import java.util.ResourceBundle;
  */
 public class BoxListController extends RootController implements Initializable {
     private CabinetInfo currentCabinet;
-    private  int currentCabinetIndex=0;
+    private int currentCabinetIndex = 0;
     private List<CabinetInfo> cabinets;
     private List<BoxInfo> boxes;
     private boolean checked;
-
     @FXML
     private CheckBox chkOpenBoxTest;
     @FXML
@@ -56,49 +54,41 @@ public class BoxListController extends RootController implements Initializable {
     private Button clearAllButton;
     @FXML
     private Button refreshButton;
-
     @FXML
     private Label lblTimer;
-
     @FXML
     private FlowPane boxesFlow;
     @FXML
     private ChoiceBox<String> cabinetList;
     private Map<Integer, Button> buttonMap = new HashMap<>();
 
-
-
     public void setApp(MainApp app) {
         this.app = app;
-
         app.createTimeout(lblTimer);
     }
 
-    public void createCabinetList(Integer selectedCabinetId){
+    public void createCabinetList(Integer selectedCabinetId) {
         CabinetService.listAll(new RestfulResult() {
             @Override
             public void doResult(RfResultEvent event) {
-                if(event.getResult() != RfResultEvent.OK) return;
-
+                if (event.getResult() != RfResultEvent.OK) {
+                    return;
+                }
                 cabinetList.getItems().removeAll();
-                cabinets = (List<CabinetInfo>)event.getData();
-
-                for(int i=0; i<cabinets.size(); i++){
-                    CabinetInfo cabinetInfo = (CabinetInfo)cabinets.get(i);
+                cabinets = (List<CabinetInfo>) event.getData();
+                for (int i = 0; i < cabinets.size(); i++) {
+                    CabinetInfo cabinetInfo = (CabinetInfo) cabinets.get(i);
                     if (cabinetInfo.getCabinetNo().equals(LocalConfig.getInstance().getLocalCabinet())) {
                         cabinetList.getItems().add("本柜");
-                    }
-                    else{
+                    } else {
                         cabinetList.getItems().add(cabinetInfo.getCabinetNo());
                     }
-
-                    if(selectedCabinetId>0){
-                        if(cabinetInfo.getCabinetId().equals(selectedCabinetId)){
+                    if (selectedCabinetId > 0) {
+                        if (cabinetInfo.getCabinetId().equals(selectedCabinetId)) {
                             currentCabinet = cabinetInfo;
                             currentCabinetIndex = i;
                         }
-                    }
-                    else {
+                    } else {
                         if (cabinetInfo.getCabinetNo().equals(LocalConfig.getInstance().getLocalCabinet())) {
                             currentCabinet = cabinetInfo;
                             currentCabinetIndex = i;
@@ -111,7 +101,6 @@ public class BoxListController extends RootController implements Initializable {
                     public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                         currentCabinetIndex = newValue.intValue();
                         currentCabinet = cabinets.get(currentCabinetIndex);
-
                         onRefreshBoxes();
                     }
                 });
@@ -126,8 +115,7 @@ public class BoxListController extends RootController implements Initializable {
     }
 
 
-
-    public void initialize(URL location, ResourceBundle resources){
+    public void initialize(URL location, ResourceBundle resources) {
         boxesFlow.getChildren().remove(0, boxesFlow.getChildren().size());
         boxesFlow.setHgap(10);
         boxesFlow.setVgap(10);
@@ -135,53 +123,54 @@ public class BoxListController extends RootController implements Initializable {
     }
 
     @FXML
-    private  void onRefreshAction(ActionEvent event){
+    private void onRefreshAction(ActionEvent event) {
         checked = false;
         onRefreshBoxes();
     }
 
-    private void setButtonVisible(boolean b){
+    private void setButtonVisible(boolean b) {
         openAllButton.setVisible(b);
         clearAllButton.setVisible(b);
         chkOpenBoxTest.setVisible(b);
         refreshButton.setVisible(b);
     }
 
-    private void onRefreshBoxes(){
+    private void onRefreshBoxes() {
         currentCabinet = cabinets.get(currentCabinetIndex);
         BoxService.listByCabinetId(currentCabinet.getCabinetId(), new RestfulResult() {
             @Override
             public void doResult(RfResultEvent event) {
-                if(event.getResult() != RfResultEvent.OK) return;
-
-                boxes = (List<BoxInfo>)event.getData();
+                if (event.getResult() != RfResultEvent.OK) {
+                    return;
+                }
+                boxes = (List<BoxInfo>) event.getData();
                 CabinetEntry cabinetEntry = new CabinetEntry();
                 buttonMap.clear();
                 boxesFlow.getChildren().remove(0, boxesFlow.getChildren().size());
-                for(int i=0; i<boxes.size(); i++){
+                for (int i = 0; i < boxes.size(); i++) {
                     BoxInfo boxInfo = boxes.get(i);
                     Button button = createButton(boxInfo);
                     buttonMap.put(boxInfo.getBoxId(), button);
-
                     cabinetEntry.addBox(boxInfo);
                 }
-
-                if((currentCabinet.getCabinetId().equals( GlobalOption.currentCabinet.getCabinetId())) ){
+                if ((currentCabinet.getCabinetId().equals(GlobalOption.currentCabinet.getCabinetId()))) {
                     setButtonVisible(true);
-                    if(!checked) {
+                    if (!checked) {
                         checked = true;
                         GetCabinetStatus task = new GetCabinetStatus(cabinetEntry);
                         task.valueProperty().addListener(new ChangeListener<Integer>() {
                             @Override
                             public void changed(ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) {
-                                if (newValue != 0) return;
-
+                                if (newValue != 0) {
+                                    return;
+                                }
                                 boolean changed = false;
                                 for (int i = 0; i < boxes.size(); i++) {
                                     BoxInfo boxInfo = boxes.get(i);
                                     BoxEntry boxEntry = task.getCabinet().getBoxEntry(boxInfo.getControlCardId(), boxInfo.getControlSequence());
-                                    if (boxEntry == null) continue;
-
+                                    if (boxEntry == null) {
+                                        continue;
+                                    }
                                     if (boxInfo.isOpened() && boxEntry.getStatus() == 0) {
                                         boxInfo.setOpened(false);
                                         saveBox(boxInfo);
@@ -194,42 +183,34 @@ public class BoxListController extends RootController implements Initializable {
                                 }
                                 onRefreshBoxes();
                             }
-
                         });
                         SimpleDialog.showDialog(app.getRootStage(), task, "", "");
                     }
-                }
-                else{
+                } else {
                     setButtonVisible(false);
                 }
-
             }
 
             private Button createButton(BoxInfo boxInfo) {
                 Button button = boxInfo.createButton(false);
                 boxesFlow.getChildren().add(button);
-
-                button.addEventHandler(ActionEvent.ACTION, (ActionEvent actionEvent)-> {
-                    if(chkOpenBoxTest.isSelected()){
+                button.addEventHandler(ActionEvent.ACTION, (ActionEvent actionEvent) -> {
+                    if (chkOpenBoxTest.isSelected()) {
                         onOpenBoxAction(boxInfo);
-                    }
-                    else {
+                    } else {
                         try {
                             FXMLLoader fxmlLoader;
                             fxmlLoader = new FXMLLoader(getClass().getResource("BoxEdit.fxml"));
                             Parent root = fxmlLoader.load();
                             BoxEditController controller = (BoxEditController) fxmlLoader.getController();
-
                             getApp().getRootStage().getScene().setRoot(root);
                             controller.setBoxInfo(boxInfo);
                             controller.setApp(app);
-
                         } catch (Exception e) {
                             SimpleDialog.showMessageDialog(getApp().getRootStage(), e.getMessage(), "错误");
                         }
                     }
                 });
-
                 return button;
             }
 
@@ -241,13 +222,12 @@ public class BoxListController extends RootController implements Initializable {
     }
 
 
-
     @FXML
-    private void onBackAction(ActionEvent event){
+    private void onBackAction(ActionEvent event) {
         app.goManager();
     }
 
-    private void saveBox(BoxInfo boxInfo){
+    private void saveBox(BoxInfo boxInfo) {
         BoxService.save(boxInfo, new RestfulResult() {
             @Override
             public void doResult(RfResultEvent event) {
@@ -261,14 +241,13 @@ public class BoxListController extends RootController implements Initializable {
         });
     }
 
-    private void onOpenBoxAction(BoxInfo boxInfo){
-        OpenBoxTask task = new OpenBoxTask(boxInfo, "正在打开箱门("+boxInfo.getSequence()+")...");
+    private void onOpenBoxAction(BoxInfo boxInfo) {
+        OpenBoxTask task = new OpenBoxTask(boxInfo, "正在打开箱门(" + boxInfo.getSequence() + ")...");
         task.valueProperty().addListener(new ChangeListener<Integer>() {
             @Override
             public void changed(ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) {
-                if(newValue!=null && newValue == 0){
+                if (newValue != null && newValue == 0) {
                     saveBox(boxInfo);
-
                     Button button = buttonMap.get(boxInfo.getBoxId());
                     button.setText("开门");
                 }
@@ -278,78 +257,73 @@ public class BoxListController extends RootController implements Initializable {
     }
 
 
-
     @FXML
-    private void onOpenAllBox(ActionEvent event){
-        String message = "确认要全开箱门吗？";
-        SimpleDialog.Response  response = SimpleDialog.showConfirmDialog(app.getRootStage(),message ,"确认");
-        if(response == SimpleDialog.Response.NO) return;
-
+    private void onOpenAllBox(ActionEvent event) {
+        String message = "您确定要清空所有箱格吗？  开箱后箱内如有物品，请取出物品！";
+        SimpleDialog.Response response = SimpleDialog.showConfirmDialog(app.getRootStage(), message, "确认");
+        if (response == SimpleDialog.Response.NO) {
+            return;
+        }
         CabinetEntry cabinetEntry = getCabinetEntry();
-
         OpenAllBoxTask task = new OpenAllBoxTask(cabinetEntry);
         task.valueProperty().addListener(new ChangeListener<Integer>() {
             @Override
             public void changed(ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) {
-                if(newValue != 0) return;
-
-
-                for(int i=0; i<boxes.size(); i++){
+                if (newValue != 0) {
+                    return;
+                }
+                for (int i = 0; i < boxes.size(); i++) {
                     BoxInfo boxInfo = boxes.get(i);
-                        boxInfo.setOpened(true);
-                        saveBox(boxInfo);
-
+                    boxInfo.setOpened(true);
+                    saveBox(boxInfo);
                 }
                 onRefreshBoxes();
             }
-
         });
         SimpleDialog.showDialog(app.getRootStage(), task, "", "");
     }
 
     private CabinetEntry getCabinetEntry() {
         CabinetEntry cabinetEntry = new CabinetEntry();
-        for(int i=0; i<boxes.size(); i++){
+        for (int i = 0; i < boxes.size(); i++) {
             BoxInfo boxInfo = boxes.get(i);
-            if(boxInfo.isLocked()) continue;
-
+            if (boxInfo.isLocked()) {
+                continue;
+            }
             cabinetEntry.addBox(boxInfo);
         }
         return cabinetEntry;
     }
 
     @FXML
-    private void onClearAllBox(ActionEvent event){
+    private void onClearAllBox(ActionEvent event) {
         String message = "确认要全清箱门吗？";
-        SimpleDialog.Response  response = SimpleDialog.showConfirmDialog(app.getRootStage(),message ,"确认");
-        if(response == SimpleDialog.Response.NO) return;
-
+        SimpleDialog.Response response = SimpleDialog.showConfirmDialog(app.getRootStage(), message, "确认");
+        if (response == SimpleDialog.Response.NO) {
+            return;
+        }
         CabinetEntry cabinetEntry = getCabinetEntry();
-
         OpenAllBoxTask task = new OpenAllBoxTask(cabinetEntry);
         task.valueProperty().addListener(new ChangeListener<Integer>() {
             @Override
             public void changed(ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) {
-                if(newValue != 0) return;
-
-
-                for(int i=0; i<boxes.size(); i++){
+                if (newValue != 0) {
+                    return;
+                }
+                for (int i = 0; i < boxes.size(); i++) {
                     BoxInfo boxInfo = boxes.get(i);
                     boxInfo.setOpened(true);
                     boxInfo.setUsed(false);
                     saveBox(boxInfo);
-
                 }
                 onRefreshBoxes();
             }
-
         });
         SimpleDialog.showDialog(app.getRootStage(), task, "", "");
     }
 
     @FXML
-    private void onOpenBoxTestAction(ActionEvent event){
+    private void onOpenBoxTestAction(ActionEvent event) {
 
     }
-
 }

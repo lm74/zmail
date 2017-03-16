@@ -18,14 +18,13 @@ import javafx.scene.control.ToolBar;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
  * Created by wenliz on 2017/2/18.
  */
-public class ChangePasswordController  implements Initializable {
+public class ChangePasswordController implements Initializable {
     private MainApp app;
     @FXML
     private Label lblTimer;
@@ -53,10 +52,8 @@ public class ChangePasswordController  implements Initializable {
 
     public void setUserClass(Integer userClass) {
         this.userClass = userClass;
-
         txtOldPassword.setDisable(true);
         txtOldPassword.setText(user.getPassword());
-
     }
 
     public Integer getParentType() {
@@ -65,7 +62,7 @@ public class ChangePasswordController  implements Initializable {
 
     public void setParentType(Integer parentType) {
         this.parentType = parentType;
-        if(parentType == 0 ){
+        if (parentType == 0) {
             txtOldPassword.setDisable(true);
             txtOldPassword.setText(user.getPassword());
         }
@@ -97,61 +94,57 @@ public class ChangePasswordController  implements Initializable {
     }
 
     @FXML
-    private void onBackAction(ActionEvent event){
+    private void onBackAction(ActionEvent event) {
         String parent = GlobalOption.parents.pop();
-        if(parent == null || parent.equals("userList")){
-            UserListController controller =app.goUserList();
+        if (parent == null || parent.equals("userList")) {
+            UserListController controller = app.goUserList();
             controller.selectTab(userClass);
-        }
-        else if(parent.equals("userView")){
+        } else if (parent.equals("userView")) {
             app.goUserView();
         }
     }
 
     @FXML
-    private void onSave(ActionEvent event){
-        if(txtOldPassword.getText()==null || txtOldPassword.getText().length() == 0){
-            SimpleDialog.showMessageDialog(app.getRootStage(), "旧密码不能为空.","错误");
+    private void onSave(ActionEvent event) {
+        if (txtOldPassword.getText() == null || txtOldPassword.getText().length() == 0) {
+            SimpleDialog.showMessageDialog(app.getRootStage(), "旧密码不能为空.", "错误");
             txtOldPassword.requestFocus();
             return;
         }
-        if(txtNewPassword.getText().length() == 0){
-            SimpleDialog.showMessageDialog(app.getRootStage(), "新密码不能为空","错误");
+        if (txtNewPassword.getText().length() == 0) {
+            SimpleDialog.showMessageDialog(app.getRootStage(), "新密码不能为空", "错误");
             txtNewPassword.requestFocus();
             return;
         }
-        if(txtConfigPassword.getText().length() == 0){
-            SimpleDialog.showMessageDialog(app.getRootStage(), "确认密码不能为空","错误");
+        if (txtConfigPassword.getText().length() == 0) {
+            SimpleDialog.showMessageDialog(app.getRootStage(), "确认密码不能为空", "错误");
             txtConfigPassword.requestFocus();
             return;
         }
-        if(!txtNewPassword.getText().equals(txtConfigPassword.getText())){
-            SimpleDialog.showMessageDialog(app.getRootStage(), "新密码和确认密码不一不致.","错误");
+        if (!txtNewPassword.getText().equals(txtConfigPassword.getText())) {
+            SimpleDialog.showMessageDialog(app.getRootStage(), "新密码和确认密码不一不致.", "错误");
             txtNewPassword.requestFocus();
             return;
         }
-        String oldPassword="";
-        if(txtOldPassword.isDisable()){
+        String oldPassword = "";
+        if (txtOldPassword.isDisable()) {
             oldPassword = user.getPassword();
-        }
-        else {
+        } else {
             oldPassword = KeySecurity.encrypt(txtOldPassword.getText());
         }
         String newPasword = KeySecurity.encrypt(txtNewPassword.getText());
         UserService.changePassword(user.getUserId(), oldPassword, newPasword, new RestfulResult() {
             @Override
             public void doResult(RfResultEvent event) {
-                if(event.getResult() == 0){
+                if (event.getResult() == 0) {
                     SimpleDialog.showAutoCloseInfo(app.getRootStage(), "密码修改成功。");
                     onBackAction(null);
-                }
-                else if(event.getResult() == -2){
-                    SimpleDialog.showMessageDialog(app.getRootStage(), "旧密码不正确.","错误");
+                } else if (event.getResult() == -2) {
+                    SimpleDialog.showMessageDialog(app.getRootStage(), "旧密码不正确.", "错误");
                     txtOldPassword.requestFocus();
                     return;
-                }
-                else{
-                    SimpleDialog.showMessageDialog(app.getRootStage(), "用户信息不全，修改失败.","错误");
+                } else {
+                    SimpleDialog.showMessageDialog(app.getRootStage(), "用户信息不全，修改失败.", "错误");
                     txtOldPassword.requestFocus();
                     return;
                 }
