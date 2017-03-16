@@ -25,6 +25,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
+import javafx.scene.paint.Paint;
 
 import java.net.URL;
 import java.util.*;
@@ -110,6 +111,9 @@ public class PickupController  implements Initializable {
                     @Override
                     public void run() {
                         setBoxNumber(finalMailBoxNos, finalPacketBoxNos);
+                        if(mailLogs.size() == 0 && packetLogs.size()==0){
+                            Speaker.noPacket();
+                        }
                     }
                 });
             }
@@ -122,7 +126,7 @@ public class PickupController  implements Initializable {
         DeliveryLogService.listAllByOwner(GlobalOption.currentUser.getUserId(), new RestfulResult() {
             @Override
             public void doResult(RfResultEvent event) {
-                if(event.getResult() == RfResultEvent.OK && event.getData() != null) return;
+                if(event.getResult() != RfResultEvent.OK && event.getData() == null) return;//修改判断，显示其他柜信件
 
                 List<CabinetNode> nodes = (List<CabinetNode>) event.getData();
                 String nodeMessage = "";
@@ -135,7 +139,7 @@ public class PickupController  implements Initializable {
                 }
                 if(!nodeMessage.equals("")) {
                     nodeMessage = nodeMessage.substring(1);
-                    lblNotify.setText("您还有信包在如下柜中：" + nodeMessage);
+                    lblNotify.setText("您还有信包在" + nodeMessage+"号柜中，请前往所在柜领取！");
                 }
             }
 
@@ -154,7 +158,7 @@ public class PickupController  implements Initializable {
         }
 
         if(mailLogs.size() ==0){
-            lblMailBoxNumber.setText("您有0信件。");
+            lblMailBoxNumber.setText("您有0个信件。");
             openMailDoorButton.setDisable(true);
 
 
@@ -165,7 +169,7 @@ public class PickupController  implements Initializable {
         }
 
         if(packetLogs.size() == 0){
-            lblPacketBoxNumber.setText("您有0包裹。");
+            lblPacketBoxNumber.setText("您有0个包裹。");
             openPacketDoorButton.setDisable(true);
 
         }

@@ -482,6 +482,11 @@ public class UserListController implements Initializable {
 
     @FXML
     private void onSettingPasswordAction(ActionEvent event) {
+        List<UserInfo> userInfoList = getSelectedUsers();
+        if (userInfoList == null || userInfoList.size() <= 0) {
+            SimpleDialog.showMessageDialog(app.getRootStage(), "请选择一条记录！", "");
+            return;
+        }
         ChangePasswordController controller = app.goChangePassword();
         controller.setUser(getSelectedUserInfo());
         GlobalOption.parents.push("userList");

@@ -98,24 +98,18 @@ public class MainApp extends Application {
         rootScene.getStylesheets().add("style.css");
         primaryStage.setScene(rootScene);
         rootStage = primaryStage;
-
         primaryStage.setMaximized(true);
         primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.show();
         rootScene.getWindow().centerOnScreen();
-
         initVK(rootStage);
-
         openCom();
         //initUDP();
         testConnection();
         Speaker.welcome();
-
-
         rootStage.addEventFilter(KeyEvent.KEY_PRESSED, keyEventEventHandler);
         rootStage.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEventEventHandler);
         rootStage.addEventFilter(MouseEvent.MOUSE_MOVED, mouseEventEventHandler);
-
         checkRegisterNo();
     }
 
@@ -124,10 +118,7 @@ public class MainApp extends Application {
         if (registerNo.equals(LocalConfig.getInstance().getRegisterNo())) {
             return;
         }
-
         goRegister();
-
-
     }
 
     private void initVK(Stage primaryStage) {
@@ -136,13 +127,10 @@ public class MainApp extends Application {
         double height = rootScene.getWindow().getHeight();
         double width = rootScene.getWindow().getWidth();
         double scale = Math.min(height / 550, width / 650);
-
         KeyBoardPopupBuilder builder = KeyBoardPopupBuilder.create();
         builder.initScale(scale);
         builder.initLocale(Locale.CHINESE);
         KeyBoardPopup popup = builder.build();
-
-
         popup.addDoubleClickEventFilter(primaryStage);
         popup.addFocusListener(rootScene);
         popup.addGlobalFocusListener();
@@ -181,7 +169,6 @@ public class MainApp extends Application {
                     }
                 });
                 return resultValue;
-
             }
         };
         SimpleDialog.showDialog(rootStage, testTask, "正在连接到服务器...", "连接");
@@ -199,7 +186,6 @@ public class MainApp extends Application {
                             mainController.setAppTitle(option.getCharValue());
                         }
                     });
-
                 }
             }
 
@@ -345,12 +331,12 @@ public class MainApp extends Application {
     public void goDelivery() {
         try {
             FXMLLoader fxmlLoader;
-            fxmlLoader = new FXMLLoader(getClass().getResource("delivery/view/commonDelivery.fxml"));
+            fxmlLoader = new FXMLLoader(getClass().getResource("delivery/view/Delivery.fxml"));
             Parent root = fxmlLoader.load();
             getRootStage().getScene().setRoot(root);
-            CommonDeliveryController controller = fxmlLoader.getController();
+            // Modified By Luopeng Mar 15 2017
+            DeliveryController controller = fxmlLoader.getController();
             controller.setApp(this);
-
         } catch (Exception e) {
             SimpleDialog.showMessageDialog(this.getRootStage(), e.getMessage(), "错误");
         }
@@ -377,7 +363,6 @@ public class MainApp extends Application {
             fxmlLoader = new FXMLLoader(getClass().getResource("cabinet/view/CabinetList.fxml"));
             Parent root = fxmlLoader.load();
             CabinetListController controller = (CabinetListController) fxmlLoader.getController();
-
             getRootStage().getScene().setRoot(root);
             controller.setApp(this);
         } catch (Exception e) {
@@ -392,9 +377,7 @@ public class MainApp extends Application {
     public UserListController goUserList() {
         try {
             FXMLLoader fxmlLoader;
-
             fxmlLoader = new FXMLLoader(getClass().getResource("user/view/UserList.fxml"));
-
             Parent root = fxmlLoader.load();
             UserListController controller = (UserListController) fxmlLoader.getController();
             controller.setApp(this);
@@ -404,7 +387,6 @@ public class MainApp extends Application {
             SimpleDialog.showMessageDialog(getRootStage(), e.getMessage(), "错误");
             return null;
         }
-
     }
 
     public void goHelp() {
@@ -474,9 +456,7 @@ public class MainApp extends Application {
     private RootController loadFxml(String path) {
         try {
             FXMLLoader fxmlLoader;
-
             fxmlLoader = new FXMLLoader(getClass().getResource(path));
-
             Parent root = fxmlLoader.load();
             RootController controller = (RootController) fxmlLoader.getController();
             controller.setApp(this);
@@ -487,7 +467,6 @@ public class MainApp extends Application {
             return null;
         }
     }
-
 
     EventHandler<KeyEvent> keyEventEventHandler = new EventHandler<KeyEvent>() {
         public void handle(final KeyEvent keyEvent) {
@@ -525,7 +504,6 @@ public class MainApp extends Application {
     }
 
     public void stopApplication() {
-
         Platform.exit();
     }
 
@@ -535,7 +513,6 @@ public class MainApp extends Application {
 
             timer = null;
         }
-
         if (responseManager != null) {
             responseManager.setCanceled(true);
             try {
@@ -550,6 +527,5 @@ public class MainApp extends Application {
             }
             SendManager.gateway = null;
         }
-
     }
 }

@@ -308,10 +308,9 @@ public class PutdownController  extends RootController implements Initializable 
     }
 
     @FXML
-    public void onBackAction(ActionEvent event){
+    public void onBackAction(ActionEvent event) {//一律返回邮政投递界面？
         app.goDelivery();
     }
-
     private void saveBox(BoxInfo boxInfo){
         BoxService.save(boxInfo, new RestfulResult() {
             @Override

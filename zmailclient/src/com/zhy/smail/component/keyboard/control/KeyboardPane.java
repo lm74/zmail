@@ -185,14 +185,14 @@ public class KeyboardPane extends Region implements StandardKeyCode, EventHandle
       setScaleY(getScale());
     }
 
-    setOnZoom(e -> {
+    /*setOnZoom(e -> {//双指手动缩放键盘
       double s = getScale() * e.getTotalZoomFactor();
       logger.info("onZoom-->"+s);
       if (s >= getMinScale() && s <= getMaxScale()) {
         setScale(s);
         e.consume();
       }
-    });
+    });*/
 
     setOnScroll(e -> {  //在触屏下此事件引起缩放
       /*double s = getScale() + (e.getDeltaY() > 0.0d ? getScaleOffset() : -getScaleOffset());
