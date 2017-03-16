@@ -86,14 +86,14 @@ public class ConfirmDeliveryController extends RootController implements Initial
         HBox.setHgrow(topRight, Priority.ALWAYS);
     }
 
-    private void openBox(){
+    private void openBox() {
         int[] boxList = new int[]{box.getControlSequence()};
 
         SimpleDialog.showDialog(app.getRootStage(), new Task() {
             @Override
             protected Object call() throws Exception {
-                updateMessage("正在开"+box.getSequence()+"号箱门...");
-                if(!SystemUtil.canUse()){
+                updateMessage("正在开" + box.getSequence() + "号箱门...");
+                if (!SystemUtil.canUse()) {
                     updateMessage("开箱失败，请联系厂家(9999)。");
                     updateValue(-1);
                     return -1;
@@ -106,7 +106,7 @@ public class ConfirmDeliveryController extends RootController implements Initial
 
                     LcResult result = ResponseManager.response.poll(ResponseManager.WAIT_SECONDS, TimeUnit.SECONDS);
                     if (result == null) {
-                        updateMessage("开"+box.getSequence()+"号箱门开启失败，请重试或联系管理员。");
+                        updateMessage("开" + box.getSequence() + "号箱门开启失败，请重试或联系管理员。");
                         updateValue(-1);
                     } else {
                         if (result.getErrorNo() == LcResult.SUCCESS) {
@@ -115,9 +115,9 @@ public class ConfirmDeliveryController extends RootController implements Initial
                                 public void run() {
                                     confirmButton.setDisable(false);
                                     lblConfirmMessage.setVisible(true);
-                                    lblLine1.setText("投递对象:" + user.getBuildingNo()+"栋" + user.getUnitNo()+"单元"+user.getFloorNo()+user.getRoomNo()+"号房");
-                                    lblConfirmMessage.setText(box.getSequence()+"号箱门已开，请放入物品后，点击确认投递。");
-                                    OpeningLogService.save(GlobalOption.currentUser.getUserId(),  box.getBoxId(), "开箱成功", new DefaultRestfulResult());
+                                    lblLine1.setText("投递对象:" + user.getBuildingNo() + "栋" + user.getUnitNo() + "单元" + user.getFloorNo() + user.getRoomNo() + "号房");
+                                    lblConfirmMessage.setText(box.getSequence() + "号箱门已开，请放入物品后，点击确认投递。");
+                                    OpeningLogService.save(GlobalOption.currentUser.getUserId(), box.getBoxId(), "开箱成功", new DefaultRestfulResult());
                                     Speaker.delivery();
                                 }
                             });
@@ -125,63 +125,57 @@ public class ConfirmDeliveryController extends RootController implements Initial
                             updateValue(0);
                             return null;
                         } else {
-                            updateMessage("开"+box.getSequence()+"号箱门开启失败，请重试或联系管理员。");
+                            updateMessage("开" + box.getSequence() + "号箱门开启失败，请重试或联系管理员。");
                             updateValue(-1);
                         }
                     }
                     return null;
-                }
-                catch (InterruptedException e){
+                } catch (InterruptedException e) {
                     updateMessage("设备没有响应，请确认设备是否运行正常.");
-                }
-                catch (IOException e){
+                } catch (IOException e) {
                     updateMessage("发送数据包失败:" + e.getMessage());
-                }
-                catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 updateValue(-1);
-                OpeningLogService.save(GlobalOption.currentUser.getUserId(),  box.getBoxId(), "开箱失败", new DefaultRestfulResult());
+                OpeningLogService.save(GlobalOption.currentUser.getUserId(), box.getBoxId(), "开箱失败", new DefaultRestfulResult());
                 return null;
             }
         }, "正在开箱...", "开箱");
     }
 
     @FXML
-    public void onBackAction(ActionEvent event){
+    public void onBackAction(ActionEvent event) {
         String parent = GlobalOption.parents.pop();
-        if(parent!=null){
-            if(parent.equals("putmail")){
+        if (parent != null) {
+            if (parent.equals("putmail")) {
                 app.goPutmail();
-            }
-            else{
+            } else {
                 app.goPutdown();
             }
         }
     }
 
     @FXML
-    public void onConfirmAction(ActionEvent event){
+    public void onConfirmAction(ActionEvent event) {
 
         String parent = GlobalOption.parents.getFirst();
         Integer deliveryType = 0;
-        if(parent.equals("putdown") || parent.equals("selectRoom")){
+        if (parent.equals("putdown") || parent.equals("selectRoom")) {
             deliveryType = 1;
         }
         Integer deliveryMan = GlobalOption.currentUser.getUserId();
         DeliveryLogService.putdown(deliveryMan, user.getUserId(), box.getBoxId(), deliveryType, new RestfulResult() {
             @Override
             public void doResult(RfResultEvent event) {
-                if(event.getResult() == RfResultEvent.OK){
+                if (event.getResult() == RfResultEvent.OK) {
                     Speaker.deliverySucess();
-                    if(parent.equals("selectRoom")){
+                    if (parent.equals("selectRoom")) {
                         app.goCommonDelivery();
-                    }
-                    else {
+                    } else {
                         app.goDelivery();
                     }
-                }
-                else {
+                } else {
                     Speaker.deliveryFail();
                 }
             }

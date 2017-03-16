@@ -35,7 +35,7 @@ import java.util.ResourceBundle;
 /**
  * Created by Administrator on 2017/3/11.
  */
-public class SelectRoomController  extends RootController implements Initializable {
+public class SelectRoomController extends RootController implements Initializable {
 
     @FXML
     private Label lblTimer;
@@ -46,7 +46,7 @@ public class SelectRoomController  extends RootController implements Initializab
     @FXML
     private TextField txtRoomNo;
     @FXML
-    private  Label lblBoxNo;
+    private Label lblBoxNo;
 
 
     private UserInfo user;
@@ -60,7 +60,6 @@ public class SelectRoomController  extends RootController implements Initializab
         txtRoomNo.setText(user.getUserName());
     }
 
-
     private BoxInfo box;
 
     public BoxInfo getBox() {
@@ -69,71 +68,56 @@ public class SelectRoomController  extends RootController implements Initializab
 
     public void setBox(BoxInfo box) {
         this.box = box;
-
         lblBoxNo.setText(String.valueOf(box.getSequence()));
     }
 
     public void setApp(MainApp app) {
         this.app = app;
         app.createTimeout(lblTimer);
-
-
     }
-
-
 
     public void initialize(URL location, ResourceBundle resources) {
         user = null;
         box = null;
-
         HBox.setHgrow(topLeft, Priority.ALWAYS);
         HBox.setHgrow(topRight, Priority.ALWAYS);
         createUserAutoCombBox(txtRoomNo);
         txtRoomNo.focusedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if(newValue){
+                if (newValue) {
                     Speaker.choseRoomNo();
                 }
             }
         });
-
-
     }
 
 
-
-    protected void  changeUser(UserInfo user){
+    protected void changeUser(UserInfo user) {
         this.user = user;
     }
 
     @FXML
-    public void onOpenAction(ActionEvent event){
-       if(user == null){
-            SimpleDialog.showMessageDialog(app.getRootStage(), "请选择有效的房号或手机号码.","");
+    public void onOpenAction(ActionEvent event) {
+        if (user == null) {
+            SimpleDialog.showMessageDialog(app.getRootStage(), "请选择有效的房号或手机号码.", "");
             return;
         }
-
-
         ConfirmDeliveryController controller = app.goConfirmDelivery();
         controller.setUser(user);
         controller.setBox(box);
-
-
         GlobalOption.parents.push("selectRoom");
-
-
     }
 
     @FXML
-    public void onChoiceUserAction(ActionEvent event){
+    public void onChoiceUserAction(ActionEvent event) {
         GlobalOption.parents.push("selectRoom");
         UserChoiceController controller = app.goUserChoice();
         controller.setBox(box);
     }
 
     @FXML
-    public void onBackAction(ActionEvent event){
+    public void onBackAction(ActionEvent event) {
         app.goCommonDelivery();
     }
 

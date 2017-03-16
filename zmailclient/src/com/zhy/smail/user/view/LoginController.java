@@ -45,7 +45,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class LoginController implements Initializable{
+public class LoginController implements Initializable {
     private Integer loginType;
     private MainApp app;
     private TimeoutTimer timer;
@@ -67,11 +67,12 @@ public class LoginController implements Initializable{
 
     KeyboardPane kb;
 
-    public void setUserName(String userName){
+    public void setUserName(String userName) {
         txtUserName.setText(userName);
         txtUserName.setDisable(true);
     }
-    public void passwordFocus(){
+
+    public void passwordFocus() {
         txtPassword.requestFocus();
     }
 
@@ -85,7 +86,7 @@ public class LoginController implements Initializable{
 
         Stage stage = app.getRootStage();
         Scene scene = app.getRootScene();
-        app.createTimeout(lblTimer,15);
+        app.createTimeout(lblTimer, 15);
         /*KeyBoardPopup popup = new KeyBoardPopup(kb);
 
         Bounds textNodeBounds = txtUserName.localToScreen(txtUserName.getBoundsInLocal());
@@ -107,11 +108,11 @@ public class LoginController implements Initializable{
 
     }
 
-    public void initialize(URL location, ResourceBundle resources){
+    public void initialize(URL location, ResourceBundle resources) {
         txtPassword.focusedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if(newValue){
+                if (newValue) {
                     Speaker.inputPassword();
                 }
             }
@@ -120,14 +121,12 @@ public class LoginController implements Initializable{
         txtUserName.focusedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if(newValue){
-                    if(loginType == 1){
+                if (newValue) {
+                    if (loginType == 1) {
                         Speaker.inputManagerUser();
-                    }
-                    else if(loginType == 2){
+                    } else if (loginType == 2) {
                         Speaker.inputUserName();
-                    }
-                    else if(loginType == 3){
+                    } else if (loginType == 3) {
                         Speaker.inputRoom();
                     }
                 }
@@ -165,13 +164,11 @@ public class LoginController implements Initializable{
             txtUserName.requestFocus();
             return;
         }
-
         if (password.length() == 0) {
             SimpleDialog.showMessageDialog(app.getRootStage(), "请输入密码，密码不能为空", "错误");
             txtPassword.requestFocus();
             return;
         }
-
         UserService.login(userName, password, new RestfulResult() {
             @Override
             public void doResult(RfResultEvent event) {
@@ -183,14 +180,13 @@ public class LoginController implements Initializable{
                 } else {
                     UserInfo user = (UserInfo) event.getData();
                     GlobalOption.currentUser = user;
-                    if(GlobalOption.runMode == 1 && user.getUserType()>UserInfo.ADMIN){
+                    if (GlobalOption.runMode == 1 && user.getUserType() > UserInfo.ADMIN) {
                         SimpleDialog.showAutoCloseError(app.getRootStage(), "系统处于脱机状态，只有管理员才能登录。");
                         return;
                     }
                     if (user != null) {
                         loginForward(user);
                     }
-
                 }
             }
 
@@ -200,7 +196,9 @@ public class LoginController implements Initializable{
                 txtUserName.requestFocus();
             }
         });
-    };
+    }
+
+    ;
 
 
     private void loginForward(UserInfo user) {
@@ -221,21 +219,20 @@ public class LoginController implements Initializable{
                 break;
         }
     }
-    private void goCommonDelivery(){
+
+    private void goCommonDelivery() {
         String localCabinet = LocalConfig.getInstance().getLocalCabinet();
-        if(localCabinet == null || localCabinet.length()==0){
-            SimpleDialog.showMessageDialog(app.getRootStage(), "本地箱柜号没有设置,请联系系统管理员。","错误");
-        }
-        else{
+        if (localCabinet == null || localCabinet.length() == 0) {
+            SimpleDialog.showMessageDialog(app.getRootStage(), "本地箱柜号没有设置,请联系系统管理员。", "错误");
+        } else {
             CabinetService.getByCabinetNo(localCabinet, new RestfulResult() {
                 @Override
                 public void doResult(RfResultEvent event) {
-                    if(event.getResult() == RfResultEvent.OK){
-                        GlobalOption.currentCabinet = (CabinetInfo)event.getData();
+                    if (event.getResult() == RfResultEvent.OK) {
+                        GlobalOption.currentCabinet = (CabinetInfo) event.getData();
                         app.goCommonDelivery();
-                    }
-                    else{
-                        SimpleDialog.showMessageDialog(app.getRootStage(), "本地箱柜号没有设置,请联系系统管理员。","错误");
+                    } else {
+                        SimpleDialog.showMessageDialog(app.getRootStage(), "本地箱柜号没有设置,请联系系统管理员。", "错误");
                     }
                 }
 
@@ -247,20 +244,18 @@ public class LoginController implements Initializable{
         }
     }
 
-    private void goManager(){
+    private void goManager() {
         String localCabinet = LocalConfig.getInstance().getLocalCabinet();
-        if(localCabinet == null || localCabinet.length()==0){
-            SimpleDialog.showMessageDialog(app.getRootStage(), "本地箱柜号没有设置,请到【系统设置】中设置。","错误");
-        }
-        else{
+        if (localCabinet == null || localCabinet.length() == 0) {
+            SimpleDialog.showMessageDialog(app.getRootStage(), "本地箱柜号没有设置,请到【系统设置】中设置。", "错误");
+        } else {
             CabinetService.getByCabinetNo(localCabinet, new RestfulResult() {
                 @Override
                 public void doResult(RfResultEvent event) {
-                    if(event.getResult() == RfResultEvent.OK){
-                        GlobalOption.currentCabinet = (CabinetInfo)event.getData();
-                    }
-                    else{
-                        SimpleDialog.showMessageDialog(app.getRootStage(), "错误的本地箱柜号，请到【系统设置】中重新设置。","错误");
+                    if (event.getResult() == RfResultEvent.OK) {
+                        GlobalOption.currentCabinet = (CabinetInfo) event.getData();
+                    } else {
+                        SimpleDialog.showMessageDialog(app.getRootStage(), "错误的本地箱柜号，请到【系统设置】中重新设置。", "错误");
                     }
                 }
 
@@ -270,25 +265,22 @@ public class LoginController implements Initializable{
                 }
             });
         }
-
         app.goManager();
     }
 
-    private void goDelivery(){
+    private void goDelivery() {
         String localCabinet = LocalConfig.getInstance().getLocalCabinet();
-        if(localCabinet == null || localCabinet.length()==0){
-            SimpleDialog.showMessageDialog(app.getRootStage(), "本地箱柜号没有设置,请联系系统管理员。","错误");
-        }
-        else{
+        if (localCabinet == null || localCabinet.length() == 0) {
+            SimpleDialog.showMessageDialog(app.getRootStage(), "本地箱柜号没有设置,请联系系统管理员。", "错误");
+        } else {
             CabinetService.getByCabinetNo(localCabinet, new RestfulResult() {
                 @Override
                 public void doResult(RfResultEvent event) {
-                    if(event.getResult() == RfResultEvent.OK){
-                        GlobalOption.currentCabinet = (CabinetInfo)event.getData();
+                    if (event.getResult() == RfResultEvent.OK) {
+                        GlobalOption.currentCabinet = (CabinetInfo) event.getData();
                         app.goDelivery();
-                    }
-                    else{
-                        SimpleDialog.showMessageDialog(app.getRootStage(), "本地箱柜号没有设置,请联系系统管理员。","错误");
+                    } else {
+                        SimpleDialog.showMessageDialog(app.getRootStage(), "本地箱柜号没有设置,请联系系统管理员。", "错误");
                     }
                 }
 
@@ -301,21 +293,19 @@ public class LoginController implements Initializable{
 
     }
 
-    private void goOwner(){
+    private void goOwner() {
         String localCabinet = LocalConfig.getInstance().getLocalCabinet();
-        if(localCabinet == null || localCabinet.length()==0){
-            SimpleDialog.showMessageDialog(app.getRootStage(), "本地箱柜号没有设置,请联系系统管理员。","错误");
-        }
-        else{
+        if (localCabinet == null || localCabinet.length() == 0) {
+            SimpleDialog.showMessageDialog(app.getRootStage(), "本地箱柜号没有设置,请联系系统管理员。", "错误");
+        } else {
             CabinetService.getByCabinetNo(localCabinet, new RestfulResult() {
                 @Override
                 public void doResult(RfResultEvent event) {
-                    if(event.getResult() == RfResultEvent.OK){
-                        GlobalOption.currentCabinet = (CabinetInfo)event.getData();
+                    if (event.getResult() == RfResultEvent.OK) {
+                        GlobalOption.currentCabinet = (CabinetInfo) event.getData();
                         app.goOwner();
-                    }
-                    else{
-                        SimpleDialog.showMessageDialog(app.getRootStage(), "本地箱柜号没有设置,请联系系统管理员。","错误");
+                    } else {
+                        SimpleDialog.showMessageDialog(app.getRootStage(), "本地箱柜号没有设置,请联系系统管理员。", "错误");
                     }
                 }
 
@@ -326,35 +316,29 @@ public class LoginController implements Initializable{
             });
         }
     }
-
 
 
     @FXML
     public void onReadVersion(ActionEvent event) {
         LcProtocol protocol = new LcProtocol();
         byte[] packet = protocol.pack(LcCommand.READ_VERSION, 1, 0);
-
-
     }
-    @FXML
-    private void onCloseAction(ActionEvent event){
 
+    @FXML
+    private void onCloseAction(ActionEvent event) {
         SendManager.gateway.close();
-
     }
 
     @FXML
-    protected  void onConnectAction(ActionEvent event){
-
-        if(SendManager.gateway==null) {
+    protected void onConnectAction(ActionEvent event) {
+        if (SendManager.gateway == null) {
             SendManager.gateway = new SerialGateway();
         }
-        if(SendManager.gateway.isOpened()) {
+        if (SendManager.gateway.isOpened()) {
             onCloseAction(null);
-        }
-        else {
+        } else {
             try {
-                SerialGateway gateway = (SerialGateway)SendManager.gateway;
+                SerialGateway gateway = (SerialGateway) SendManager.gateway;
                 gateway.connect(gateway.getPortName());
                 //connectButton.setText("关闭端口");
                /* ParamValueList paramList = ParamManager.getCheckParams();
@@ -386,20 +370,20 @@ public class LoginController implements Initializable{
     }
 
     @FXML
-    public void onBackAction(ActionEvent event){
+    public void onBackAction(ActionEvent event) {
         app.goHome();
     }
 
     @FXML
-    public void onUserNameKeyPressed(KeyEvent event){
-        if(event.getCode() == KeyCode.ENTER){
+    public void onUserNameKeyPressed(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
             String userName = txtUserName.getText();
-            if(userName !=null && userName.length()>0  && (userName.substring(0,1).equals(";")||userName.substring(0,1).equals("；"))){
+            if (userName != null && userName.length() > 0 && (userName.substring(0, 1).equals(";") || userName.substring(0, 1).equals("；"))) {
                 userName = userName.substring(1);
                 UserService.getByCardNo(userName, new RestfulResult() {
                     @Override
                     public void doResult(RfResultEvent event) {
-                        if(event.getResult() == RfResultEvent.OK && event.getData()!=null){
+                        if (event.getResult() == RfResultEvent.OK && event.getData() != null) {
                             UserInfo user = (UserInfo) event.getData();
                             Platform.runLater(new Runnable() {
                                 @Override
@@ -423,12 +407,9 @@ public class LoginController implements Initializable{
     }
 
     @FXML
-    public void onUserNameKeyTyped(KeyEvent event){
+    public void onUserNameKeyTyped(KeyEvent event) {
 
     }
-
-
-
 
 
 }

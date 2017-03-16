@@ -24,7 +24,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
-import javafx.scene.text.Text;
 
 import java.net.URL;
 import java.util.List;
@@ -76,7 +75,6 @@ public class UserChoiceController extends RootController implements Initializabl
     private TableColumn<UserInfo, String> tcCardNo9;
     @FXML
     private TableColumn<UserInfo, String> tcCardNo10;
-
     @FXML
     private TextField txtBuildingNo;
     @FXML
@@ -107,12 +105,9 @@ public class UserChoiceController extends RootController implements Initializabl
         txtUnitNo.getProperties().put(VkProperties.VK_TYPE, VkProperties.VK_TYPE_NUMERIC);
         txtFloorNo.getProperties().put(VkProperties.VK_TYPE, VkProperties.VK_TYPE_NUMERIC);
         txtRoomNo.getProperties().put(VkProperties.VK_TYPE, VkProperties.VK_TYPE_NUMERIC);
-
         createOwnerTable();
         onRefresh();
-
     }
-
 
     private void createOwnerTable() {
         tcBuildingNo.setCellValueFactory(new PropertyValueFactory("buildingNo"));
@@ -126,19 +121,20 @@ public class UserChoiceController extends RootController implements Initializabl
 
     public void onRefresh() {
         ownerList.clear();
-
         UserService.listOwnerByRoom(txtBuildingNo.getText(), txtUnitNo.getText(), txtFloorNo.getText(), txtRoomNo.getText(),
                 new RestfulResult() {
                     @Override
                     public void doResult(RfResultEvent event) {
                         List<UserInfo> users = (List<UserInfo>) event.getData();
-                        if (users == null) return;
-
+                        if (users == null) {
+                            return;
+                        }
+                        String phone = "";
                         for (int i = 0; i < users.size(); i++) {
                             UserInfo user = users.get(i);
-
+                            phone = user.getPhoneNo().replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2");
+                            user.setPhoneNo(phone);
                             ownerList.add(user);
-
                         }
                     }
 
@@ -160,16 +156,12 @@ public class UserChoiceController extends RootController implements Initializabl
             SimpleDialog.showMessageDialog(app.getRootStage(), "请选择用户.", "删除出错");
             return;
         }
-
         backToParent(user);
-
     }
 
     @FXML
     private void onBackAction(ActionEvent event) {
-
         backToParent(null);
-
     }
 
     private void backToParent(UserInfo user) {

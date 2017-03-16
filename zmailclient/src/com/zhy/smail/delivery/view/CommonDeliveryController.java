@@ -49,11 +49,9 @@ public class CommonDeliveryController extends RootController implements Initiali
     private Button packetButton;
     @FXML
     private Button tomailButton;
-
     private List<BoxInfo> smallBoxes;
     private List<BoxInfo> middleBoxes;
     private List<BoxInfo> largeBoxes;
-
     @FXML
     private Button smallButton;
     @FXML
@@ -64,66 +62,57 @@ public class CommonDeliveryController extends RootController implements Initiali
     private Label lblMessage;
     @FXML
     private Label lblLine1;
-
     private BoxInfo box;
-
-
-
 
     public void setApp(MainApp app) {
         this.app = app;
         app.createTimeout(lblTimer);
         listAvailableBox();
-
     }
+
     @FXML
-    private void onRefreshBox(ActionEvent event){
+    private void onRefreshBox(ActionEvent event) {
         checkBoxStatus();
     }
 
-    public void checkBoxStatus(){
+    public void checkBoxStatus() {
         BoxService.listByCabinetId(GlobalOption.currentCabinet.getCabinetId(), new RestfulResult() {
             @Override
             public void doResult(RfResultEvent event) {
-                if(event.getResult()!=RfResultEvent.OK) return;
-
+                if (event.getResult() != RfResultEvent.OK) return;
                 List<BoxInfo> boxes = (List<BoxInfo>) event.getData();
-
                 CabinetEntry cabinetEntry = new CabinetEntry();
-                for(int i=0; i<boxes.size(); i++){
+                for (int i = 0; i < boxes.size(); i++) {
                     BoxInfo boxInfo = boxes.get(i);
-
                     cabinetEntry.addBox(boxInfo);
                 }
-
                 GetCabinetStatus task = new GetCabinetStatus(cabinetEntry);
                 task.valueProperty().addListener(new ChangeListener<Integer>() {
                     @Override
                     public void changed(ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) {
-                        if(newValue != 0) return;
-
+                        if (newValue != 0) {
+                            return;
+                        }
                         boolean hasOpened = false;
                         String openNos = "";
-                        for(int i=0; i<boxes.size(); i++) {
+                        for (int i = 0; i < boxes.size(); i++) {
                             BoxInfo boxInfo = boxes.get(i);
                             BoxEntry boxEntry = task.getCabinet().getBoxEntry(boxInfo.getControlCardId(), boxInfo.getControlSequence());
                             if (boxEntry == null) continue;
 
-                            if(boxEntry.getStatus()==0 && boxInfo.isOpened()){
+                            if (boxEntry.getStatus() == 0 && boxInfo.isOpened()) {
                                 boxInfo.setOpened(false);
                                 saveBox(boxInfo);
-                            }
-                            else if(boxEntry.getStatus() == 1 && !boxInfo.isOpened()){
+                            } else if (boxEntry.getStatus() == 1 && !boxInfo.isOpened()) {
                                 boxInfo.setOpened(true);
                                 saveBox(boxInfo);
                             }
-
                             if (!boxInfo.isLocked() && boxInfo.isOpened()) {
                                 hasOpened = true;
-                                openNos += "," +boxInfo.getSequence();
+                                openNos += "," + boxInfo.getSequence();
                             }
                         }
-                        if(hasOpened){
+                        if (hasOpened) {
                             openNos = openNos.substring(1);
                             lblMessage.setVisible(true);
                             lblLine1.setVisible(true);
@@ -132,9 +121,7 @@ public class CommonDeliveryController extends RootController implements Initiali
                             smallButton.setDisable(true);
                             middleButton.setDisable(true);
                             largeButton.setDisable(true);
-
-                        }
-                        else{
+                        } else {
                             lblMessage.setVisible(false);
                             lblLine1.setVisible(false);
                             smallButton.setDisable(false);
@@ -142,12 +129,8 @@ public class CommonDeliveryController extends RootController implements Initiali
                             largeButton.setDisable(false);
                         }
                     }
-
                 });
                 SimpleDialog.showDialog(app.getRootStage(), task, "", "");
-
-
-
             }
 
             @Override
@@ -155,42 +138,37 @@ public class CommonDeliveryController extends RootController implements Initiali
 
             }
         });
-
     }
 
     @FXML
     public void onSmallAction(ActionEvent event) {
-        if ( smallBoxes.size() > 0) {
+        if (smallBoxes.size() > 0) {
             box = smallBoxes.get(0);
         }
         goPutdown();
-
     }
 
     @FXML
     public void onMiddleAction(ActionEvent event) {
-        if ( middleBoxes.size() > 0) {
+        if (middleBoxes.size() > 0) {
             box = middleBoxes.get(0);
         }
         goPutdown();
-
     }
 
     @FXML
     public void onLargeAction(ActionEvent event) {
-        if ( largeBoxes.size() > 0) {
+        if (largeBoxes.size() > 0) {
             box = largeBoxes.get(0);
         }
         goPutdown();
-
     }
 
-    private void goPutdown(){
+    private void goPutdown() {
         if (box == null) {
             SimpleDialog.showMessageDialog(app.getRootStage(), "请选择空闲的箱门类别.", "");
             return;
         }
-
         SelectRoomController controller = app.goSelectRoom();
         controller.setBox(box);
     }
@@ -200,17 +178,14 @@ public class CommonDeliveryController extends RootController implements Initiali
         lblLine1.setText("");
         HBox.setHgrow(topLeft, Priority.ALWAYS);
         HBox.setHgrow(topRight, Priority.ALWAYS);
-
         UserInfo user = GlobalOption.currentUser;
-
         smallBoxes = new ArrayList<>();
         middleBoxes = new ArrayList<>();
         largeBoxes = new ArrayList<>();
         box = null;
-
     }
 
-    private void listAvailableBox(){
+    private void listAvailableBox() {
 
         smallBoxes.clear();
         middleBoxes.clear();
@@ -218,12 +193,13 @@ public class CommonDeliveryController extends RootController implements Initiali
         BoxService.listAvailableBox(GlobalOption.currentCabinet.getCabinetId(), new RestfulResult() {
             @Override
             public void doResult(RfResultEvent event) {
-                if(event.getResult()!=RfResultEvent.OK) return;
-
+                if (event.getResult() != RfResultEvent.OK) {
+                    return;
+                }
                 List<BoxInfo> boxes = (List<BoxInfo>) event.getData();
-                for(int i=0; i<boxes.size(); i++){
+                for (int i = 0; i < boxes.size(); i++) {
                     BoxInfo box = boxes.get(i);
-                    switch (box.getBoxType()){
+                    switch (box.getBoxType()) {
                         case BoxInfo.BOX_TYPE_SMALL:
                             smallBoxes.add(box);
                             break;
@@ -237,8 +213,6 @@ public class CommonDeliveryController extends RootController implements Initiali
                 }
                 setButtonsText();
                 checkBoxStatus();
-
-
             }
 
             @Override
@@ -248,28 +222,26 @@ public class CommonDeliveryController extends RootController implements Initiali
         });
     }
 
-    private void setButtonsText(){
-
+    private void setButtonsText() {
         setButtonText(smallButton, "小包箱", smallBoxes);
         setButtonText(middleButton, "中包箱", middleBoxes);
         setButtonText(largeButton, "大包箱", largeBoxes);
-        int count = smallBoxes.size() + middleBoxes.size()+largeBoxes.size();
-        if(count >0) return;
-
-        String nodesTypes = BoxInfo.BOX_TYPE_SMALL+","+BoxInfo.BOX_TYPE_MIDDLE+","+BoxInfo.BOX_TYPE_LARGE;
+        int count = smallBoxes.size() + middleBoxes.size() + largeBoxes.size();
+        if (count > 0) {
+            return;
+        }
+        String nodesTypes = BoxInfo.BOX_TYPE_SMALL + "," + BoxInfo.BOX_TYPE_MIDDLE + "," + BoxInfo.BOX_TYPE_LARGE;
         BoxService.getAnotherMaxAvailableCabinet(GlobalOption.currentCabinet.getCabinetId(), nodesTypes, new RestfulResult() {
             @Override
             public void doResult(RfResultEvent event) {
-                if(event.getResult()>0 ){
+                if (event.getResult() > 0) {
                     Integer count = Integer.valueOf(event.getData().toString());
-                    if(count == 0){
+                    if (count == 0) {
                         lblMessage.setText("全部箱门已满，不能投件.");
-                    }
-                    else {
+                    } else {
                         String message = "本柜箱门已满," + event.getResult() + "号柜有" + event.getData().toString() + "个空箱,请到" + event.getResult() + "号柜投件.";
                         lblMessage.setText(message);
                         //SimpleDialog.showMessageDialog(app.getRootStage(), message, "");
-
                     }
                 }
             }
@@ -281,44 +253,39 @@ public class CommonDeliveryController extends RootController implements Initiali
         });
     }
 
-    private void setButtonText(Button button, String title, List<BoxInfo> boxes){
-        button.setText(title+"(" + boxes.size()+")");
-        if(boxes.size() == 0){
+    private void setButtonText(Button button, String title, List<BoxInfo> boxes) {
+        button.setText(title + "(" + boxes.size() + ")");
+        if (boxes.size() == 0) {
             button.setDisable(true);
-        }
-        else{
+        } else {
             button.setDisable(false);
         }
     }
 
     @FXML
-    public void onBackAction(ActionEvent event){
+    public void onBackAction(ActionEvent event) {
         app.goHome();
     }
 
 
-
     @FXML
-    public void onRecordAction(ActionEvent actionEvent) throws  IOException{
+    public void onRecordAction(ActionEvent actionEvent) throws IOException {
         GlobalOption.parents.push("commonDelivery");
-
         FXMLLoader fxmlLoader;
-
         fxmlLoader = new FXMLLoader(getClass().getResource("deliveryLog.fxml"));
         Parent root = fxmlLoader.load();
         DeliveryLogController controller = fxmlLoader.getController();
         controller.setApp(app);
-
         app.getRootScene().setRoot(root);
     }
 
     @FXML
-    public void onUserView(ActionEvent event){
+    public void onUserView(ActionEvent event) {
         app.goUserView();
         GlobalOption.parents.push("commonDelivery");
     }
 
-    private void saveBox(BoxInfo boxInfo){
+    private void saveBox(BoxInfo boxInfo) {
         BoxService.save(boxInfo, new RestfulResult() {
             @Override
             public void doResult(RfResultEvent event) {
@@ -331,6 +298,4 @@ public class CommonDeliveryController extends RootController implements Initiali
             }
         });
     }
-
-
 }

@@ -13,6 +13,7 @@ import com.zhy.smail.restful.RfFaultEvent;
 import com.zhy.smail.restful.RfResultEvent;
 import com.zhy.smail.task.OpenAllBoxTask;
 import com.zhy.smail.user.entity.UserInfo;
+import com.zhy.smail.user.service.UserService;
 import com.zhy.smail.user.view.UserViewController;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -25,14 +26,18 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
+import javafx.scene.paint.Color;
+import javafx.scene.text.*;
 
+import java.awt.*;
 import java.net.URL;
 import java.util.*;
+import java.util.List;
 
 /**
  * Created by wenliz on 2017/1/14.
  */
-public class PickupController  implements Initializable {
+public class PickupController implements Initializable {
     @FXML
     private Label lblTimer;
     @FXML
@@ -51,7 +56,8 @@ public class PickupController  implements Initializable {
     private Label lblMailBoxNumber;
     @FXML
     private Label lblPacketBoxNumber;
-
+    @FXML
+    private Label lblUserInfo;
     private MainApp app;
     private List<DeliveryLog> mailLogs;
     private List<DeliveryLog> packetLogs;
@@ -65,51 +71,59 @@ public class PickupController  implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         mailLogs = new ArrayList<DeliveryLog>();
         packetLogs = new ArrayList<>();
-
         setBoxNumber("", "");
         lblOpenMessage.setVisible(false);
         HBox.setHgrow(topLeft, Priority.ALWAYS);
         HBox.setHgrow(topRight, Priority.ALWAYS);
         UserInfo user = GlobalOption.currentUser;
-
-
-        DeliveryLogService.listByOwner(GlobalOption.currentCabinet.getCabinetId(), GlobalOption.currentUser.getUserId(),0, new RestfulResult() {
+        if(UserInfo.OWNER == user.getUserType()){
+            lblUserInfo.setText(user.getBuildingNo()
+                    + "栋" + user.getUnitNo() + "单元"
+                    + user.getRoomNo() + "（房号:"
+                    + user.getBuildingNo()
+                    + user.getUnitNo()
+                    + user.getRoomNo()+" )");
+        }else {
+            lblUserInfo.setText("");
+        }
+        DeliveryLogService.listByOwner(GlobalOption.currentCabinet.getCabinetId(), GlobalOption.currentUser.getUserId(), 0, new RestfulResult() {
             @Override
             public void doResult(RfResultEvent event) {
                 mailLogs.clear();
                 packetLogs.clear();
                 Set<Integer> mailBoxSetNos = new HashSet<Integer>();
                 Set<Integer> packetBoxSetNos = new HashSet<Integer>();
-                String mailBoxNos="";
+                String mailBoxNos = "";
                 String packetBoxNos = "";
-                if(event.getData()!=null){
+                if (event.getData() != null) {
                     List<DeliveryLog> newLogs = (List<DeliveryLog>) event.getData();
-                    for(int i=0; i<newLogs.size(); i++){
+                    for (int i = 0; i < newLogs.size(); i++) {
                         DeliveryLog log = newLogs.get(i);
                         Integer boxNo = log.getBoxInfo().getSequence();
-                        if(log.getDeliveryType().equals(DeliveryLog.DELIVERY_TYPE_MAIL)){
+                        if (log.getDeliveryType().equals(DeliveryLog.DELIVERY_TYPE_MAIL)) {
                             mailLogs.add(log);
-                            if(!mailBoxSetNos.contains(boxNo)) {
+                            if (!mailBoxSetNos.contains(boxNo)) {
                                 mailBoxSetNos.add(boxNo);
-                                mailBoxNos += "," + boxNo+"号箱";
+                                mailBoxNos += "," + boxNo + "号箱";
                             }
-
-                        }
-                        else{
+                        } else {
                             packetLogs.add(log);
-                            if(!packetBoxSetNos.contains(boxNo)) {
+                            if (!packetBoxSetNos.contains(boxNo)) {
                                 packetBoxSetNos.add(boxNo);
-                                packetBoxNos += ","+boxNo+"号箱";
+                                packetBoxNos += "," + boxNo + "号箱";
                             }
                         }
                     }
                 }
-                final String finalMailBoxNos = mailBoxSetNos.size()==0? "" : mailBoxNos.substring(1);
-                final String finalPacketBoxNos = packetBoxSetNos.size() == 0 ? "": packetBoxNos.substring(1);
+                final String finalMailBoxNos = mailBoxSetNos.size() == 0 ? "" : mailBoxNos.substring(1);
+                final String finalPacketBoxNos = packetBoxSetNos.size() == 0 ? "" : packetBoxNos.substring(1);
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
                         setBoxNumber(finalMailBoxNos, finalPacketBoxNos);
+                        if (mailLogs.size() == 0 && packetLogs.size() == 0) {
+                            Speaker.noPacket();
+                        }
                     }
                 });
             }
@@ -122,18 +136,18 @@ public class PickupController  implements Initializable {
         DeliveryLogService.listAllByOwner(GlobalOption.currentUser.getUserId(), new RestfulResult() {
             @Override
             public void doResult(RfResultEvent event) {
-                if(event.getResult() == RfResultEvent.OK && event.getData() != null) return;
-
+                if (event.getResult() == RfResultEvent.OK && event.getData() != null) {
+                    return;
+                }
                 List<CabinetNode> nodes = (List<CabinetNode>) event.getData();
                 String nodeMessage = "";
-                for(int i=0; i<nodes.size(); i++){
+                for (int i = 0; i < nodes.size(); i++) {
                     CabinetNode node = nodes.get(i);
-                    if(!node.getCabinetId().equals(GlobalOption.currentCabinet.getCabinetId())){
+                    if (!node.getCabinetId().equals(GlobalOption.currentCabinet.getCabinetId())) {
                         nodeMessage += "," + node.getCabinetNo().toString();
                     }
-
                 }
-                if(!nodeMessage.equals("")) {
+                if (!nodeMessage.equals("")) {
                     nodeMessage = nodeMessage.substring(1);
                     lblNotify.setText("您还有信包在如下柜中：" + nodeMessage);
                 }
@@ -144,39 +158,31 @@ public class PickupController  implements Initializable {
 
             }
         });
-
-
     }
 
-    private void setBoxNumber(String mailBoxNos, String packetBoxNos){
-        if(mailLogs.size() == 0 && packetLogs.size()==0){
+    private void setBoxNumber(String mailBoxNos, String packetBoxNos) {
+        if (mailLogs.size() == 0 && packetLogs.size() == 0) {
 //            Speaker.noPacket();
         }
-
-        if(mailLogs.size() ==0){
-            lblMailBoxNumber.setText("您有0信件。");
+        if (mailLogs.size() == 0) {
+            lblMailBoxNumber.setText("您有0个信件。");
             openMailDoorButton.setDisable(true);
-
-
-        }
-        else{
-            lblMailBoxNumber.setText("您有" + mailLogs.size()+"个信件在：" + mailBoxNos);
+        } else {
+            lblMailBoxNumber.setText("您有" + mailLogs.size() + "个信件在：" + mailBoxNos);
             openMailDoorButton.setDisable(false);
         }
-
-        if(packetLogs.size() == 0){
-            lblPacketBoxNumber.setText("您有0包裹。");
+        if (packetLogs.size() == 0) {
+            lblPacketBoxNumber.setText("您有0个包裹。");
             openPacketDoorButton.setDisable(true);
-
-        }
-        else{
-            lblPacketBoxNumber.setText("您有"+ packetLogs.size()+"个包裹在：" + packetBoxNos);
+        } else {
+            lblPacketBoxNumber.setText("您有" + packetLogs.size() + "个包裹在：" + packetBoxNos);
             openPacketDoorButton.setDisable(false);
         }
     }
+
     private CabinetEntry getCabinetEntry(List<DeliveryLog> logs) {
         CabinetEntry cabinetEntry = new CabinetEntry();
-        for(int i=0; i<logs.size(); i++){
+        for (int i = 0; i < logs.size(); i++) {
             DeliveryLog log = logs.get(i);
             cabinetEntry.addBox(log.getBoxInfo());
         }
@@ -190,18 +196,19 @@ public class PickupController  implements Initializable {
     }
 
     @FXML
-    private void openPacketDoorAction(ActionEvent event){
+    private void openPacketDoorAction(ActionEvent event) {
         CabinetEntry cabinetEntry = getCabinetEntry(packetLogs);
         openAllDoor(cabinetEntry, packetLogs);
     }
 
-    private void openAllDoor(CabinetEntry cabinetEntry, List<DeliveryLog> logs){
+    private void openAllDoor(CabinetEntry cabinetEntry, List<DeliveryLog> logs) {
         OpenAllBoxTask task = new OpenAllBoxTask(cabinetEntry);
         task.valueProperty().addListener(new ChangeListener<Integer>() {
             @Override
             public void changed(ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) {
-                if (newValue != 0) return;
-
+                if (newValue != 0) {
+                    return;
+                }
                 lblOpenMessage.setVisible(true);
                 if (task.getOpenedBoxNos().length() == 0) {
                     lblOpenMessage.setText("开箱失败，请重试或联系管理员");
@@ -210,45 +217,44 @@ public class PickupController  implements Initializable {
                     Speaker.openBoxSound();
                     Speaker.doorOpened();
                 }
-
                 savePickup(logs, task);
             }
         });
         SimpleDialog.showDialog(app.getRootStage(), task, "", "");
-
     }
 
     @FXML
-    public void onBackAction(ActionEvent event){
+    public void onBackAction(ActionEvent event) {
         app.goHome();
     }
 
     @FXML
-    public void onUserView(ActionEvent event){
+    public void onUserView(ActionEvent event) {
         UserViewController controller = app.goUserView();
         GlobalOption.parents.push("pickup");
     }
 
     @FXML
-    public void onPickupLogAction(ActionEvent event){
+    public void onPickupLogAction(ActionEvent event) {
         app.goPickupLog();
     }
 
     private void savePickup(List<DeliveryLog> logs, OpenAllBoxTask task) {
         for (int i = 0; i < logs.size(); i++) {
             DeliveryLog log = logs.get(i);
-            for(int ii=0; ii<task.getOpenedBoxList().size(); ii++){
+            for (int ii = 0; ii < task.getOpenedBoxList().size(); ii++) {
                 Integer sequence = task.getOpenedBoxList().get(i);
-                if(log.getBoxInfo().getSequence().equals(sequence)){
+                if (log.getBoxInfo().getSequence().equals(sequence)) {
                     DeliveryLogService.pickup(log.getLogId(), GlobalOption.currentUser.getUserId(), 0, new
                             RestfulResult() {
                                 @Override
-                                public void doResult(RfResultEvent event) {}
+                                public void doResult(RfResultEvent event) {
+                                }
 
                                 @Override
-                                public void doFault(RfFaultEvent event) { }
+                                public void doFault(RfFaultEvent event) {
+                                }
                             });
-
                 }
             }
         }

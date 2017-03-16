@@ -47,7 +47,6 @@
                <HBox prefHeight="100.0" prefWidth="200.0" spacing="30.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
                    <children>
                        <Button fx:id="loginButton" mnemonicParsing="false" onAction="#onLoginAction" prefHeight="47.0" prefWidth="191.0" text="登录" />
-
                    </children>
                </HBox>
            </children>

@@ -53,3 +53,8 @@
     -fx-background-color: #DFB951;
 }
 
+.pickup-user-info{
+    -fx-font-size: 130%;
+    -fx-text-fill: #C62526;
+}
+

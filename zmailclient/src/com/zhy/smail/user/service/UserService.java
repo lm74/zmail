@@ -18,16 +18,16 @@ import java.util.Map;
 public class UserService {
     private static Log log = LogFactory.getLog(UserService.class);
 
-    public static void testConnection(RestfulResult result){
-        HttpOperator.get(GlobalOption.getServerUrl()+"/user/test", result);
+    public static void testConnection(RestfulResult result) {
+        HttpOperator.get(GlobalOption.getServerUrl() + "/user/test", result);
     }
 
-    public static void login(String userName, String password, RestfulResult result){
-        String url = GlobalOption.getServerUrl() +"/user/login?userName=" + userName+"&password=" + password;
+    public static void login(String userName, String password, RestfulResult result) {
+        String url = GlobalOption.getServerUrl() + "/user/login?userName=" + userName + "&password=" + password;
         HttpOperator.get(url, new RestfulResult() {
             @Override
             public void doResult(RfResultEvent event) {
-                if(event.getData()!=null){
+                if (event.getData() != null) {
                     event.setData(JsonOperator.toObject(event.getData(), UserInfo.class));
                 }
                 result.doResult(event);
@@ -40,8 +40,8 @@ public class UserService {
         });
     }
 
-    public static void save(UserInfo userInfo, RestfulResult result){
-        String url = GlobalOption.getServerUrl() +"/user";
+    public static void save(UserInfo userInfo, RestfulResult result) {
+        String url = GlobalOption.getServerUrl() + "/user";
         try {
             String value = HttpOperator.mapper.writeValueAsString(userInfo);
             log.info(value);
@@ -59,19 +59,18 @@ public class UserService {
                     result.doFault(event);
                 }
             });
-        }
-        catch (Exception e){
+        } catch (Exception e) {
 
         }
     }
 
-    public static void getByCardNo(String cardNo, RestfulResult result){
-        String url = GlobalOption.getServerUrl() +"/user/byCardNo?cardNo=" + cardNo;
+    public static void getByCardNo(String cardNo, RestfulResult result) {
+        String url = GlobalOption.getServerUrl() + "/user/byCardNo?cardNo=" + cardNo;
         HttpOperator.get(url, new RestfulResult() {
             @Override
             public void doResult(RfResultEvent event) {
 
-                if((event.getResult()== RfResultEvent.OK) && (event.getData()!=null)){
+                if ((event.getResult() == RfResultEvent.OK) && (event.getData() != null)) {
                     event.setData(JsonOperator.toObject(event.getData(), UserInfo.class));
                 }
                 result.doResult(event);
@@ -85,8 +84,8 @@ public class UserService {
         });
     }
 
-    public static void listByUserTyeps(String userTypes, RestfulResult result){
-        String url = GlobalOption.getServerUrl() +"/user/byUserTypes?userTypes=" + userTypes;
+    public static void listByUserTyeps(String userTypes, RestfulResult result) {
+        String url = GlobalOption.getServerUrl() + "/user/byUserTypes?userTypes=" + userTypes;
         HttpOperator.get(url, new RestfulResult() {
             @Override
             public void doResult(RfResultEvent event) {
@@ -101,24 +100,24 @@ public class UserService {
         });
     }
 
-    protected static  void objectToUserInfo(RfResultEvent event) {
-        if(event.getData()!=null){
-            List users = (List)event.getData();
-            for(int i=0; i<users.size();i++){
+    protected static void objectToUserInfo(RfResultEvent event) {
+        if (event.getData() != null) {
+            List users = (List) event.getData();
+            for (int i = 0; i < users.size(); i++) {
                 users.set(i, JsonOperator.toObject(users.get(i), UserInfo.class));
             }
         }
 
     }
 
-    public static void changePassword(Integer userId, String oldPassword, String newPassword, RestfulResult result){
-        String url = GlobalOption.getServerUrl()+"/user/changePassword?userId=" + userId.toString()+"&oldPassword=" +
-                oldPassword+"&newPassword=" + newPassword;
+    public static void changePassword(Integer userId, String oldPassword, String newPassword, RestfulResult result) {
+        String url = GlobalOption.getServerUrl() + "/user/changePassword?userId=" + userId.toString() + "&oldPassword=" +
+                oldPassword + "&newPassword=" + newPassword;
         HttpOperator.get(url, result);
     }
 
-    public static void listAll(RestfulResult result){
-        String url = GlobalOption.getServerUrl() +"/user";
+    public static void listAll(RestfulResult result) {
+        String url = GlobalOption.getServerUrl() + "/user";
         HttpOperator.get(url, new RestfulResult() {
             @Override
             public void doResult(RfResultEvent event) {
@@ -133,8 +132,8 @@ public class UserService {
         });
     }
 
-    public static void listOwner(String filter, RestfulResult result){
-        String url = GlobalOption.getServerUrl() +"/user/owner?filter="+filter;
+    public static void listOwner(String filter, RestfulResult result) {
+        String url = GlobalOption.getServerUrl() + "/user/owner?filter=" + filter;
         HttpOperator.get(url, new RestfulResult() {
             @Override
             public void doResult(RfResultEvent event) {
@@ -149,9 +148,9 @@ public class UserService {
         });
     }
 
-    public static void listOwnerByRoom(String buildingNo, String unitNo,String floorNo, String roomNo, RestfulResult result){
-        String url = GlobalOption.getServerUrl() +"/user/owner/byRoom?buildingNo="+buildingNo+"&unitNo="+unitNo+
-                "&floorNo="+floorNo+"&roomNo="+roomNo;
+    public static void listOwnerByRoom(String buildingNo, String unitNo, String floorNo, String roomNo, RestfulResult result) {
+        String url = GlobalOption.getServerUrl() + "/user/owner/byRoom?buildingNo=" + buildingNo + "&unitNo=" + unitNo +
+                "&floorNo=" + floorNo + "&roomNo=" + roomNo;
         HttpOperator.get(url, new RestfulResult() {
             @Override
             public void doResult(RfResultEvent event) {
@@ -166,18 +165,32 @@ public class UserService {
         });
     }
 
-    public static void delete(Integer userId, RestfulResult result){
-        String url = GlobalOption.getServerUrl() +"/user/" + userId.toString();
+    public static void delete(Integer userId, RestfulResult result) {
+        String url = GlobalOption.getServerUrl() + "/user/" + userId.toString();
         HttpOperator.delete(url, result);
     }
 
-    public static void deleteByIds(String ids, RestfulResult result){
-        String url = GlobalOption.getServerUrl() +"/user/deleteByIds";
+    public static void deleteByIds(String ids, RestfulResult result) {
+        String url = GlobalOption.getServerUrl() + "/user/deleteByIds";
         try {
-            HttpOperator.post(ids, url,result);
-        }
-        catch (Exception e){
+            HttpOperator.post(ids, url, result);
+        } catch (Exception e) {
 
         }
+    }
+
+    public static void getByUserId(Integer userId, RestfulResult result) {
+        String url = GlobalOption.getServerUrl() + "/user/byUserId?userId=" + userId;
+        HttpOperator.get(url, new RestfulResult() {
+            @Override
+            public void doResult(RfResultEvent event) {
+                result.doResult(event);
+            }
+
+            @Override
+            public void doFault(RfFaultEvent event) {
+                result.doFault(event);
+            }
+        });
     }
 }
