@@ -1,6 +1,7 @@
 package com.zhy.smail.task;
 
 import com.sun.xml.internal.bind.v2.schemagen.xmlschema.Import;
+import com.zhy.smail.common.utils.KeySecurity;
 import com.zhy.smail.restful.RestfulResult;
 import com.zhy.smail.restful.RfFaultEvent;
 import com.zhy.smail.restful.RfResultEvent;
@@ -51,6 +52,9 @@ public class ImportUserTask extends Task<Integer> {
             UserInfo user = getUser(row);
             updateProgress((step*i-1)+20, 100);
             if(user == null) continue;
+            else {
+                user.setPassword(KeySecurity.encrypt("123456"));
+            }
 
             UserService.save(user, new RestfulResult() {
                 @Override
