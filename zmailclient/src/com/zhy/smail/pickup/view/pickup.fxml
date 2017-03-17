@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="center" prefHeight="1024.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.76-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zhy.smail.pickup.view.PickupController">
+<VBox alignment="center" prefHeight="1024.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zhy.smail.pickup.view.PickupController">
     <children>
         <ToolBar prefHeight="40.0" prefWidth="1260.0">
             <items>
@@ -44,7 +44,7 @@
                                 <Insets top="30.0" />
                             </padding>
                         </Label>
-                  <Label fx:id="lblPacketBoxNumber" styleClass="label-middle"  text="您有0个包裹" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
+                  <Label fx:id="lblPacketBoxNumber" styleClass="label-middle" text="您有0个包裹" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
                     </children>
                 </GridPane>
             </children>
@@ -52,9 +52,9 @@
 
         <GridPane prefHeight="764.0" prefWidth="1230.0">
             <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="161.0" minWidth="10.0" prefWidth="50.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="550.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="550.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="161.0" minWidth="6.0" prefWidth="6.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="706.0" minWidth="10.0" prefWidth="706.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="565.0" minWidth="10.0" prefWidth="501.0" />
 
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="170.0" minWidth="10.0" prefWidth="50.0" />
             </columnConstraints>
@@ -87,6 +87,10 @@
             <Button mnemonicParsing="false" onAction="#onPickupLogAction" prefHeight="43.0" prefWidth="271.0" text="投取件记录" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
             </children>
         </GridPane>
-      <Label fx:id="lblNotify" />
+      <Label fx:id="lblNotify" scaleZ="2.0" styleClass="label-pickup" translateY="-250.0">
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+      </Label>
     </children>
 </VBox>

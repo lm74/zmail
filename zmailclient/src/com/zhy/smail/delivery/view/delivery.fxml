@@ -17,7 +17,7 @@
         <items>
             <Button mnemonicParsing="false" onAction="#onBackAction" text="返回" />
             <Region fx:id="topLeft" />
-            <Label text="投件管理" />
+            <Label text="投件操作" />
             <Region fx:id="topRight" />
             <Label fx:id="lblTimer" text="99" />
         </items>

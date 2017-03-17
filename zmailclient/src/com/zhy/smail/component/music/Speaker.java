@@ -101,7 +101,7 @@ public class Speaker {
    *没有物品寄存
     */
     public static void noPacket(){
-        playMusic("/music/21.wav");
+        playMusic("/music/99.wav");
     }
 
     /*

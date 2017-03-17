@@ -7,6 +7,8 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1024.0" prefWidth="1280.0"
             xmlns="http://javafx.com/javafx/8.0.76-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zhy.smail.user.view.HelpController">
     <top>
@@ -20,9 +22,15 @@
             </items>
         </ToolBar>
     </top>
-    <center>
-    <WebView fx:id="helpView" prefHeight="1024.0" prefWidth="1200.0">
 
-    </WebView>
- </center>
+    <center>
+        <ImageView fitHeight="951.0" fitWidth="1277.0" pickOnBounds="true" BorderPane.alignment="CENTER">
+            <image>
+                <Image url="@../../../../../images/help.jpg" />
+            </image>
+        </ImageView>
+    </center>
+   <!-- <center>
+    <WebView fx:id="helpView" prefHeight="1024.0" prefWidth="1200.0"/>
+    </center>-->
 </BorderPane>

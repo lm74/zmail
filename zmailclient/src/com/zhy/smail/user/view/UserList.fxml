@@ -11,107 +11,107 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="center" prefHeight="1024.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zhy.smail.user.view.UserListController">
+<VBox alignment="center" prefHeight="1024.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.112"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zhy.smail.user.view.UserListController">
     <children>
         <ToolBar fx:id="topToolBar" prefHeight="40.0" prefWidth="200.0">
             <items>
-                <Button mnemonicParsing="false" onAction="#onBackAction" text="返回" />
-                <Region fx:id="topLeft" />
-                  <Label text="用户管理" />
-                <Region fx:id="topRight" />
-                  <Label fx:id="lblTimer" text="99" />
+                <Button mnemonicParsing="false" onAction="#onBackAction" text="返回"/>
+                <Region fx:id="topLeft"/>
+                <Label text="用户管理"/>
+                <Region fx:id="topRight"/>
+                <Label fx:id="lblTimer" text="99"/>
 
             </items>
         </ToolBar>
-      <TabPane fx:id="userContainer" prefHeight="967.0" prefWidth="1280.0" tabClosingPolicy="UNAVAILABLE">
-        <tabs>
-          <Tab fx:id="ownerTab" text="业主">
-            <content>
+        <TabPane fx:id="userContainer" prefHeight="967.0" prefWidth="1280.0" tabClosingPolicy="UNAVAILABLE">
+            <tabs>
+                <Tab fx:id="ownerTab" text="业主">
+                    <content>
 
-                  <TableView fx:id="ownerTable" editable="true" minHeight="700.0">
-                      <columns>
-                          <TableColumn fx:id="tcChecked" prefWidth="80">
+                        <TableView fx:id="ownerTable" editable="true" minHeight="700.0">
+                            <columns>
+                                <TableColumn fx:id="tcChecked" prefWidth="80">
+                                </TableColumn>
+                                <TableColumn fx:id="tcBuildingNo" prefWidth="150" text="楼栋号"/>
+                                <TableColumn fx:id="tcUnitNo" prefWidth="150" text="单元号"/>
+                                <TableColumn fx:id="tcFloorNo" prefWidth="150" text="楼层号"/>
+                                <TableColumn fx:id="tcRoomNo" prefWidth="155.0" text="房号"/>
+                                <TableColumn fx:id="tcPhoneNo" prefWidth="240.0" text="手机号码"/>
+                                <TableColumn fx:id="tcCardNo1" prefWidth="319.0" text="卡号1"/>
+                                <TableColumn fx:id="tcCardNo2" prefWidth="327.0" text="卡号2"/>
+                                <TableColumn fx:id="tcCardNo3" prefWidth="300.0" text="卡号3"/>
+                                <TableColumn fx:id="tcCardNo4" prefWidth="300.0" text="卡号4"/>
+                                <TableColumn fx:id="tcCardNo5" prefWidth="300.0" text="卡号5"/>
+                                <TableColumn fx:id="tcCardNo6" prefWidth="300.0" text="卡号6"/>
+                                <TableColumn fx:id="tcCardNo7" prefWidth="300.0" text="卡号7"/>
+                                <TableColumn fx:id="tcCardNo8" prefWidth="300.0" text="卡号8"/>
+                                <TableColumn fx:id="tcCardNo9" prefWidth="300.0" text="卡号9"/>
+                                <TableColumn fx:id="tcCardNo10" prefWidth="300.0" text="卡号10"/>
+                            </columns>
+                        </TableView>
 
-                          </TableColumn>
-                          <TableColumn fx:id="tcBuildingNo" prefWidth="150" text="栋" />
-                          <TableColumn fx:id="tcUnitNo" prefWidth="150" text="单元" />
-                          <TableColumn fx:id="tcFloorNo" prefWidth="150" text="楼层" />
-                          <TableColumn fx:id="tcRoomNo" prefWidth="155.0" text="房号" />
-                          <TableColumn fx:id="tcPhoneNo" prefWidth="228.0" text="手机" />
-                          <TableColumn fx:id="tcCardNo1" prefWidth="319.0" text="卡号1" />
-                          <TableColumn fx:id="tcCardNo2" prefWidth="327.0" text="卡号2" />
-                          <TableColumn fx:id="tcCardNo3" prefWidth="300.0" text="卡号3" />
-                          <TableColumn fx:id="tcCardNo4" prefWidth="300.0" text="卡号4" />
-                          <TableColumn fx:id="tcCardNo5" prefWidth="300.0" text="卡号5" />
-                          <TableColumn fx:id="tcCardNo6" prefWidth="300.0" text="卡号6" />
-                          <TableColumn fx:id="tcCardNo7" prefWidth="300.0" text="卡号7" />
-                          <TableColumn fx:id="tcCardNo8" prefWidth="300.0" text="卡号8" />
-                          <TableColumn fx:id="tcCardNo9" prefWidth="300.0" text="卡号9" />
-                          <TableColumn fx:id="tcCardNo10" prefWidth="300.0" text="卡号10" />
-                      </columns>
-                  </TableView>
+                    </content>
 
-            </content>
+                </Tab>
+                <Tab fx:id="deliveryTab" text="投递员">
+                    <content>
 
-          </Tab>
-          <Tab fx:id="deliveryTab" text="投递员">
-            <content>
+                        <TableView fx:id="deliveryTable" editable="true" minHeight="700.0">
+                            <columns>
+                                <TableColumn fx:id="tcdChecked" prefWidth="80"/>
+                                <TableColumn fx:id="tcDelivery" prefWidth="200" text="快递员名称"/>
+                                <TableColumn fx:id="tcdPhoneNo" prefWidth="240.0" text="手机号码"/>
+                                <TableColumn fx:id="tcdCardNo1" prefWidth="319.0" text="卡号1"/>
+                                <TableColumn fx:id="tcdCardNo2" prefWidth="327.0" text="卡号2"/>
+                                <TableColumn fx:id="tcdCardNo3" prefWidth="300.0" text="卡号3"/>
+                                <TableColumn fx:id="tcdCardNo4" prefWidth="300.0" text="卡号4"/>
+                                <TableColumn fx:id="tcdCardNo5" prefWidth="300.0" text="卡号5"/>
+                                <TableColumn fx:id="tcdCardNo6" prefWidth="300.0" text="卡号6"/>
+                                <TableColumn fx:id="tcdCardNo7" prefWidth="300.0" text="卡号7"/>
+                                <TableColumn fx:id="tcdCardNo8" prefWidth="300.0" text="卡号8"/>
+                                <TableColumn fx:id="tcdCardNo9" prefWidth="300.0" text="卡号9"/>
+                                <TableColumn fx:id="tcdCardNo10" prefWidth="300.0" text="卡号10"/>
+                            </columns>
+                        </TableView>
 
-                <TableView fx:id="deliveryTable" editable="true" minHeight="700.0">
-                    <columns>
-                        <TableColumn fx:id="tcdChecked" prefWidth="80" />
-                        <TableColumn fx:id="tcDelivery" prefWidth="150" text="快递员" />
-                        <TableColumn fx:id="tcdPhoneNo" prefWidth="228.0" text="手机" />
-                        <TableColumn fx:id="tcdCardNo1" prefWidth="319.0" text="卡号1" />
-                        <TableColumn fx:id="tcdCardNo2" prefWidth="327.0" text="卡号2" />
-                        <TableColumn fx:id="tcdCardNo3" prefWidth="300.0" text="卡号3" />
-                        <TableColumn fx:id="tcdCardNo4" prefWidth="300.0" text="卡号4" />
-                        <TableColumn fx:id="tcdCardNo5" prefWidth="300.0" text="卡号5" />
-                        <TableColumn fx:id="tcdCardNo6" prefWidth="300.0" text="卡号6" />
-                        <TableColumn fx:id="tcdCardNo7" prefWidth="300.0" text="卡号7" />
-                        <TableColumn fx:id="tcdCardNo8" prefWidth="300.0" text="卡号8" />
-                        <TableColumn fx:id="tcdCardNo9" prefWidth="300.0" text="卡号9" />
-                        <TableColumn fx:id="tcdCardNo10" prefWidth="300.0" text="卡号10" />
-                    </columns>
-                </TableView>
+                    </content>
+                </Tab>
+                <Tab fx:id="managerTab" text="管理员">
+                    <content>
 
-            </content>
-          </Tab>
-            <Tab fx:id="managerTab" text="管理员">
-                <content>
+                        <TableView fx:id="managerTable" editable="true" minHeight="700.0">
+                            <columns>
+                                <TableColumn fx:id="tcmChecked" prefWidth="80"/>
+                                <TableColumn fx:id="tcUserName" prefWidth="200" text="管理员名称"/>
+                                <TableColumn fx:id="tcmPhoneNo" prefWidth="240.0" text="手机号码"/>
+                                <TableColumn fx:id="tcmCardNo1" prefWidth="319.0" text="卡号1"/>
+                                <TableColumn fx:id="tcmCardNo2" prefWidth="327.0" text="卡号2"/>
+                                <TableColumn fx:id="tcmCardNo3" prefWidth="300.0" text="卡号3"/>
+                                <TableColumn fx:id="tcmCardNo4" prefWidth="300.0" text="卡号4"/>
+                                <TableColumn fx:id="tcmCardNo5" prefWidth="300.0" text="卡号5"/>
+                                <TableColumn fx:id="tcmCardNo6" prefWidth="300.0" text="卡号6"/>
+                                <TableColumn fx:id="tcmCardNo7" prefWidth="300.0" text="卡号7"/>
+                                <TableColumn fx:id="tcmCardNo8" prefWidth="300.0" text="卡号8"/>
+                                <TableColumn fx:id="tcmCardNo9" prefWidth="300.0" text="卡号9"/>
+                                <TableColumn fx:id="tcmCardNo10" prefWidth="300.0" text="卡号10"/>
+                            </columns>
+                        </TableView>
 
-                    <TableView fx:id="managerTable" editable="true" minHeight="700.0">
-                        <columns>
-                            <TableColumn fx:id="tcmChecked" prefWidth="80" />
-                            <TableColumn fx:id="tcUserName" prefWidth="150" text="名称" />
-                            <TableColumn fx:id="tcmPhoneNo" prefWidth="228.0" text="手机" />
-                            <TableColumn fx:id="tcmCardNo1" prefWidth="319.0" text="卡号1" />
-                            <TableColumn fx:id="tcmCardNo2" prefWidth="327.0" text="卡号2" />
-                            <TableColumn fx:id="tcmCardNo3" prefWidth="300.0" text="卡号3" />
-                            <TableColumn fx:id="tcmCardNo4" prefWidth="300.0" text="卡号4" />
-                            <TableColumn fx:id="tcmCardNo5" prefWidth="300.0" text="卡号5" />
-                            <TableColumn fx:id="tcmCardNo6" prefWidth="300.0" text="卡号6" />
-                            <TableColumn fx:id="tcmCardNo7" prefWidth="300.0" text="卡号7" />
-                            <TableColumn fx:id="tcmCardNo8" prefWidth="300.0" text="卡号8" />
-                            <TableColumn fx:id="tcmCardNo9" prefWidth="300.0" text="卡号9" />
-                            <TableColumn fx:id="tcmCardNo10" prefWidth="300.0" text="卡号10" />
-                        </columns>
-                    </TableView>
-
-                </content>
-            </Tab>
-        </tabs>
-      </TabPane>
-      <ToolBar prefHeight="40.0" prefWidth="200.0">
-        <items>
-            <CheckBox fx:id="chkSelectAll" mnemonicParsing="false" onAction="#onSelectAllAction" text="全选" />
-          <Button mnemonicParsing="false" onAction="#onAddUserAction" text="增加" />
-            <Button mnemonicParsing="false" onAction="#onDeleteAction" text="删除" />
-            <Button fx:id="updateRecord" mnemonicParsing="false" onAction="#onEditAction" text="修改" />
-            <Button fx:id="setPassword" mnemonicParsing="false" onAction="#onSettingPasswordAction" text="设置密码" />
-            <Button mnemonicParsing="false" onAction="#onImportFile" text="导入" />
-            <Button mnemonicParsing="false" onAction="#onExportFile" text="导出" />
-        </items>
-      </ToolBar>
+                    </content>
+                </Tab>
+            </tabs>
+        </TabPane>
+        <ToolBar prefHeight="40.0" prefWidth="200.0">
+            <items>
+                <CheckBox fx:id="chkSelectAll" mnemonicParsing="false" onAction="#onSelectAllAction" text="全选"/>
+                <Button mnemonicParsing="false" onAction="#onAddUserAction" text="增加"/>
+                <Button mnemonicParsing="false" onAction="#onDeleteAction" text="删除"/>
+                <Button fx:id="updateRecord" mnemonicParsing="false" onAction="#onEditAction" text="修改"/>
+                <Button fx:id="setPassword" mnemonicParsing="false" onAction="#onSettingPasswordAction" text="设置密码"/>
+                <Button mnemonicParsing="false" onAction="#onImportFile" text="导入"/>
+                <Button mnemonicParsing="false" onAction="#onExportFile" text="导出"/>
+            </items>
+        </ToolBar>
     </children>
 </VBox>

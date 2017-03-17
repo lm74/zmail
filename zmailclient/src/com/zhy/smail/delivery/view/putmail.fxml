@@ -26,8 +26,8 @@
         <GridPane BorderPane.alignment="CENTER">
             <columnConstraints>
 
-                <ColumnConstraints hgrow="SOMETIMES" prefWidth="280.0" />
-                <ColumnConstraints hgrow="ALWAYS" prefWidth="600.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="411.0" minWidth="285.0" prefWidth="411.0" />
+                <ColumnConstraints hgrow="ALWAYS" maxWidth="615.0" minWidth="489.0" prefWidth="489.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
                 <ColumnConstraints hgrow="SOMETIMES" prefWidth="180.0" />
             </columnConstraints>
@@ -44,7 +44,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <Label text="请输入或者选择房号:" GridPane.columnIndex="0" GridPane.halignment="RIGHT" />
+                <Label text="请输入或者选择房号：" GridPane.columnIndex="0" GridPane.halignment="RIGHT" />
                 <Label text="空闲箱格数量：" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
 
 
