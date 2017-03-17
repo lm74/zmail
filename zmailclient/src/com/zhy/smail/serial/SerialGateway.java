@@ -79,17 +79,28 @@ public class SerialGateway extends  Gateway{
 
 
     public boolean sendMessage(byte[] data) throws IOException {
+        try {
+            if (out == null) {  //端口如果没有打开，测进行打开
+                String message = "Failed to send packet(%s) because the port %s cannot be opened.";
+                message = String.format(message, StringUtil.parse(data), portName);
+                log.error(message);
+                return false;
+            }
+            out.write(data);
 
-        if (out == null){  //端口如果没有打开，测进行打开
-            String message= "Failed to send packet(%s) because the port %s cannot be opened.";
-            message = String.format(message,StringUtil.parse(data), portName );
-            log.error(message);
+            log.info("数据包:" + StringUtil.parse(data) + " 端口:" + portName + " 发送成功. ");
+            return true;
+        }
+        catch (IOException e){
+            this.close();
+            try {
+                connect(portName);
+            }
+            catch (Exception e1){
+
+            }
             return false;
         }
-        out.write(data);
-
-        log.info("数据包:" + StringUtil.parse(data)+ " 端口:"+ portName + " 发送成功. ");
-        return true;
 
     }
 

@@ -6,9 +6,9 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane onKeyPressed="#onKeyPressed" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.zhy.smail.MainController">
-    <ImageView pickOnBounds="true" preserveRatio="true">
+
+<Pane onKeyPressed="#onKeyPressed" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zhy.smail.MainController">
+    <ImageView layoutX="0" layoutY="0" pickOnBounds="true" preserveRatio="true">
         <image>
             <Image url="@../../../images/firstMainBack.jpg"/>
         </image>

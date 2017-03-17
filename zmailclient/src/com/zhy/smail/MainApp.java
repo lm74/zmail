@@ -65,7 +65,7 @@ public class MainApp extends Application {
     }
 
     public void setOffline(boolean offline) {
-        this.offline.set(offline);
+       this.offline.set(offline);
     }
 
     public TimeoutTimer getTimer() {
@@ -98,7 +98,9 @@ public class MainApp extends Application {
         rootScene.getStylesheets().add("style.css");
         primaryStage.setScene(rootScene);
         rootStage = primaryStage;
+
         primaryStage.setMaximized(true);
+
         primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.show();
         rootScene.getWindow().centerOnScreen();
