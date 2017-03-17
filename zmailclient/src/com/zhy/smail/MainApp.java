@@ -99,7 +99,7 @@ public class MainApp extends Application {
         primaryStage.setScene(rootScene);
         rootStage = primaryStage;
 
-        primaryStage.setMaximized(true);
+        //primaryStage.setMaximized(true);
         primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.show();
         rootScene.getWindow().centerOnScreen();
