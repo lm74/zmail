@@ -27,6 +27,9 @@ public class DoorSystemRunner implements Runnable {
     private UserService userService;
     private DeliveryLogService deliveryLogService;
     private int waitTime = 2000;
+    public DoorSystemRunner(){
+        canceled = false;
+    }
 
     public DoorConnection getConnection() {
         return connection;
@@ -229,11 +232,11 @@ public class DoorSystemRunner implements Runnable {
                 udpSender = new ZyudpSender(connection.getServerPort());
             }
             udpSender.send(data, connection.getServerIp(), connection.getServerPort());
-            sleep(1);
-            udpSender.send(data, connection.getServerIp(), connection.getServerPort());
-            sleep(1);
-            udpSender.send(data, connection.getServerIp(), connection.getServerPort());
-            sleep(1);
+//            sleep(1);
+//            udpSender.send(data, connection.getServerIp(), connection.getServerPort());
+//            sleep(1);
+//            udpSender.send(data, connection.getServerIp(), connection.getServerPort());
+//            sleep(1);
         }
         catch (InterruptedException e){
 

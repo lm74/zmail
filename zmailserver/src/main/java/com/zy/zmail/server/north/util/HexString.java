@@ -101,6 +101,7 @@ public class HexString {
         return hexString;
     }
 
+
     public static char ascii2Char(byte ASCII) {
         return (char) ASCII;
     }
@@ -112,17 +113,26 @@ public class HexString {
     public static byte[] strToAscii(String str, int length){
         if(str == null || str.length() ==0) return new byte[0];
 
-        char[] cs = str.toCharArray();
-        int extralength = 0;
-        if(length>cs.length){
-            extralength = cs.length - length;
+
+        int cslength = str.length();
+        if(length>cslength){
+            int extralength = length-cslength;
+            String temp = "";
+            for(int i=0; i<extralength; i++){
+                temp = temp.concat("0");
+            }
+            str = temp + str;
         }
+
+        char[] cs = str.toCharArray();
         byte[] ases = new byte[length];
-        for(int i=extralength; i<cs.length; i++){
+        for(int i=0; i<cs.length; i++){
             byte asc = char2ASCII(cs[i]);
-            ases[extralength+i]=asc;
+            ases[i]=asc;
+
         }
         return ases;
     }
+
 
 }

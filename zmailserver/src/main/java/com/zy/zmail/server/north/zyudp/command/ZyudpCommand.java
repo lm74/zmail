@@ -2,6 +2,7 @@ package com.zy.zmail.server.north.zyudp.command;
 
 import com.zy.zmail.server.north.DoorMessage;
 import com.zy.zmail.server.north.util.CRC8;
+import com.zy.zmail.server.north.util.HexString;
 import com.zy.zmail.server.north.util.Octet;
 
 import java.util.Calendar;
@@ -23,7 +24,7 @@ import java.util.Date;
     public static final int END_FLAG = 0XCC;
     public static final int END_FLAG2 = 0XDD;
 
-    public static final int COMMAND_LENGTH = 27;
+    public static final int COMMAND_LENGTH = 33;
     private DoorMessage message;
     private int index;
 
@@ -40,26 +41,28 @@ import java.util.Date;
     }
 
     private void getAddress(byte[] data){
-        for(int i=0; i<14; i++){
-            data[index+i] = 0;
+        for(int i=0; i<20; i++) {
+            data[index + i] = 0;
         }
-        byte[] building = Octet.toData(message.getBuildingNo().intValue());
+        byte[] building = HexString.strToAscii(message.getBuildingNo().toString(),4);
         System.arraycopy(building, 0, data, index, building.length);
         index += building.length;
 
-        byte[] units = Octet.toData(message.getUnitNo().shortValue());
+        byte[] units = HexString.strToAscii(message.getBuildingNo().toString(),2);
         System.arraycopy(units, 0, data, index, units.length);
         index +=units.length;
 
-        index += 4;
-        byte[] rooms = Octet.toData(message.getRoomNo().intValue());
-        System.arraycopy(units, 0, data,index, units.length);
-
+        byte[] rooms = HexString.strToAscii(message.getRoomNo().toString(),8);
+        System.arraycopy(rooms, 0, data,index, rooms.length);
         index += rooms.length;
 
-        for(int i=0; i<14; i++){
-            data[i+3] += 0x30;
-        }
+        byte[] cabinets = HexString.strToAscii(message.getCabinetNo().toString(),4);
+        System.arraycopy(cabinets, 0, data,index, cabinets.length);
+        index += cabinets.length;
+
+        byte[] boxs = HexString.strToAscii(message.getBoxNo().toString(),2);
+        System.arraycopy(boxs, 0, data,index, boxs.length);
+        index += boxs.length;
     }
 
     private void getDeliveryTime(byte[] data){

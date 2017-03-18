@@ -11,6 +11,8 @@ public class DoorMessage {
     private Integer unitNo;
     private Integer floorNo;
     private Integer roomNo;
+    private Integer cabinetNo;
+    private Integer boxNo;
     private Integer commandNo;
     private Object data;
     private Date deliveryTime;
@@ -38,6 +40,8 @@ public class DoorMessage {
         unitNo = 0;
         floorNo = 0;
         roomNo = 0;
+        cabinetNo = 0;
+        boxNo = 0;
     }
 
     public Integer getCommandNo() {
@@ -101,5 +105,27 @@ public class DoorMessage {
 
     public void setDeliveryTime(Date deliveryTime) {
         this.deliveryTime = deliveryTime;
+    }
+
+    public Integer getCabinetNo() {
+        return cabinetNo;
+    }
+
+    public void setCabinetNo(Integer cabinetNo) {
+        if(cabinetNo == null){
+            cabinetNo = 0;
+        }
+        this.cabinetNo = cabinetNo;
+    }
+
+    public Integer getBoxNo() {
+        return boxNo;
+    }
+
+    public void setBoxNo(Integer boxNo) {
+        if(boxNo == null){
+            boxNo = 0;
+        }
+        this.boxNo = boxNo;
     }
 }

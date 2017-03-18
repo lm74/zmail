@@ -64,5 +64,15 @@ public class CabinetServiceImpl implements CabinetService{
         return cabinets.size();
     }
 
+    public CabinetInfo getByCabinetId(Integer cabinetId){
+        String jpql = "from CabinetInfo c where c.cabinetId= :cabinetId";
+        Query query = em.createQuery(jpql);
+        query.setParameter("cabinetId", cabinetId);
+        List cabinets = query.getResultList();
+        if(cabinets.size() == 0){
+            return null;
+        }
+        return (CabinetInfo)cabinets.get(0);
+    }
 
 }

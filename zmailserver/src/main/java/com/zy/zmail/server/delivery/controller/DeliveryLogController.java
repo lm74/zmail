@@ -46,6 +46,9 @@ public class DeliveryLogController {
     @Autowired
     OptionService optionService;
 
+    @Autowired
+    CabinetService cabinetService;
+
      @RequestMapping(value="/byCabinetId", method = RequestMethod.GET)
     public JsonResult listByCabinetId(@RequestParam Integer cabinetId, Integer periodType, Integer pickedup){
         JsonResult result = JsonResult.getInstance();
@@ -104,7 +107,7 @@ public class DeliveryLogController {
         box.setOwner( ownerId);
         box.setUsed(true);
         boxService.save(box);
-
+        CabinetInfo cabinetInfo = cabinetService.getByCabinetId(box.getCabinetId());
         LogBrief brief = new LogBrief();
         brief.setDeliveryMan(deliveryMan);
         brief.setBoxId(boxId);
@@ -120,9 +123,11 @@ public class DeliveryLogController {
         message.setUnitNo(StringUtil.getInteger(user.getUnitNo()));
         message.setFloorNo(StringUtil.getInteger(user.getFloorNo()));
         message.setRoomNo(StringUtil.getInteger(user.getRoomNo()));
+        message.setCabinetNo(StringUtil.getInteger(cabinetInfo.getCabinetNo()));
+        message.setBoxNo(box.getSequence());
         message.setCommandNo(ZytcpCommand.DELIVERY);
         message.setDeliveryTime(new Date());
-        message.setOperateType((byte)0);
+        message.setOperateType((byte)1);
         DoorSystemRunner.messages.add(message);
 
         return result;
@@ -132,30 +137,27 @@ public class DeliveryLogController {
     public JsonResult pickup(@RequestParam Integer logId, @RequestParam Integer pickupUser, @RequestParam Integer pickupType){
 
         JsonResult result = JsonResult.getInstance();
-         LogBrief log = deliveryLogService.getBriefByLogId(logId);
-
+        LogBrief log = deliveryLogService.getBriefByLogId(logId);
         BoxInfo box = boxService.getById(log.getBoxId());
         box.setUsed(false);
         boxService.save(box);
-
-
+        CabinetInfo cabinetInfo = cabinetService.getByCabinetId(box.getCabinetId());
         log.setPickupTime(new Timestamp(System.currentTimeMillis()));
         log.setPickupType(pickupType);
         log.setPickupUser(pickupUser);
         deliveryLogService.save(log);
-
         DoorMessage message = new DoorMessage();
         UserInfo user = userService.getByUserId(pickupUser);
         message.setBuildingNo(StringUtil.getInteger(user.getBuildingNo()));
         message.setUnitNo(StringUtil.getInteger(user.getUnitNo()));
         message.setFloorNo(StringUtil.getInteger(user.getFloorNo()));
         message.setRoomNo(StringUtil.getInteger(user.getRoomNo()));
+        message.setCabinetNo(StringUtil.getInteger(cabinetInfo.getCabinetNo()));
+        message.setBoxNo(box.getSequence());
         message.setCommandNo(ZytcpCommand.PICKUP);
         message.setDeliveryTime(new Date());
-        message.setOperateType((byte)0);
+        message.setOperateType((byte)2);
         DoorSystemRunner.messages.add(message);
-
-
         return result;
     }
 }
