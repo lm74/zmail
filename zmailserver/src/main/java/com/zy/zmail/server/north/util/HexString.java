@@ -100,4 +100,29 @@ public class HexString {
 
         return hexString;
     }
+
+    public static char ascii2Char(byte ASCII) {
+        return (char) ASCII;
+    }
+
+    public static byte char2ASCII(char c) {
+        return (byte) c;
+    }
+
+    public static byte[] strToAscii(String str, int length){
+        if(str == null || str.length() ==0) return new byte[0];
+
+        char[] cs = str.toCharArray();
+        int extralength = 0;
+        if(length>cs.length){
+            extralength = cs.length - length;
+        }
+        byte[] ases = new byte[length];
+        for(int i=extralength; i<cs.length; i++){
+            byte asc = char2ASCII(cs[i]);
+            ases[extralength+i]=asc;
+        }
+        return ases;
+    }
+
 }

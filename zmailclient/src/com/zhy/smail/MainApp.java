@@ -44,10 +44,15 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.util.Locale;
+import java.util.logging.Logger;
 
 public class MainApp extends Application {
+    private static Log logger = LogFactory.getLog(MainApp.class);
+
     private Scene rootScene;
     private Stage rootStage;
     private MainController mainController;
@@ -141,10 +146,32 @@ public class MainApp extends Application {
     public void testConnection() {
         Task<Integer> testTask = new Task<Integer>() {
             private Integer resultValue;
+            private boolean checked = false;
 
             @Override
             protected Integer call() throws Exception {
                 updateMessage("正在连接服务器...");
+                checked = false;
+                if(GlobalOption.appMode == 0){
+                   trySleep(5000);
+                }
+                updateMessage("正在连接服务器1...");
+                test();
+
+                return resultValue;
+            }
+
+            private void trySleep(long m){
+                try {
+                    Thread.sleep(m);
+                }
+                catch (Exception e){
+
+                }
+            }
+
+            private void test(){
+
                 UserService.testConnection(new RestfulResult() {
                     @Override
                     public void doResult(RfResultEvent event) {
@@ -158,11 +185,20 @@ public class MainApp extends Application {
 
                     @Override
                     public void doFault(RfFaultEvent event) {
-                        resultValue = -1;
-                        updateValue(-1);
-                        if (event.getErrorNo() == -1) {
-                            updateMessage(event.getMessage());
-                        } else {
+                        if(GlobalOption.appMode == 0 && !checked){
+                            updateMessage("正在连接服务器2...");
+                            trySleep(30000);
+                            updateMessage("正在连接服务器3...");
+                            checked = true;
+                            test();
+                        }
+                        else {
+                            resultValue = -1;
+                            updateValue(-1);
+                            if (event.getErrorNo() == -1) {
+                                updateMessage(event.getMessage());
+                            }
+
                             updateMessage("连接服务器(" + GlobalOption.serverIP + ")失败.本机进入脱机状态，只有管理员才能登录.");
                             GlobalOption.serverIP = "127.0.0.1";
                             GlobalOption.runMode = 1;
@@ -170,7 +206,6 @@ public class MainApp extends Application {
                         }
                     }
                 });
-                return resultValue;
             }
         };
         SimpleDialog.showDialog(rootStage, testTask, "正在连接到服务器...", "连接");
@@ -239,6 +274,7 @@ public class MainApp extends Application {
     }
 
     public void openCom() {
+
         if (SendManager.gateway == null) {
             SendManager.gateway = new SerialGateway();
         }

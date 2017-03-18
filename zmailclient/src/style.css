@@ -52,7 +52,4 @@
 .selected-toggle{
     -fx-background-color: #DFB951;
 }
-.label-pickup{
-    -fx-font-size:120%;
-    -fx-text-fill: red;
-}
+

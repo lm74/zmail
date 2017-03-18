@@ -85,6 +85,8 @@ public class MainController implements Initializable {
         startGetTyped = false;
         lblOffline.setVisible(false);
         timer = new Timer();
+        if(GlobalOption.remainTime == null) return;
+
         perTotal = GlobalOption.remainTime.getIntValue();
         if (perTotal == 0) {
             return;

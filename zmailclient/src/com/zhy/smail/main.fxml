@@ -23,7 +23,7 @@
     <Button layoutX="998.0" layoutY="910.0" mnemonicParsing="false" onAction="#onHelpAction" opacity="0.0"
             prefHeight="113.0" prefWidth="197.0" text="使用帮助"/>
     <Label fx:id="lblMessage" layoutX="1190.0" layoutY="48.0" prefHeight="18.0" prefWidth="25.0"/>
-    <Label fx:id="lblOffline" layoutX="1065.0" layoutY="48.0" styleClass="offline" text="脱机"/>
+    <Label fx:id="lblOffline" visible="false" layoutX="1065.0" layoutY="48.0" styleClass="offline" text="脱机"/>
     <Pane fx:id="logoImagePane" layoutX="14.0" layoutY="1.0" prefHeight="113.0" prefWidth="280.0">
         <children>
             <ImageView fx:id="logoImageView" fitHeight="113.0" fitWidth="200.0" layoutX="40.0" layoutY="20.0"
