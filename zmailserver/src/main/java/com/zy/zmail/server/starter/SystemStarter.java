@@ -41,6 +41,6 @@ public class SystemStarter implements ApplicationRunner{
         connection.setServerPort(doorServerPort.getIntValue());
         doorSystemRunner = new DoorSystemRunner(connection, userService, deliveryLogService);
 
-        new Thread(doorSystemRunner);
+        (new Thread(doorSystemRunner)).start();
     }
 }

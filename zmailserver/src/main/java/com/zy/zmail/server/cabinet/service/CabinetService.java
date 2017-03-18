@@ -14,4 +14,5 @@ public interface CabinetService {
     public void delete(Integer cabinetId);
     public CabinetInfo getByCabinetNo(String cabinetNo);
     public Integer sameCabinetNo(String cabinetNo);
+    public CabinetInfo getByCabinetId(Integer cabnietId);
 }
