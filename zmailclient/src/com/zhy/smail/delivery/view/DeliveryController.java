@@ -1,6 +1,7 @@
 package com.zhy.smail.delivery.view;
 
 import com.zhy.smail.MainApp;
+import com.zhy.smail.common.controller.RootController;
 import com.zhy.smail.config.GlobalOption;
 import com.zhy.smail.manager.entity.DeliveryLog;
 import com.zhy.smail.manager.service.DeliveryLogService;
@@ -30,7 +31,7 @@ import java.util.ResourceBundle;
 /**
  * Created by wenliz on 2017/1/14.
  */
-public class DeliveryController implements Initializable{
+public class DeliveryController extends RootController implements Initializable{
     @FXML
     private Label lblTimer;
     @FXML
@@ -44,7 +45,7 @@ public class DeliveryController implements Initializable{
     @FXML
     private Button tomailButton;
 
-    private MainApp app;
+
 
 
     public void setApp(MainApp app) {
@@ -57,10 +58,10 @@ public class DeliveryController implements Initializable{
         HBox.setHgrow(topRight, Priority.ALWAYS);
 
         UserInfo user = GlobalOption.currentUser;
-        if(user.getUserType() == UserInfo.DELIVERY){
+        /*if(user.getUserType() == UserInfo.DELIVERY){
             mailButton.setVisible(false);
             tomailButton.setVisible(false);
-        }
+        }*/
     }
 
     @FXML

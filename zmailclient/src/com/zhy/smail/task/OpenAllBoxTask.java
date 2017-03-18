@@ -34,6 +34,7 @@ public class OpenAllBoxTask  extends Task<Integer> {
     private String openedBoxNos;
     private List<Integer> openedBoxList;
 
+
     public List<Integer> getOpenedBoxList() {
         return openedBoxList;
     }

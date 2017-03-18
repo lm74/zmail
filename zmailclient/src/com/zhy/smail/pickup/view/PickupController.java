@@ -242,7 +242,7 @@ public class PickupController  implements Initializable {
         for (int i = 0; i < logs.size(); i++) {
             DeliveryLog log = logs.get(i);
             for(int ii=0; ii<task.getOpenedBoxList().size(); ii++){
-                Integer sequence = task.getOpenedBoxList().get(i);
+                Integer sequence = task.getOpenedBoxList().get(ii);
                 if(log.getBoxInfo().getSequence().equals(sequence)){
                     DeliveryLogService.pickup(log.getLogId(), GlobalOption.currentUser.getUserId(), 0, new
                             RestfulResult() {
@@ -252,7 +252,6 @@ public class PickupController  implements Initializable {
                                 @Override
                                 public void doFault(RfFaultEvent event) { }
                             });
-
                 }
             }
         }

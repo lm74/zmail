@@ -151,17 +151,15 @@ public class ConfirmDeliveryController extends RootController implements Initial
     public void onBackAction(ActionEvent event){
         String parent = GlobalOption.parents.pop();
 
-        if(parent!=null){
-            if(parent.equals("selectRoom")){
+        if(parent!=null) {
+            if (parent.equals("selectRoom")) {
                 app.goCommonDelivery();
-            }
-            else if(parent.equals("putmail")){
+            } else if (parent.equals("putmail")) {
                 app.goPutmail();
-            }
-            else{
+            } else {
                 app.goPutdown();
             }
-
+        }
 
     }
 

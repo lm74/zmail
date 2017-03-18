@@ -43,6 +43,7 @@ public class SplashController extends RootController implements Initializable {
             File file = new File(viedoFile);
             videoMeida = new Media(file.toURI().toString());
             mediaPlayer = new MediaPlayer(videoMeida);
+
             welcomeView.setMediaPlayer(mediaPlayer);
 
             mediaPlayer.setAutoPlay(true);
