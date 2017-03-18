@@ -97,14 +97,15 @@ public class MainApp extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("main.fxml"));
         Parent root = fxmlLoader.load();
         mainController = fxmlLoader.getController();
-        mainController.setApp(this);
+
         primaryStage.setTitle("ZY Mail");
         rootScene = new Scene(root, 1280, 1024);
         rootScene.getStylesheets().add("style.css");
         primaryStage.setScene(rootScene);
         rootStage = primaryStage;
+        mainController.setApp(this);
 
-        primaryStage.setMaximized(true);
+        //primaryStage.setMaximized(true);
 
         primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.show();
@@ -367,17 +368,7 @@ public class MainApp extends Application {
     }
 
     public void goDelivery() {
-        try {
-            FXMLLoader fxmlLoader;
-            fxmlLoader = new FXMLLoader(getClass().getResource("delivery/view/Delivery.fxml"));
-            Parent root = fxmlLoader.load();
-            getRootStage().getScene().setRoot(root);
-            // Modified By Luopeng Mar 15 2017
-            DeliveryController controller = fxmlLoader.getController();
-            controller.setApp(this);
-        } catch (Exception e) {
-            SimpleDialog.showMessageDialog(this.getRootStage(), e.getMessage(), "错误");
-        }
+       loadFxml("delivery/view/delivery.fxml");
     }
 
     public ChangePasswordController goChangePassword() {
