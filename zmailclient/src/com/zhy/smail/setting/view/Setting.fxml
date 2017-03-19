@@ -67,7 +67,7 @@
                                            GridPane.rowIndex="3"/>
                                 <Label text="视频文件：" GridPane.columnIndex="1" GridPane.halignment="RIGHT"
                                        GridPane.rowIndex="3"/>
-                                <Label text="超时时间：" GridPane.columnIndex="3" GridPane.halignment="RIGHT"/>
+                                <Label text="超时未取时间：" GridPane.columnIndex="3" GridPane.halignment="RIGHT"/>
                                 <Label text="小时" GridPane.columnIndex="5"/>
 
                                 <TextField fx:id="txtTimeout" GridPane.columnIndex="4"/>
@@ -77,7 +77,7 @@
 
                                 <CheckBox fx:id="chkNeedPasswordForCard" mnemonicParsing="false" text="刷卡登录需要密码"
                                           GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="2"/>
-                                <CheckBox fx:id="chkDeliverSameMail" mnemonicParsing="false" text="投信选择已投未取件信箱"
+                                <CheckBox fx:id="chkDeliverSameMail" mnemonicParsing="false" text="邮政信箱重复投递"
                                           GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="2"/>
 
                                 <Label text="本柜所在栋号：" GridPane.columnIndex="1" GridPane.halignment="RIGHT"/>

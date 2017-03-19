@@ -11,7 +11,12 @@
 }
 
 .label-title{
-    -fx-font-size: 150%;
+    -fx-font-size: 160%;
+    -fx-text-fill: red;
+}
+
+.label-title-main{
+    -fx-font-size: 170%;
     -fx-text-fill: red;
 }
 .label-middle{
@@ -52,4 +57,11 @@
 .selected-toggle{
     -fx-background-color: #DFB951;
 }
-
+.label-pickup{
+    -fx-font-size:120%;
+    -fx-text-fill: #C62526;
+}
+.pickup-user-info{
+    -fx-font-size: 130%;
+    -fx-text-fill: #C62526;
+}

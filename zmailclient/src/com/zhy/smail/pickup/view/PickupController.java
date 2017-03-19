@@ -52,7 +52,8 @@ public class PickupController  implements Initializable {
     private Label lblMailBoxNumber;
     @FXML
     private Label lblPacketBoxNumber;
-
+    @FXML
+    private Label lblUserInfo;
     private MainApp app;
     private List<DeliveryLog> mailLogs;
     private List<DeliveryLog> packetLogs;
@@ -72,8 +73,16 @@ public class PickupController  implements Initializable {
         HBox.setHgrow(topLeft, Priority.ALWAYS);
         HBox.setHgrow(topRight, Priority.ALWAYS);
         UserInfo user = GlobalOption.currentUser;
-
-
+        if(UserInfo.OWNER == user.getUserType()){
+            lblUserInfo.setText(user.getBuildingNo()
+                    + "栋" + user.getUnitNo() + "单元"
+                    + user.getRoomNo() + "（房号:"
+                    + user.getBuildingNo()
+                    + user.getUnitNo()
+                    + user.getRoomNo()+" )");
+        }else {
+            lblUserInfo.setText("");
+        }
         DeliveryLogService.listByOwner(GlobalOption.currentCabinet.getCabinetId(), GlobalOption.currentUser.getUserId(),0, new RestfulResult() {
             @Override
             public void doResult(RfResultEvent event) {
@@ -210,7 +219,7 @@ public class PickupController  implements Initializable {
                 if (task.getOpenedBoxNos().length() == 0) {
                     lblOpenMessage.setText("开箱失败，请重试或联系管理员");
                 } else {
-                    lblOpenMessage.setText(task.getOpenedBoxNos() + "号箱门已经打开，请取出物品后关好箱门。");
+                    lblOpenMessage.setText(task.getOpenedBoxNos() + "箱门已经打开，请您一次性取出所有物品后关好箱门。");
                     Speaker.openBoxSound();
                     Speaker.doorOpened();
                 }
@@ -252,6 +261,7 @@ public class PickupController  implements Initializable {
                                 @Override
                                 public void doFault(RfFaultEvent event) { }
                             });
+
                 }
             }
         }

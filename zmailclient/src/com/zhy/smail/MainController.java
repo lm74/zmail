@@ -19,7 +19,6 @@ import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
@@ -86,7 +85,7 @@ public class MainController implements Initializable {
         startGetTyped = false;
         lblOffline.setVisible(false);
         timer = new Timer();
-        if(GlobalOption.remainTime == null) return;
+        if(GlobalOption.remainTime== null) return;
 
         perTotal = GlobalOption.remainTime.getIntValue();
         if (perTotal == 0) {
@@ -146,13 +145,7 @@ public class MainController implements Initializable {
                 lblOffline.setVisible(newValue);
             }
         });
-        /*app.getRootStage().addEventHandler(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                System.out.println("1=" + event.getCharacter());
-            }
-        });*/
-}
+    }
 
     public void setAppTitle(String title) {
         lblAppTitle.setText(title);
@@ -184,25 +177,14 @@ public class MainController implements Initializable {
 
     @FXML
     private void onKeyPressed(KeyEvent event) {
-        System.out.println("Pressed: " + event.getText()+": " + event.getCode());
         if (event.getCode() == KeyCode.SEMICOLON) {
             startGetTyped = true;
             typedStr = "";
         } else if (startGetTyped && event.getCode() == KeyCode.ENTER) {
             startGetTyped = false;
             startToLogin(typedStr);
-        }
-    }
-
-    @FXML
-    private void onKeyTyped(KeyEvent event){
-        System.out.println("onKeyTyped " + event.getCharacter()+": " + event.getCode());
-        if(event.getCharacter().equals(";") || event.getCharacter().equals("；")){
-            startGetTyped = true;
-            typedStr = "";
-        }
-        else if (startGetTyped) {
-            typedStr += event.getCharacter();
+        } else if (startGetTyped) {
+            typedStr += event.getText();
         }
     }
 

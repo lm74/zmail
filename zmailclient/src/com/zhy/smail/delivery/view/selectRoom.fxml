@@ -47,7 +47,7 @@
                 <Label text="已选箱门号：" GridPane.halignment="RIGHT" />
 
 
-                <TextField fx:id="txtRoomNo" promptText="输入房号" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <TextField fx:id="txtRoomNo" promptText="请输入或者选择房号" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                 <Button mnemonicParsing="false" onAction="#onChoiceUserAction" text="选择" GridPane.columnIndex="2" GridPane.rowIndex="1" />
             <Button mnemonicParsing="false" onAction="#onOpenAction" text="开箱投递" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <Label fx:id="lblBoxNo" text="Label" GridPane.columnIndex="1" />

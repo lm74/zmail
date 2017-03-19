@@ -137,6 +137,21 @@ public class CommonDeliveryController extends RootController implements Initiali
                             smallButton.setDisable(false);
                             middleButton.setDisable(false);
                             largeButton.setDisable(false);
+                            if (smallBoxes.size() == 0) {
+                                smallButton.setDisable(true);
+                            } else {
+                                smallButton.setDisable(false);
+                            }
+                            if (middleBoxes.size() == 0) {
+                                middleButton.setDisable(true);
+                            } else {
+                                middleButton.setDisable(false);
+                            }
+                            if (largeBoxes.size() == 0) {
+                                largeButton.setDisable(true);
+                            } else {
+                                largeButton.setDisable(false);
+                            }
                         }
                     }
 

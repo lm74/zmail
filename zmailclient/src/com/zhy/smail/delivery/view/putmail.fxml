@@ -48,7 +48,7 @@
                 <Label text="空闲箱格数量：" GridPane.columnIndex="0" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
 
 
-                <TextField fx:id="txtRoomNo" promptText="输入房号" GridPane.columnIndex="1" />
+                <TextField fx:id="txtRoomNo" promptText="请输入或者选择房号" GridPane.columnIndex="1" />
             <Button mnemonicParsing="false" onAction="#onChoiceUserAction" text="选择" GridPane.columnIndex="2" />
             <Button fx:id="startDeliveryButton" mnemonicParsing="false" onAction="#onStartDeliveryAction" text="开箱投递" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <Label fx:id="lblAvailableBox" GridPane.columnIndex="1" GridPane.rowIndex="1" />

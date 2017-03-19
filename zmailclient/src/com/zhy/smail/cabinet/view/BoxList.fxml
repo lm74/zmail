@@ -73,7 +73,7 @@
 
                 </ChoiceBox>
                 <Button fx:id="openAllButton" mnemonicParsing="false" onAction="#onOpenAllBox" text="全开" />
-                <Button fx:id="clearAllButton" mnemonicParsing="false" onAction="#onOpenAllBox" text="全清" />
+                <Button fx:id="clearAllButton" mnemonicParsing="false" onAction="#onClearAllBox" text="全清" />
             <CheckBox fx:id="chkOpenBoxTest" mnemonicParsing="false" text="开门测试" />
             <Button fx:id="refreshButton" mnemonicParsing="false" onAction="#onRefreshAction" text="刷新状态" />
             </items>
