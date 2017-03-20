@@ -35,6 +35,8 @@ import com.zhy.smail.component.keyboard.control.KeyBoardPopup;
 import com.zhy.smail.component.keyboard.control.KeyBoardPopupBuilder;
 import com.zhy.smail.component.keyboard.control.VkProperties;
 
+import com.zhy.smail.lcp.util.HexString;
+import com.zhy.smail.lcp.util.Octet;
 import javafx.application.Application;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
@@ -162,8 +164,38 @@ public class MainDemo extends Application implements VkProperties {
 
   }
 
+  public static char ascii2Char(byte ASCII) {
+    return (char) ASCII;
+  }
+
+  public static byte char2ASCII(char c) {
+    return (byte) c;
+  }
+
+  public static byte[] strToAscii(String str, int length){
+    if(str == null || str.length() ==0) return new byte[0];
+
+    int cslength = str.length();
+    if(length>cslength){
+      int extralength = length-cslength;
+      String temp = "";
+      for(int i=0; i<extralength; i++){
+        temp = temp.concat("0");
+      }
+      str = temp + str;
+    }
+
+    char[] cs = str.toCharArray();
+    byte[] ases = new byte[length];
+    for(int i=0; i<cs.length; i++){
+      byte asc = char2ASCII(cs[i]);
+      ases[i]=asc;
+    }
+    return ases;
+  }
+
   public static void main(String[] args) {
-    Application.launch(args);
+    //Application.launch(args);
     /*Calendar cal =Calendar.getInstance();
     SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     cal.set(Calendar.HOUR, 0);
@@ -174,6 +206,11 @@ public class MainDemo extends Application implements VkProperties {
     //这种输出的是上个星期周日的日期，因为老外那边把周日当成第一天
     cal.set(Calendar.DAY_OF_MONTH, 1);
     System.out.println(df.format(cal.getTime()));*/
+
+    String  str = "301";
+    byte[] aa = strToAscii(str, 5);
+    String bb = HexString.toString(aa);
+    System.out.print(bb);
 
   }
 
