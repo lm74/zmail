@@ -96,7 +96,6 @@ public class CabinetController {
     public JsonResult deleteById(@PathVariable Integer cabinetId){
         JsonResult result = JsonResult.getInstance();
         cabinetService.delete(cabinetId);
-        boxService.deleteByCabinetId(cabinetId);
         return result;
     }
 

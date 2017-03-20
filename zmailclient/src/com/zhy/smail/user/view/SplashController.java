@@ -3,8 +3,6 @@ package com.zhy.smail.user.view;
 import com.zhy.smail.MainApp;
 import com.zhy.smail.common.controller.RootController;
 import com.zhy.smail.config.LocalConfig;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.input.KeyEvent;
@@ -34,18 +32,15 @@ public class SplashController extends RootController implements Initializable {
         welcomeView.setFitWidth(app.getRootStage().getWidth());
         welcomeView.setPreserveRatio(false);
 
-    }
+            }
 
     public boolean play(){
         try {
-
             String viedoFile = LocalConfig.getInstance().getVideoFile();
             File file = new File(viedoFile);
             videoMeida = new Media(file.toURI().toString());
             mediaPlayer = new MediaPlayer(videoMeida);
-
             welcomeView.setMediaPlayer(mediaPlayer);
-
             mediaPlayer.setAutoPlay(true);
             return true;
         }

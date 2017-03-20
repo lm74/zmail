@@ -69,14 +69,17 @@ public class DeliveryLogController {
         return result;
     }
 
-    @RequestMapping(value="/byOwner", method = RequestMethod.GET)
-    public JsonResult listByOwner(@RequestParam Integer cabinetId, Integer ownerId, Integer pickuped){
+    @RequestMapping(value = "/byOwner", method = RequestMethod.GET)
+    public JsonResult listByOwner(@RequestParam Integer cabinetId, Integer ownerId, Integer pickuped) {
         JsonResult result = JsonResult.getInstance();
-        if(pickuped == null || pickuped == 0){
+        if (pickuped == null || pickuped == 0) {
             result.setData(deliveryLogService.listByOwner(cabinetId, ownerId, false));
-        }
-        else{
-            result.setData(deliveryLogService.listByOwner(cabinetId, ownerId, true));
+        } else {
+            if (pickuped == 2) {
+                result.setData(deliveryLogService.listByOwner(cabinetId, ownerId, false));
+            } else {
+                result.setData(deliveryLogService.listByOwner(cabinetId, ownerId, true));
+            }
         }
         return result;
     }

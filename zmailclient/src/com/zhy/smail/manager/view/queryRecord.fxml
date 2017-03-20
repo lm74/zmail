@@ -7,12 +7,10 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<?import javafx.scene.layout.Region?>
 <VBox alignment="center" minWidth="1200.0" prefHeight="1024.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zhy.smail.manager.view.QueryRecordController">
     <children>
 
@@ -40,11 +38,11 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <Button fx:id="deliveryButton" contentDisplay="TOP" mnemonicParsing="false" onAction="#onLogListAction" prefHeight="178.0" prefWidth="287.0" text="投件记录" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0">
+                <Button fx:id="deliveryButton" contentDisplay="TOP" mnemonicParsing="false" onAction="#onLogListAction" prefHeight="178.0" prefWidth="287.0" text="投取记录" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0">
                     <graphic>
                         <ImageView fitHeight="130.0" fitWidth="123.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@/resources/images/button/query.png" />
+                                <Image url="@/resources/images/button/touqu.png" />
                             </image>
                         </ImageView>
                     </graphic></Button>
@@ -57,14 +55,23 @@
                         </ImageView>
                     </graphic>
                 </Button>
-                <Button fx:id="timeoutButton" contentDisplay="TOP" mnemonicParsing="false" onAction="#onTimeoutAction" prefHeight="178.0" prefWidth="287.0" text="超时记录" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                <Button fx:id="timeoutButton" contentDisplay="TOP" mnemonicParsing="false" onAction="#onTimeoutAction" prefHeight="178.0" prefWidth="287.0" text="超时记录" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                     <graphic>
                         <ImageView fitHeight="130.0" fitWidth="123.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@/resources/images/button/query.png" />
+                                <Image url="@/resources/images/button/expired.png" />
                             </image>
                         </ImageView>
                     </graphic></Button>
+                <Button fx:id="noPickupButton" contentDisplay="TOP" mnemonicParsing="false" onAction="#onNoPickupAction" prefHeight="178.0" prefWidth="287.0" text="未取记录" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" >
+                    <graphic>
+                        <ImageView fitHeight="130.0" fitWidth="123.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@/resources/images/button/noPickup.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
             </children>
         </GridPane>
     </children>

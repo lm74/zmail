@@ -36,34 +36,46 @@ public class DeliveryLogServiceImpl implements DeliveryLogService {
 
         Calendar endTime = Calendar.getInstance();
         if(pickedup > 0){
-            endTime.add(Calendar.HOUR_OF_DAY, -pickedup);
-
-            jqpl += " and  (log.pickupTime is null) and (log.deliveryTime<:endTime) ";
+            if(pickedup == 2){
+                jqpl += " and  (log.pickupTime is null) ";
+            }else {
+                endTime.add(Calendar.HOUR_OF_DAY, -pickedup);
+                jqpl += " and  (log.pickupTime is null) and (log.deliveryTime<:endTime) ";
+            }
         }
         Query query = em.createQuery(jqpl);
         query.setParameter("cabinetId", cabinetId);
         if(pickedup>0){
-            query.setParameter("endTime", endTime.getTime());
+            if(pickedup != 2){
+                query.setParameter("endTime",  endTime.getTime());
+            }
         }
         return (List<DeliveryLog>)query.getResultList();
     }
     public List<DeliveryLog> listByCabinetId(Integer cabinetId, Integer periodType, Integer pickedup){
-        if(periodType>5 || periodType <1) return null;
+        if(periodType>5 || periodType <1) {
+            return null;
+        }
 
         Date startTime =  getStartTime(periodType);
         String jqpl = " from DeliveryLog as log  left join fetch log.boxInfo as box " +
             "where log.deliveryTime>=:startTime and box.cabinetId = :cabinetId ";
         Calendar endTime = Calendar.getInstance();
         if(pickedup > 0){
-            endTime.add(Calendar.HOUR_OF_DAY, -pickedup);
-
-            jqpl += " and  (log.pickupTime is null) and (log.deliveryTime<:endTime) ";
+            if(pickedup == 2){
+                jqpl += " and  (log.pickupTime is null) ";
+            }else {
+                endTime.add(Calendar.HOUR_OF_DAY, -pickedup);
+                jqpl += " and  (log.pickupTime is null) and (log.deliveryTime<:endTime) ";
+            }
         }
         Query query = em.createQuery(jqpl);
         query.setParameter("startTime", startTime);
         query.setParameter("cabinetId", cabinetId);
         if(pickedup>0){
-            query.setParameter("endTime",  endTime.getTime());
+            if(pickedup != 2){
+                query.setParameter("endTime",  endTime.getTime());
+            }
         }
         return (List<DeliveryLog>)query.getResultList();
     }

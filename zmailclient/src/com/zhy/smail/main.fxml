@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<Pane onKeyPressed="#onKeyPressed" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zhy.smail.MainController">
+<Pane onKeyTyped="#onKeyTyped" onKeyPressed="#onKeyPressed" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zhy.smail.MainController">
     <ImageView pickOnBounds="true" preserveRatio="true">
         <image>
             <Image url="@../../../images/firstMainBack.jpg" />

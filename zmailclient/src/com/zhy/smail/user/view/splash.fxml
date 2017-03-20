@@ -4,8 +4,7 @@
 <?import javafx.scene.media.MediaView?>
 
 <?import javafx.scene.layout.StackPane?>
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1024.0" prefWidth="1280.0"
-           xmlns="http://javafx.com/javafx/8.0.76-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zhy.smail.user.view.SplashController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1024.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.76-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zhy.smail.user.view.SplashController">
    <children>
       <MediaView fx:id="welcomeView" fitHeight="1024.0" fitWidth="1280.0" onMouseMoved="#onMouseClicked" onKeyPressed="#onKeypressed" onMouseClicked="#onMouseClicked" />
    </children>

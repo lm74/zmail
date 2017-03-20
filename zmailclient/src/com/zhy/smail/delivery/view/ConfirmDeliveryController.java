@@ -131,7 +131,7 @@ public class ConfirmDeliveryController extends RootController implements Initial
                     }
                     return null;
                 }
-               catch (InterruptedException e){
+                catch (InterruptedException e){
                     updateMessage("设备没有响应，请确认设备是否运行正常.");
                 }
                 catch (IOException e){
@@ -150,13 +150,14 @@ public class ConfirmDeliveryController extends RootController implements Initial
     @FXML
     public void onBackAction(ActionEvent event){
         String parent = GlobalOption.parents.pop();
-
         if(parent!=null) {
-            if (parent.equals("selectRoom")) {
+            if(parent.equals("selectRoom")){//解决普通投递页面调用问题
                 app.goCommonDelivery();
-            } else if (parent.equals("putmail")) {
+            }
+            else if(parent.equals("putmail")){
                 app.goPutmail();
-            } else {
+            }
+            else{
                 app.goPutdown();
             }
         }

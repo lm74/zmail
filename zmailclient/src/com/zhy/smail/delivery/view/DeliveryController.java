@@ -45,7 +45,7 @@ public class DeliveryController extends RootController implements Initializable{
     @FXML
     private Button tomailButton;
 
-
+    //private MainApp app;
 
 
     public void setApp(MainApp app) {

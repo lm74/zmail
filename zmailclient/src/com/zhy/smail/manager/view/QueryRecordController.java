@@ -46,19 +46,29 @@ public class QueryRecordController extends RootController implements Initializab
 
     @FXML
     public void onOpeningLogAction(ActionEvent event){
+        // 开箱记录查询方法
         app.goOpeningLog();
     }
 
     @FXML
     private void onLogListAction(ActionEvent event){
+        // 投取记录查询方法
         LogListController controller = app.goLogList();
         controller.setPickedup(0);
     }
+
     @FXML
     private void onTimeoutAction(ActionEvent event){
+        // 超时记录查询方法
         LogListController controller = app.goLogList();
         controller.setPickedup(1);
     }
 
+    @FXML
+    private void onNoPickupAction(ActionEvent event){
+        // 未取记录查询方法
+        LogListController controller = app.goLogList();
+        controller.setPickedup(2);
+    }
 
 }
