@@ -23,7 +23,7 @@
             <items>
                 <Button mnemonicParsing="false" onAction="#onBackAction" text="返回" />
                 <Pane HBox.hgrow="ALWAYS" />
-                <Label text="记录查询" GridPane.halignment="CENTER" />
+                <Label text="开箱记录" GridPane.halignment="CENTER" />
                 <Pane HBox.hgrow="ALWAYS" />
                 <Label fx:id="lblTimer" text="99" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
 

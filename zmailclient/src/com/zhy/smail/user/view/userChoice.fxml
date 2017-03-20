@@ -12,20 +12,18 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1024.0"
-            prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.zhy.smail.user.view.UserChoiceController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1024.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zhy.smail.user.view.UserChoiceController">
     <top>
-        <ToolBar prefHeight="40.0" prefWidth="1260.0" BorderPane.alignment="CENTER">
+        <ToolBar prefHeight="95.0" prefWidth="1260.0" BorderPane.alignment="CENTER">
             <items>
-                <Button mnemonicParsing="false" onAction="#onBackAction" text="返回"/>
-                <Region fx:id="topLeft"/>
-                <Label text="选择用户"/>
-                <Region fx:id="topRight"/>
-                <Label fx:id="lblTimer" text="99"/>
+                <Button mnemonicParsing="false" onAction="#onBackAction" text="返回" />
+                <Region fx:id="topLeft" />
+                <Label text="选择用户" />
+                <Region fx:id="topRight" />
+                <Label fx:id="lblTimer" text="99" />
             </items>
             <padding>
-                <Insets top="5.0"/>
+                <Insets top="5.0" />
             </padding>
         </ToolBar>
     </top>
@@ -35,57 +33,57 @@
                 <children>
                     <Label text="楼栋号:">
                         <HBox.margin>
-                            <Insets/>
+                            <Insets />
                         </HBox.margin>
                         <padding>
-                            <Insets left="30.0"/>
+                            <Insets left="30.0" />
                         </padding>
                     </Label>
                     <TextField fx:id="txtBuildingNo" prefHeight="23.0" prefWidth="98.0">
                         <opaqueInsets>
-                            <Insets left="30.0"/>
+                            <Insets left="30.0" />
                         </opaqueInsets>
                     </TextField>
                     <Label fx:id="lblUnitNo" text="单元号:">
                         <HBox.margin>
-                            <Insets left="5.0"/>
+                            <Insets left="5.0" />
                         </HBox.margin>
                     </Label>
-                    <TextField fx:id="txtUnitNo" prefHeight="23.0" prefWidth="99.0"/>
+                    <TextField fx:id="txtUnitNo" prefHeight="23.0" prefWidth="99.0" />
                     <Label text="楼层号:">
                         <HBox.margin>
-                            <Insets left="5.0"/>
+                            <Insets left="5.0" />
                         </HBox.margin>
                     </Label>
-                    <TextField fx:id="txtFloorNo" prefHeight="23.0" prefWidth="97.0"/>
+                    <TextField fx:id="txtFloorNo" prefHeight="23.0" prefWidth="97.0" />
                     <Label fx:id="lblRoomNo" text="房号:">
                         <HBox.margin>
-                            <Insets left="5.0"/>
+                            <Insets left="5.0" />
                         </HBox.margin>
                     </Label>
-                    <TextField fx:id="txtRoomNo" prefHeight="23.0" prefWidth="97.0"/>
-                    <Button mnemonicParsing="false" onAction="#onQueryAction" text="查询"/>
+                    <TextField fx:id="txtRoomNo" prefHeight="23.0" prefWidth="97.0" />
+                    <Button mnemonicParsing="false" onAction="#onQueryAction" text="查询" />
 
                 </children>
                 <opaqueInsets>
-                    <Insets/>
+                    <Insets />
                 </opaqueInsets>
                 <VBox.margin>
-                    <Insets right="250.0"/>
+                    <Insets right="250.0" />
                 </VBox.margin>
             </HBox>
             <TableView fx:id="ownerTable" minHeight="700.0" VBox.vgrow="ALWAYS">
                 <columns>
-                    <TableColumn fx:id="tcBuildingNo" prefWidth="250" text="楼栋号"/>
-                    <TableColumn fx:id="tcUnitNo" prefWidth="250" text="单元号"/>
-                    <TableColumn fx:id="tcFloorNo" prefWidth="250" text="楼层号"/>
-                    <TableColumn fx:id="tcRoomNo" prefWidth="250.0" text="房号"/>
-                    <TableColumn fx:id="tcPhoneNo" prefWidth="300.0" text="手机号码"/>
+                    <TableColumn fx:id="tcBuildingNo" prefWidth="250" text="楼栋号" />
+                    <TableColumn fx:id="tcUnitNo" prefWidth="250" text="单元号" />
+                    <TableColumn fx:id="tcFloorNo" prefWidth="250" text="楼层号" />
+                    <TableColumn fx:id="tcRoomNo" prefWidth="250.0" text="房号" />
+                    <TableColumn fx:id="tcPhoneNo" prefWidth="300.0" text="手机号码" />
                 </columns>
             </TableView>
         </VBox>
     </center>
     <bottom>
-        <Button mnemonicParsing="false" onAction="#onOkAction" text="选择" BorderPane.alignment="CENTER"/>
+        <Button mnemonicParsing="false" onAction="#onOkAction" text="选择" BorderPane.alignment="CENTER" />
     </bottom>
 </BorderPane>

@@ -62,9 +62,30 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
          <children>
-            <Button fx:id="smallButton" mnemonicParsing="false" onAction="#onSmallAction" prefHeight="202.0" prefWidth="250.0" text="小包箱" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-            <Button fx:id="middleButton" mnemonicParsing="false" onAction="#onMiddleAction" prefHeight="200.0" prefWidth="250.0" text="中包箱" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-            <Button fx:id="largeButton" mnemonicParsing="false" onAction="#onLargeAction" prefHeight="200.0" prefWidth="250.0" text="大包箱" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <Button fx:id="smallButton" contentDisplay="TOP" mnemonicParsing="false" onAction="#onSmallAction" prefHeight="202.0" prefWidth="250.0" text="小包箱" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+               <graphic>
+                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" >
+                      <image>
+                          <Image url="@/resources/images/button/smallBox.jpg" />
+                      </image>
+                  </ImageView>
+               </graphic></Button>
+            <Button fx:id="middleButton" contentDisplay="TOP" mnemonicParsing="false" onAction="#onMiddleAction" prefHeight="200.0" prefWidth="250.0" text="中包箱" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+               <graphic>
+                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" >
+                      <image>
+                          <Image url="@/resources/images/button/middleBox.jpg" />
+                      </image>
+                  </ImageView>
+               </graphic></Button>
+            <Button fx:id="largeButton" contentDisplay="TOP" mnemonicParsing="false" onAction="#onLargeAction" prefHeight="200.0" prefWidth="250.0" text="大包箱" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+               <graphic>
+                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" >
+                      <image>
+                          <Image url="@/resources/images/button/largeBox.jpg" />
+                      </image>
+                  </ImageView>
+               </graphic></Button>
          </children>
         </GridPane>
         <GridPane VBox.vgrow="SOMETIMES">
