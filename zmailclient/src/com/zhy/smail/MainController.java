@@ -145,7 +145,14 @@ public class MainController implements Initializable {
                 lblOffline.setVisible(newValue);
             }
         });
+   /*app.getRootStage().addEventHandler(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
     }
+            @Override
+            public void handle(KeyEvent event) {
+                System.out.println("1=" + event.getCharacter());
+            }
+        });*/
+        }
 
     public void setAppTitle(String title) {
         lblAppTitle.setText(title);
@@ -177,15 +184,26 @@ public class MainController implements Initializable {
 
     @FXML
     private void onKeyPressed(KeyEvent event) {
+        System.out.println("Pressed: " + event.getText()+": " + event.getCode());
         if (event.getCode() == KeyCode.SEMICOLON) {
             startGetTyped = true;
             typedStr = "";
         } else if (startGetTyped && event.getCode() == KeyCode.ENTER) {
             startGetTyped = false;
             startToLogin(typedStr);
-        } else if (startGetTyped) {
-            typedStr += event.getText();
         }
+    }
+
+    @FXML
+    private void onKeyTyped(KeyEvent event){
+                System.out.println("onKeyTyped " + event.getCharacter()+": " + event.getCode());
+                if(event.getCharacter().equals(";") || event.getCharacter().equals("；")){
+                        startGetTyped = true;
+                        typedStr = "";
+                    }
+                else if (startGetTyped) {
+                        typedStr += event.getCharacter();
+                }
     }
 
     private void startToLogin(String cardNo) {

@@ -150,14 +150,16 @@ public class ConfirmDeliveryController extends RootController implements Initial
     @FXML
     public void onBackAction(ActionEvent event){
         String parent = GlobalOption.parents.pop();
-        if(parent.equals("selectRoom")){//解决普通投递页面调用问题
-            app.goCommonDelivery();
-        }
-        else if(parent.equals("putmail")){
-            app.goPutmail();
-        }
-        else{
-            app.goPutdown();
+        if(parent!=null) {
+            if(parent.equals("selectRoom")){//解决普通投递页面调用问题
+                app.goCommonDelivery();
+            }
+            else if(parent.equals("putmail")){
+                app.goPutmail();
+            }
+            else{
+                app.goPutdown();
+            }
         }
 
     }

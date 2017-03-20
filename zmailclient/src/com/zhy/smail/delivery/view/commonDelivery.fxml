@@ -62,7 +62,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
          <children>
-            <Button fx:id="smallButton" contentDisplay="TOP" mnemonicParsing="false" onAction="#onSmallAction" prefHeight="202.0" prefWidth="250.0" text="小包箱" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+             <Button fx:id="smallButton" contentDisplay="TOP" mnemonicParsing="false" onAction="#onSmallAction" prefHeight="202.0" prefWidth="250.0" text="小包箱" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                <graphic>
                   <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" >
                       <image>
