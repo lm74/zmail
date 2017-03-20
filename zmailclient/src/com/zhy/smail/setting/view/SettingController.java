@@ -444,13 +444,13 @@ public class SettingController extends RootController implements Initializable {
                             message="发包失败，请检查IP和端口是否正确.";
                         }
                         else if(event.getResult() == 2){
-                            message="连接门禁系统失败，请检查IP他端口是否正确。";
+                            message="连接门禁系统失败，请检查IP和端口是否正确。";
                         }
                         else if(event.getResult() == 3){
                             message="登录门禁系统失败，请检查门禁系统是否运行正常。";
                         }
                         else{
-                            message="未知错误，请检查IP他端口是否正确。";
+                            message="未知错误，请检查IP和端口是否正确。";
                         }
                         updateMessage(message);
                         final String  showMesage = message;

@@ -129,9 +129,13 @@ public class UserChoiceController extends RootController implements Initializabl
                     public void doResult(RfResultEvent event) {
                         List<UserInfo> users = (List<UserInfo>) event.getData();
                         if (users == null) return;
-
+                        String phone = "";
                         for (int i = 0; i < users.size(); i++) {
                             UserInfo user = users.get(i);
+                            if(user.getPhoneNo() != null){
+                                phone = user.getPhoneNo().replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2");
+                            }
+                            user.setPhoneNo(phone);
                             ownerList.add(user);
                         }
                     }

@@ -4,31 +4,35 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
 
-
-<Pane onKeyTyped="#onKeyTyped" onKeyPressed="#onKeyPressed" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zhy.smail.MainController">
-    <ImageView layoutX="0" layoutY="0" pickOnBounds="true" preserveRatio="true">
+<Pane onKeyPressed="#onKeyPressed" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zhy.smail.MainController">
+    <ImageView pickOnBounds="true" preserveRatio="true">
         <image>
-            <Image url="@../../../images/firstMainBack.jpg"/>
+            <Image url="@../../../images/firstMainBack.jpg" />
         </image>
     </ImageView>
-    <Label fx:id="lblAppTitle" layoutX="458.0" layoutY="39.0" styleClass="label-title" text="智能信包箱系统"/>
-    <Button layoutX="86.0" layoutY="908.0" mnemonicParsing="false" onAction="#onDeliveryAction" opacity="0.0"
-            prefHeight="113.0" prefWidth="174.0" text="投件"/>
-    <Button layoutX="359.0" layoutY="911.0" mnemonicParsing="false" onAction="#onLoginAction" opacity="0.0"
-            prefHeight="107.0" prefWidth="222.0" text="取件"/>
-    <Button layoutX="685.0" layoutY="909.0" mnemonicParsing="false" onAction="#onManagerAction" opacity="0.0"
-            prefHeight="113.0" prefWidth="222.0" text="管理员"/>
-    <Button layoutX="998.0" layoutY="910.0" mnemonicParsing="false" onAction="#onHelpAction" opacity="0.0"
-            prefHeight="113.0" prefWidth="197.0" text="使用帮助"/>
-    <Label fx:id="lblMessage" layoutX="1190.0" layoutY="48.0" prefHeight="18.0" prefWidth="25.0"/>
-    <Label fx:id="lblOffline" visible="false" layoutX="1065.0" layoutY="48.0" styleClass="offline" text="脱机"/>
-    <Pane fx:id="logoImagePane" layoutX="14.0" layoutY="1.0" prefHeight="113.0" prefWidth="280.0">
+    <Button layoutX="86.0" layoutY="908.0" mnemonicParsing="false" onAction="#onDeliveryAction" opacity="0.0" prefHeight="113.0" prefWidth="174.0" text="投件" />
+    <Button layoutX="359.0" layoutY="911.0" mnemonicParsing="false" onAction="#onLoginAction" opacity="0.0" prefHeight="107.0" prefWidth="222.0" text="取件" />
+    <Button layoutX="685.0" layoutY="909.0" mnemonicParsing="false" onAction="#onManagerAction" opacity="0.0" prefHeight="113.0" prefWidth="222.0" text="管理员" />
+    <Button layoutX="998.0" layoutY="910.0" mnemonicParsing="false" onAction="#onHelpAction" opacity="0.0" prefHeight="113.0" prefWidth="197.0" text="使用帮助" />
+    <Label fx:id="lblMessage" layoutX="1190.0" layoutY="48.0" prefHeight="18.0" prefWidth="25.0" />
+    <Label fx:id="lblOffline" layoutX="1065.0" layoutY="48.0" styleClass="offline" text="脱机" />
+    <GridPane layoutX="0" layoutY="50" prefHeight="30.0" prefWidth="1280.0">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="269.0" minWidth="10.0" prefWidth="269.0" />
+            <ColumnConstraints hgrow="ALWAYS" maxWidth="775.0" minWidth="10.0" prefWidth="761.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="250.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
         <children>
-            <ImageView fx:id="logoImageView" fitHeight="113.0" fitWidth="200.0" layoutX="40.0" layoutY="20.0"
-                       pickOnBounds="true"
-                       preserveRatio="true"/>
+            <Label fx:id="lblAppTitle" styleClass="label-title-main" text="智能信包箱系统" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+            <ImageView fx:id="logoImageView" fitHeight="96.0" fitWidth="200.0" layoutX="10.0" layoutY="17.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.halignment="CENTER" />
         </children>
-    </Pane>
+    </GridPane>
 </Pane>

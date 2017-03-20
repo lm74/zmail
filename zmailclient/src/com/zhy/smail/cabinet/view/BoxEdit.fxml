@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1020.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.76-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zhy.smail.cabinet.view.BoxEditController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1020.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zhy.smail.cabinet.view.BoxEditController">
    <children>
        <ToolBar prefHeight="60.0" prefWidth="1220.0">
            <items>
@@ -44,9 +44,9 @@
             <ColumnConstraints minWidth="10.0" prefWidth="135.0" />
          </columnConstraints>
          <children>
-            <Label text="箱门编号:" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
+            <Label text="箱门编号：" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
             <Label fx:id="lblSequence" GridPane.columnIndex="2" />
-             <Label text="箱门类别:" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+             <Label text="箱门类别：" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
             <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
                <children>
                   <ToggleButton fx:id="btnBoxMail" mnemonicParsing="false" onAction="#onBoxTypeChange" selected="true" text="信箱">
@@ -69,7 +69,7 @@
             <Label fx:id="lblOpened" text="关闭" GridPane.columnIndex="2" GridPane.rowIndex="2" />
              <Label text="锁定状态：" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
              <Label fx:id="lblLocked" text="关闭" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-            <Label text="使用状态:" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
+            <Label text="使用状态：" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
             <Label fx:id="lblUseStatus" text="空闲" GridPane.columnIndex="2" GridPane.rowIndex="4" />
          </children></GridPane>
    </children>

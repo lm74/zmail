@@ -344,10 +344,8 @@ public class UserListController implements Initializable {
     @FXML
     private void onDeleteAction(ActionEvent event) {
         List<UserInfo> users = getSelectedUsers();
-//        if(users.size() == 0){
-//            users.add(getSelectedUserInfo());
-//        }
-        if (users.size() == 0) {
+        UserInfo userInfo = getSelectedUserInfo();
+        if (userInfo == null) {
             SimpleDialog.showMessageDialog(app.getRootStage(), "请选择需要删除的用户.", "删除出错");
             return;
         }
@@ -482,9 +480,10 @@ public class UserListController implements Initializable {
 
     @FXML
     private void onSettingPasswordAction(ActionEvent event) {
-        List<UserInfo> userInfoList = getSelectedUsers();
-        if (userInfoList == null || userInfoList.size() <= 0) {
-            SimpleDialog.showMessageDialog(app.getRootStage(), "请选择一条记录！", "");
+        UserInfo user = getSelectedUserInfo();
+        if (user == null) {
+            SimpleDialog.showMessageDialog(app.getRootStage(),
+                    "请选择一条需要设置密码的用户！", "");
             return;
         }
         ChangePasswordController controller = app.goChangePassword();

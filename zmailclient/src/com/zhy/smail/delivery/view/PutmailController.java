@@ -58,7 +58,10 @@ public class PutmailController extends RootController implements Initializable {
     @FXML
     private Button startDeliveryButton;
 
+    private BoxInfo selectedBox;
+
     UserInfo user;
+
 
     public UserInfo getUser() {
         return user;
@@ -77,8 +80,8 @@ public class PutmailController extends RootController implements Initializable {
                             DeliveryLog log = (DeliveryLog) logs.get(i);
                             if(log.getBoxInfo().getBoxType() == BoxInfo.BOX_TYPE_MAIL ||
                                     log.getBoxInfo().getBoxType() == BoxInfo.BOX_TYPE_SMALL){
-
-                                startDelivery(log.getBoxInfo(), log.getPickupUser());
+                                //startDelivery(log.getBoxInfo(), log.getPickupUser());
+                                selectedBox = log.getBoxInfo();
                                 break;
                             }
 
@@ -177,7 +180,7 @@ public class PutmailController extends RootController implements Initializable {
 
         user = null;
         box = null;
-
+        selectedBox = null;
         createUserAutoCombBox(txtRoomNo);
 
     }
@@ -256,7 +259,13 @@ public class PutmailController extends RootController implements Initializable {
 
     @FXML
     private void onStartDeliveryAction(ActionEvent event) {
-        box = mailBoxes.get(0);
+        if(selectedBox == null){
+            box =  mailBoxes.get(0);
+        }
+        else{
+            box = selectedBox;
+        }
+
         startDelivery(box, user);
     }
 
@@ -269,6 +278,7 @@ public class PutmailController extends RootController implements Initializable {
             SimpleDialog.showMessageDialog(app.getRootStage(), "请选择有效的房号或手机号码.","");
             return;
         }
+
 
         ConfirmDeliveryController controller = app.goConfirmDelivery();
         controller.setUser(user);
