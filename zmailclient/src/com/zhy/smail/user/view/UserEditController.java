@@ -138,7 +138,7 @@ public class UserEditController implements Initializable{
         rdoAdvanceManager.setVisible(true);
 
         rdoManager.setText("普通快递员");
-        rdoAdvanceManager.setText("邮政快递员");
+        rdoAdvanceManager.setText("邮政投递员");
 
     }
 
