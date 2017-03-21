@@ -275,7 +275,9 @@ public class PutmailController extends RootController implements Initializable {
             return;
         }
         if(user == null){
-            SimpleDialog.showMessageDialog(app.getRootStage(), "请选择有效的房号或手机号码.","");
+            // Modified By 罗鹏 Mar 21 2017
+            SimpleDialog.showMessageDialog(app.getRootStage(), "请输入或者选择房号。","");
+            // Ended By 罗鹏 Mar 21 2017
             return;
         }
 

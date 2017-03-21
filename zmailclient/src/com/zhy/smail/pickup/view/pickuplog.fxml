@@ -46,14 +46,16 @@
         <ScrollPane>
             <content>
                 <TableView fx:id="logTable" prefHeight="860.0" prefWidth="1800.0">
+                    <!--Modified By 罗鹏 Mar 21 2017 -->
                     <columns>
-                        <TableColumn fx:id="tcPickupTime" prefWidth="380.0" text="取件时间" />
-                        <TableColumn fx:id="tcPickupUser" prefWidth="150.0" text="取件用户" />
-                        <TableColumn fx:id="tcDeliveryType" prefWidth="150.0" text="投件类型" />
-                        <TableColumn fx:id="tcBoxSequence" prefWidth="150.0" text="箱门号" />
-                        <TableColumn fx:id="tcDeliveryTime" prefWidth="380.0" text="投递时间" />
-                        <TableColumn fx:id="tcDeliveryMan" prefWidth="150.0" text="投递员" />
+                        <TableColumn fx:id="tcPickupTime" prefWidth="345.0" text="取件时间"/>
+                        <TableColumn fx:id="tcPickupUser" prefWidth="150.0" text="取件用户"/>
+                        <TableColumn fx:id="tcDeliveryType" prefWidth="150.0" text="投件类型"/>
+                        <TableColumn fx:id="tcBoxSequence" prefWidth="140.0" text="箱门号"/>
+                        <TableColumn fx:id="tcDeliveryMan" prefWidth="150.0" text="投递员"/>
+                        <TableColumn fx:id="tcDeliveryTime" prefWidth="345.0" text="投递时间"/>
                     </columns>
+                    <!--Ended By 罗鹏 Mar 21 2017 -->
                 </TableView>
             </content>
         </ScrollPane>

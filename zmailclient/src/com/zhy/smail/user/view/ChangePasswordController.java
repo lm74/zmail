@@ -110,26 +110,28 @@ public class ChangePasswordController  implements Initializable {
 
     @FXML
     private void onSave(ActionEvent event){
+        // Modified By 罗鹏 Mar 21 2017
         if(txtOldPassword.getText()==null || txtOldPassword.getText().length() == 0){
-            SimpleDialog.showMessageDialog(app.getRootStage(), "旧密码不能为空.","错误");
+            SimpleDialog.showMessageDialog(app.getRootStage(), "旧密码不能为空！","错误");
             txtOldPassword.requestFocus();
             return;
         }
         if(txtNewPassword.getText().length() == 0){
-            SimpleDialog.showMessageDialog(app.getRootStage(), "新密码不能为空","错误");
+            SimpleDialog.showMessageDialog(app.getRootStage(), "新密码不能为空！","错误");
             txtNewPassword.requestFocus();
             return;
         }
         if(txtConfigPassword.getText().length() == 0){
-            SimpleDialog.showMessageDialog(app.getRootStage(), "确认密码不能为空","错误");
+            SimpleDialog.showMessageDialog(app.getRootStage(), "确认密码不能为空！","错误");
             txtConfigPassword.requestFocus();
             return;
         }
         if(!txtNewPassword.getText().equals(txtConfigPassword.getText())){
-            SimpleDialog.showMessageDialog(app.getRootStage(), "新密码和确认密码不一不致.","错误");
-            txtNewPassword.requestFocus();
+            SimpleDialog.showMessageDialog(app.getRootStage(), "新密码和确认密码不一致，请重新输入！","错误");
+            txtConfigPassword.requestFocus();
             return;
         }
+        // Ended By 罗鹏 Mar 21 2017
         String oldPassword="";
         if(txtOldPassword.isDisable()){
             oldPassword = user.getPassword();

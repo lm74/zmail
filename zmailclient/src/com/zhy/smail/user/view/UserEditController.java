@@ -264,61 +264,60 @@ public class UserEditController implements Initializable{
         UserService.save(user, new RestfulResult() {
             @Override
             public void doResult(RfResultEvent event) {
-                if(event.getResult() == 0) {
+                if (event.getResult() == 0) {
                     SimpleDialog.showAutoCloseInfo(app.getRootStage(), "保存成功");
-                    if(addNew){
-                       addNewUser();
-                    }
-                    else {
+                    if (addNew) {
+                        addNewUser();
+                    } else {
                         UserListController controller = app.goUserList();
                         controller.selectTab(userClass);
                     }
                 }
-                else if(event.getResult() == -2){
-                    SimpleDialog.showMessageDialog(app.getRootStage(), "用户名" + user.getUserName()+"已经存在，保存失败。", "保存出错");
-
+                // Modified By 罗鹏 Mar 21 2017
+                else if (event.getResult() == -2) {
+                    SimpleDialog.showMessageDialog(app.getRootStage(), "用户名 (" + user.getUserName() + ") 已经存在，请重新输入用户名！", "保存失败");
+                } else if (event.getResult() == -3) {
+                    SimpleDialog.showMessageDialog(app.getRootStage(), "电话号码 (" + user.getPhoneNo() + ") 已经属于其它用户，请重新输入电话号码！", "保存失败");
+                    txtPhoneNo.requestFocus();
+                } else if (event.getResult() == -11) {
+                    SimpleDialog.showMessageDialog(app.getRootStage(), "卡号 (" + user.getCardNo1() + ") 已经属于其它用户，请重新输入卡号！", "保存失败");
+                    txtCard1No.requestFocus();
+                } else if (event.getResult() == -12) {
+                    SimpleDialog.showMessageDialog(app.getRootStage(), "卡号 (" + user.getCardNo2() + ") 已经属于其它用户，请重新输入卡号！", "保存失败");
+                    txtCard2No.requestFocus();
+                } else if (event.getResult() == -13) {
+                    SimpleDialog.showMessageDialog(app.getRootStage(), "卡号 (" + user.getCardNo3() + ") 已经属于其它用户，请重新输入卡号！", "保存失败");
+                    txtCard3No.requestFocus();
+                } else if (event.getResult() == -14) {
+                    SimpleDialog.showMessageDialog(app.getRootStage(), "卡号 (" + user.getCardNo4() + ") 已经属于其它用户，请重新输入卡号！", "保存失败");
+                    txtCard4No.requestFocus();
+                } else if (event.getResult() == -15) {
+                    SimpleDialog.showMessageDialog(app.getRootStage(), "卡号 (" + user.getCardNo5() + ") 已经属于其它用户，请重新输入卡号！", "保存失败");
+                    txtCard5No.requestFocus();
+                } else if (event.getResult() == -16) {
+                    SimpleDialog.showMessageDialog(app.getRootStage(), "卡号 (" + user.getCardNo6() + ") 已经属于其它用户，请重新输入卡号！", "保存失败");
+                    txtCard6No.requestFocus();
+                } else if (event.getResult() == -17) {
+                    SimpleDialog.showMessageDialog(app.getRootStage(), "卡号 (" + user.getCardNo7() + ") 已经属于其它用户，请重新输入卡号！", "保存失败");
+                    txtCard7No.requestFocus();
+                } else if (event.getResult() == -18) {
+                    SimpleDialog.showMessageDialog(app.getRootStage(), "卡号 (" + user.getCardNo8() + ") 已经属于其它用户，请重新输入卡号！", "保存失败");
+                    txtCard8No.requestFocus();
+                } else if (event.getResult() == -19) {
+                    SimpleDialog.showMessageDialog(app.getRootStage(), "卡号 (" + user.getCardNo9() + ") 已经属于其它用户，请重新输入卡号！", "保存失败");
+                    txtCard9No.requestFocus();
+                } else if (event.getResult() == -20) {
+                    SimpleDialog.showMessageDialog(app.getRootStage(), "卡号 (" + user.getCardNo10() + ") 已经属于其它用户，请重新输入卡号！", "保存失败");
+                    txtCard10No.requestFocus();
+                } else {
+                    SimpleDialog.showMessageDialog(app.getRootStage(), event.getMessage(), "保存失败");
                 }
-                else if(event.getResult() == -3){
-                    SimpleDialog.showMessageDialog(app.getRootStage(), "电话" + user.getPhoneNo()+"已经是属于其它用户，保存失败。", "保存出错");
-                }
-                else if(event.getResult() == -11){
-                    SimpleDialog.showMessageDialog(app.getRootStage(), "卡号" + user.getCardNo1()+"已经是属于其它用户，保存失败。", "保存出错");
-                }
-                else if(event.getResult() == -12){
-                    SimpleDialog.showMessageDialog(app.getRootStage(), "卡号" + user.getCardNo2()+"已经是属于其它用户，保存失败。", "保存出错");
-                }
-                else if(event.getResult() == -13){
-                    SimpleDialog.showMessageDialog(app.getRootStage(), "卡号" + user.getCardNo3()+"已经是属于其它用户，保存失败。", "保存出错");
-                }
-                else if(event.getResult() == -14){
-                    SimpleDialog.showMessageDialog(app.getRootStage(), "卡号" + user.getCardNo4()+"已经是属于其它用户，保存失败。", "保存出错");
-                }
-                else if(event.getResult() == -15){
-                    SimpleDialog.showMessageDialog(app.getRootStage(), "卡号" + user.getCardNo5()+"已经是属于其它用户，保存失败。", "保存出错");
-                }
-                else if(event.getResult() == -16){
-                    SimpleDialog.showMessageDialog(app.getRootStage(), "卡号" + user.getCardNo6()+"已经是属于其它用户，保存失败。", "保存出错");
-                }else if(event.getResult() == -17){
-                    SimpleDialog.showMessageDialog(app.getRootStage(), "卡号" + user.getCardNo7()+"已经是属于其它用户，保存失败。", "保存出错");
-                }
-                else if(event.getResult() == -18){
-                    SimpleDialog.showMessageDialog(app.getRootStage(), "卡号" + user.getCardNo8()+"已经是属于其它用户，保存失败。", "保存出错");
-                }
-                else if(event.getResult() == -19){
-                    SimpleDialog.showMessageDialog(app.getRootStage(), "卡号" + user.getCardNo9()+"已经是属于其它用户，保存失败。", "保存出错");
-                }
-                else if(event.getResult() == -20){
-                    SimpleDialog.showMessageDialog(app.getRootStage(), "卡号" + user.getCardNo10()+"已经是属于其它用户，保存失败。", "保存出错");
-                }
-
-                else{
-                    SimpleDialog.showMessageDialog(app.getRootStage(), event.getMessage(), "保存出错");
-                }
+                // Ended By 罗鹏 Mar 21 2017
             }
 
             @Override
             public void doFault(RfFaultEvent event) {
-                SimpleDialog.showMessageDialog(app.getRootStage(), event.getMessage(), "保存出错");
+                SimpleDialog.showMessageDialog(app.getRootStage(), event.getMessage(), "保存失败");
             }
         });
     }
