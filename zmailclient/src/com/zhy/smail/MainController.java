@@ -196,21 +196,27 @@ public class MainController implements Initializable {
 
     @FXML
     private void onKeyTyped(KeyEvent event){
-                System.out.println("onKeyTyped " + event.getCharacter()+": " + event.getCode());
-                if(event.getCharacter().equals(";") || event.getCharacter().equals("；")){
-                        startGetTyped = true;
-                        typedStr = "";
-                    }
-                else if (startGetTyped) {
-                        typedStr += event.getCharacter();
+            System.out.println("onKeyTyped " + event.getCharacter()+": " + event.getCode());
+            if(event.getCharacter().equals(";") || event.getCharacter().equals("；")){
+                    startGetTyped = true;
+                    typedStr = "";
                 }
+            else if (startGetTyped) {
+                    typedStr += event.getCharacter();
+            }
     }
 
     private void startToLogin(String cardNo) {
+        if(cardNo == null || cardNo.length() == 0){
+            Speaker.invalideCard();
+            SimpleDialog.showMessageDialog(app.getRootStage(), "无效卡", "");
+            return;
+        }
+
         UserService.getByCardNo(cardNo, new RestfulResult() {
             @Override
             public void doResult(RfResultEvent event) {
-                if (event.getResult() == JsonResult.FAIL) {
+                if (event.getResult().equals(JsonResult.FAIL)) {
                     Speaker.invalideCard();
                     SimpleDialog.showMessageDialog(app.getRootStage(), "无效卡", "");
                 } else {
