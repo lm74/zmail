@@ -96,12 +96,13 @@ public class MainApp extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("main.fxml"));
         Parent root = fxmlLoader.load();
         mainController = fxmlLoader.getController();
+
         primaryStage.setTitle("ZY Mail");
         rootScene = new Scene(root, 1280, 1024);
         rootScene.getStylesheets().add("style.css");
         primaryStage.setScene(rootScene);
         rootStage = primaryStage;
-        primaryStage.setMaximized(true);
+        //primaryStage.setMaximized(true);
         primaryStage.initStyle(StageStyle.UNDECORATED);
         mainController.setApp(this);
         primaryStage.show();
