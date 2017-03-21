@@ -3,6 +3,10 @@ package com.zhy.smail.component.music;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.net.URLDecoder;
+
 /**
  * Created by wenliz on 2017/2/22.
  */
@@ -156,18 +160,59 @@ public class Speaker {
      */
     public  static  void userOrPasswordError(){playMusic("/music/22.wav");}
 
+
+    private static String getWorkDir() {
+        // 得到当前应用程序（无论是class还是Jar包）的绝对根路径
+        URL url = Speaker.class.getProtectionDomain().getCodeSource().getLocation();
+        String file = null;
+        try {
+            file = URLDecoder.decode(url.getPath(), "UTF-8"); // 路径如果包含中文进行编码转换
+        } catch (UnsupportedEncodingException e) {
+
+        }
+
+
+        // 掐去第一个字符"/"
+        if (file.startsWith("/")) {
+            file = file.substring(1);
+        }
+
+
+        // 去掉尾部的"xxx.jar"字样
+        if (file.endsWith(".jar")) {
+            file = file.substring(0, file.lastIndexOf("/") + 1);
+        }
+
+        return file;
+    }
+
     private static void playMusic(String path){
-        String music0 = Speaker.class.getResource(path).toString();
-        Media media2 = new Media(music0);
-        MediaPlayer mp2 = new MediaPlayer(media2);
-        mp2.play();
-
-        mp2.setOnStopped(new Runnable() {
-            @Override
-            public void run() {
-
+        try {
+            if (path.startsWith("/")) {
+                path = path.substring(1);
             }
-        });
+            String music0 = "file:/"+getWorkDir() + path;
+            System.out.println(music0);
+            Media media2 = new Media(music0);
+            MediaPlayer mp2 = new MediaPlayer(media2);
+            mp2.setOnEndOfMedia(new Runnable() {
+                @Override
+                public void run() {
+                    System.out.println("Playing End.");
+                }
+            });
+            mp2.setOnError(new Runnable() {
+                @Override
+                public void run() {
+                    String errorMessage = mp2.getError().getMessage();
+                    System.out.println("MediaPlayer Error: " + errorMessage);
+                }
+            });
+            mp2.play();
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+        }
 
     }
 }
