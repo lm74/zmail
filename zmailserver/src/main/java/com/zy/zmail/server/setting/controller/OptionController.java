@@ -1,17 +1,19 @@
 package com.zy.zmail.server.setting.controller;
 
 import com.zy.zmail.server.common.json.JsonResult;
+import com.zy.zmail.server.north.Abudp.AbudpProtocol;
+import com.zy.zmail.server.north.Abudp.AbudpSender;
 import com.zy.zmail.server.north.DoorMessage;
+import com.zy.zmail.server.north.DoorSystemRunner;
 import com.zy.zmail.server.north.zytcp.ZytcpGateway;
 import com.zy.zmail.server.north.zytcp.ZytcpProtocol;
 import com.zy.zmail.server.north.zytcp.command.ZytcpCommand;
+import com.zy.zmail.server.north.zyudp.ZyudpGateway;
 import com.zy.zmail.server.north.zyudp.ZyudpProtocol;
-import com.zy.zmail.server.north.zyudp.ZyudpSender;
+import com.zy.zmail.server.north.zyudp.command.ZyudpCommand;
 import com.zy.zmail.server.setting.entity.SystemOption;
 import com.zy.zmail.server.setting.service.OptionService;
 import com.zy.zmail.server.starter.SystemStarter;
-import com.zy.zmail.server.user.controller.UserController;
-import com.zy.zmail.server.user.entity.UserInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,74 +79,104 @@ public class OptionController {
         if(protocolType == 0){
             result.setResult(testUdpConnection(serverIp,serverPort));
         }
-        else{
+        else if(protocolType == 1){
             result.setResult(testTcpConnection(serverIp,serverPort));
+        }
+        else{
+            result.setResult(testZyudpConnection(serverIp, serverPort));
         }
         return result;
     }
 
     private Integer testTcpConnection(String serverIp, Integer serverPort) {
-        ZytcpGateway zytcpGateway = new ZytcpGateway(serverIp, serverPort);
-        if (!zytcpGateway.open()) {
-            return 2;
-        }
-        try {
-            SystemOption building = optionService.getById(SystemOption.BUILDING_NO_ID);
-            SystemOption unitNo = optionService.getById(SystemOption.UNIT_NO_ID);
-            if (!zytcpGateway.login(building.getIntValue(), unitNo.getIntValue())) {
-                return 3;
-            }
-            sleep(500);
-            zytcpGateway.heartbeat(building.getIntValue(), unitNo.getIntValue());
-            sleep(500);
-            DoorMessage message = new DoorMessage();
-            message.setCommandNo(ZytcpCommand.DELIVERY);
-            message.setBuildingNo(building.getIntValue());
-            message.setUnitNo(unitNo.getIntValue());
-            ZytcpProtocol protocol = ZytcpProtocol.getInstance();
-            byte[] data = protocol.pack(message);
-            zytcpGateway.sendMessage(data);
-            sleep(500);
-            message.setCommandNo(ZytcpCommand.PICKUP);
-            data = protocol.pack(message);
-            zytcpGateway.sendMessage(data);
-            sleep(500);
-            message.setCommandNo(ZytcpCommand.QUERY_STATUS_RESPONSE);
-            message.setData(Integer.valueOf(1));
-            data = protocol.pack(message);
-            zytcpGateway.sendMessage(data);
-            sleep(500);
-            return 0;
-        }
-        finally {
-            zytcpGateway.close();
-        }
+
+        SystemOption building = optionService.getById(SystemOption.BUILDING_NO_ID);
+        SystemOption unitNo = optionService.getById(SystemOption.UNIT_NO_ID);
+
+
+        DoorMessage message = new DoorMessage();
+        message.setCommandNo(ZytcpCommand.DELIVERY);
+        message.setBuildingNo(building.getIntValue());
+        message.setUnitNo(unitNo.getIntValue());
+        DoorSystemRunner.messages.add(message);
+        sleep(500);
+        message = new DoorMessage();
+
+        message.setBuildingNo(building.getIntValue());
+        message.setUnitNo(unitNo.getIntValue());
+        message.setCommandNo(ZytcpCommand.PICKUP);
+        DoorSystemRunner.messages.add(message);
+        sleep(500);
+        message = new DoorMessage();
+
+        message.setBuildingNo(building.getIntValue());
+        message.setUnitNo(unitNo.getIntValue());
+        message.setCommandNo(ZytcpCommand.QUERY_STATUS_RESPONSE);
+        message.setData(Integer.valueOf(1));
+        DoorSystemRunner.messages.add(message);
+        sleep(500);
+        return 0;
+
+    }
+
+    private Integer testZyudpConnection(String serverIp, Integer serverPort) {
+        SystemOption building = optionService.getById(SystemOption.BUILDING_NO_ID);
+        SystemOption unitNo = optionService.getById(SystemOption.UNIT_NO_ID);
+
+        DoorMessage message = new DoorMessage();
+        message.setCommandNo(ZyudpCommand.DELIVERY);
+        message.setBuildingNo(building.getIntValue());
+        message.setUnitNo(unitNo.getIntValue());
+        message.setFloorNo(8);
+        message.setRoomNo(9);
+        message.setDeliveryTime(new Date());
+        message.setCabinetNo(10);
+        message.setBoxNo(11);
+        message.setOperateType((byte) 1);
+        DoorSystemRunner.messages.add(message);
+        sleep(500);
+        message = new DoorMessage();
+        message.setCommandNo(ZyudpCommand.PICKUP);
+        message.setBuildingNo(building.getIntValue());
+        message.setUnitNo(unitNo.getIntValue());
+        message.setFloorNo(8);
+        message.setRoomNo(9);
+        message.setDeliveryTime(new Date());
+        message.setCabinetNo(10);
+        message.setBoxNo(11);
+        message.setOperateType((byte) 2);
+        DoorSystemRunner.messages.add(message);
+        sleep(500);
+        message = new DoorMessage();
+        message.setBuildingNo(building.getIntValue());
+        message.setUnitNo(unitNo.getIntValue());
+        message.setFloorNo(8);
+        message.setRoomNo(9);
+        message.setDeliveryTime(new Date());
+        message.setCabinetNo(10);
+        message.setBoxNo(11);
+        message.setOperateType((byte) 2);
+        message.setCommandNo(ZyudpCommand.QUERY_STATUS_RESPONSE);
+        byte[] context = new byte[]{1, 0};
+        message.setData(context);
+        DoorSystemRunner.messages.add(message);
+        sleep(500);
+        return 0;
+
     }
 
     private Integer testUdpConnection(String serverIp, Integer serverPort) {
         DoorMessage message = new DoorMessage();
         message.setDeliveryTime(new Date());
-        message.setOperateType((byte) 0);
+        message.setOperateType((byte) 1);
 
-        ZyudpProtocol protocol = ZyudpProtocol.getInstance();
-        byte[] data = protocol.pack(message);
-        ZyudpSender udpSender = new ZyudpSender(serverPort);
-        try {
-            if (!udpSender.send(data, serverIp, serverPort)) {
-                return 1;
-            }
-            sleep(500);
-            message.setOperateType((byte) 1);
-            data = protocol.pack(message);
-            if (!udpSender.send(data, serverIp, serverPort)) {
-                return 1;
-            }
-
-            return 0;
-        }
-        finally {
-            udpSender.close();
-        }
+        DoorSystemRunner.messages.add(message);
+        sleep(500);
+        message = new DoorMessage();
+        message.setDeliveryTime(new Date());
+        message.setOperateType((byte) 2);
+        DoorSystemRunner.messages.add(message);
+        return 0;
     }
 
     private void sleep(int seconds){

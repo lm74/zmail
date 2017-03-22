@@ -16,6 +16,7 @@ public class DoorMessage {
     private Integer commandNo;
     private Object data;
     private Date deliveryTime;
+
     private byte operateType;
 
     public byte getOperateType() {

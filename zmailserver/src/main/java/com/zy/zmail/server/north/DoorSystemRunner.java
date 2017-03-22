@@ -1,12 +1,17 @@
 package com.zy.zmail.server.north;
 
+import com.zy.zmail.server.cabinet.entity.CabinetInfo;
+import com.zy.zmail.server.cabinet.service.CabinetService;
 import com.zy.zmail.server.delivery.entity.DeliveryLog;
 import com.zy.zmail.server.delivery.service.DeliveryLogService;
+import com.zy.zmail.server.north.Abudp.AbudpSender;
+import com.zy.zmail.server.north.util.StringUtil;
 import com.zy.zmail.server.north.zytcp.ZytcpGateway;
 import com.zy.zmail.server.north.zytcp.ZytcpProtocol;
 import com.zy.zmail.server.north.zytcp.command.ZytcpCommand;
+import com.zy.zmail.server.north.zyudp.ZyudpGateway;
 import com.zy.zmail.server.north.zyudp.ZyudpProtocol;
-import com.zy.zmail.server.north.zyudp.ZyudpSender;
+import com.zy.zmail.server.north.zyudp.command.ZyudpCommand;
 import com.zy.zmail.server.user.entity.UserInfo;
 import com.zy.zmail.server.user.service.UserService;
 import org.springframework.stereotype.Service;
@@ -26,7 +31,8 @@ public class DoorSystemRunner implements Runnable {
     private boolean connected;
     private UserService userService;
     private DeliveryLogService deliveryLogService;
-    private int waitTime = 2000;
+    private CabinetService cabinetService;
+    private int waitTime = 20;
     public DoorSystemRunner(){
         canceled = false;
     }
@@ -42,11 +48,11 @@ public class DoorSystemRunner implements Runnable {
     public void setBuildingNo(int buildingNo){
         connection.setBuildingNo(buildingNo);
 
-        restart();
+        //restart();
     }
     public void setUnitNo(int unitNo){
         connection.setUnitNo(unitNo);
-        restart();
+        //restart();
     }
     public void setServerIp(String serverIp){
         connection.setServerIp(serverIp);
@@ -59,24 +65,33 @@ public class DoorSystemRunner implements Runnable {
     public void setProtocolType(Integer protocolType){
         connection.setProtocolType(protocolType);
 
-        restart();
+        //restart();
     }
     private void restart(){
-        if(udpSender!=null){
-            udpSender.close();
+        if(abudpSender !=null){
+            abudpSender.close();
+            abudpSender = null;
         }
         if(zytcpGateway!=null){
             zytcpGateway.close();
+            zytcpGateway = null;
+        }
+        if(zyudpGateway != null){
+            zyudpGateway.stopGateway();
+            zyudpGateway = null;
         }
     }
 
     private DoorConnection connection;
-    private ZyudpSender udpSender =null;
+    private AbudpSender abudpSender =null;
+    private ZyudpGateway zyudpGateway = null;
     private ZytcpGateway zytcpGateway = null;
 
-    public DoorSystemRunner(DoorConnection connection, UserService userService, DeliveryLogService deliveryLogService){
+    public DoorSystemRunner(DoorConnection connection, UserService userService, DeliveryLogService deliveryLogService,
+                            CabinetService cabinetService){
         this.userService = userService;
         this.deliveryLogService = deliveryLogService;
+        this.cabinetService = cabinetService;
         canceled = false;
         connected = false;
         this.connection  = connection;
@@ -85,22 +100,24 @@ public class DoorSystemRunner implements Runnable {
 
     public void run(){
         while (!canceled){
-            if(connection.getProtocolType() == 0){
-                processUdp();
+            switch (connection.getProtocolType().intValue()){
+                case 0:
+                    processAbUdp();
+                    break;
+                case 1:
+                    processTcp();
+                    break;
+                case 2:
+                    processZyUdp();
+                default:
+                    sleep(1);
             }
-            else if(connection.getProtocolType() == 1){
-                processTcp();
-            }
-            else{
-                sleep(1);
-            }
-
         }
     }
 
     private void increaseWaitTime(){
-        if(waitTime<30000){
-            waitTime += 10000;
+        if(waitTime<30){
+            waitTime += 10;
         }
     }
 
@@ -150,7 +167,7 @@ public class DoorSystemRunner implements Runnable {
 
     private void reponseQuery(){
         try {
-            byte[] data = ZytcpGateway.response.poll(1000, TimeUnit.SECONDS);
+            byte[] data = ZytcpGateway.response.poll(1, TimeUnit.SECONDS);
             if(data != null){
                 ZytcpProtocol protocol = ZytcpProtocol.getInstance();
                 DoorResult result= protocol.parse(data);
@@ -175,6 +192,7 @@ public class DoorSystemRunner implements Runnable {
                     message.setUnitNo(result.getUnitNo());
                     message.setFloorNo(result.getFloorNo());
                     message.setRoomNo(result.getRoomNo());
+                    message.setData(flag);
                     message.setCommandNo(ZytcpCommand.QUERY_STATUS_RESPONSE);
                     byte[] rdata = protocol.pack(message);
                     zytcpGateway.sendMessage(rdata);
@@ -221,26 +239,120 @@ public class DoorSystemRunner implements Runnable {
         return flag;
     }
 
-    private void processUdp(){
+    private void processAbUdp(){
         try {
             DoorMessage message = messages.take();
             ZyudpProtocol protocol = ZyudpProtocol.getInstance();
             byte[] data = protocol.pack(message);
             if(data == null || data.length==0) return;
 
-            if(udpSender == null) {
-                udpSender = new ZyudpSender(connection.getServerPort());
+            if(abudpSender == null) {
+                abudpSender = new AbudpSender(connection.getServerPort());
             }
-            udpSender.send(data, connection.getServerIp(), connection.getServerPort());
-//            sleep(1);
-//            udpSender.send(data, connection.getServerIp(), connection.getServerPort());
-//            sleep(1);
-//            udpSender.send(data, connection.getServerIp(), connection.getServerPort());
-//            sleep(1);
+            abudpSender.send(data, connection.getServerIp(), connection.getServerPort());
+
+        }
+        catch (InterruptedException e){
+        }
+    }
+
+    private void processZyUdp(){
+        try {
+            DoorMessage message = messages.poll(2, TimeUnit.SECONDS);
+
+            if(connection.getServerIp()==null || connection.getServerIp().length()==0) return;
+            if(connection.getServerPort()<1024) return;
+
+            if (zyudpGateway == null) {
+                zyudpGateway = ZyudpGateway.getInstance(connection.getServerIp(), connection.getServerPort());
+            }
+            if(message == null){
+                reponseZyudp();
+                return;
+            }
+
+            ZyudpProtocol protocol = ZyudpProtocol.getInstance();
+            byte[] data = protocol.pack(message);
+            if(data == null || data.length==0) return;
+
+            zyudpGateway.sendMessage(data);
+
         }
         catch (InterruptedException e){
 
         }
+    }
+
+    private void reponseZyudp(){
+        try {
+            byte[] data = ZyudpGateway.response.poll(1, TimeUnit.SECONDS);
+            if(data != null){
+                ZyudpProtocol protocol = ZyudpProtocol.getInstance();
+                DoorResult result= protocol.parse(data);
+                if(result.getCommandNo() == ZyudpCommand.QUERY_STATUS){
+
+                    String userName = "";
+                    if(result.getBuildingNo()>0){
+                        userName+=result.getBuildingNo();
+                    }
+                    if(result.getUnitNo()>0){
+                        userName += result.getUnitNo();
+                    }
+                    if(result.getFloorNo()>0){
+                        userName += result.getFloorNo();
+                    }
+                    if(result.getRoomNo()>0){
+                        userName += result.getRoomNo();
+                    }
+                    int flag = getFlag(userName);
+                    DoorMessage message = new DoorMessage();
+                    message.setBuildingNo(result.getBuildingNo());
+                    message.setUnitNo(result.getUnitNo());
+                    message.setFloorNo(result.getFloorNo());
+                    message.setRoomNo(result.getRoomNo());
+                    message.setCommandNo(ZyudpCommand.QUERY_STATUS_RESPONSE);
+                    message.setData(getMailInfo(userName));
+                    byte[] rdata = protocol.pack(message);
+                    zyudpGateway.sendMessage(rdata);
+                }
+            }
+        }
+        catch (InterruptedException e){
+
+        }
+    }
+    private byte[] emptyMail() {
+        byte[] data = new byte[2];
+        data[0] = 0x01;
+        data[1] = 0x00;
+        return data;
+    }
+
+    private byte[] getMailInfo(String userName){
+        UserInfo user = userService.getByUserName(userName);
+        if(user == null){
+            return emptyMail();
+        }
+
+        List<DeliveryLog> deliveryLogList = deliveryLogService.listByOwner(user.getUserId());
+        if(deliveryLogList.size() == 0){
+            return emptyMail();
+        }
+
+        byte[] data= new byte[deliveryLogList.size()*2+2];
+        data[0] = (byte)(deliveryLogList.size()*2+2);
+        byte flag = 1;
+        for (int i = 0; i < deliveryLogList.size(); i++) {
+            DeliveryLog log = deliveryLogList.get(i);
+            CabinetInfo cabinetInfo = cabinetService.getByCabinetId(log.getBoxInfo().getCabinetId());
+            data[i*2+2] =  (byte)(StringUtil.getInteger(cabinetInfo.getCabinetNo())&0xFF);
+            data[i*2+1+2] =  (byte)(log.getBoxInfo().getSequence()&0xFF);
+            if(log.getDeliveryType().equals(1)){
+                flag = 2;
+            }
+        }
+        data[1] = flag;
+        return data;
     }
 
     private void sleep(int seconds){

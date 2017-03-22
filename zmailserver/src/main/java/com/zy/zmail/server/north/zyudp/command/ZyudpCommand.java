@@ -1,9 +1,11 @@
 package com.zy.zmail.server.north.zyudp.command;
 
 import com.zy.zmail.server.north.DoorMessage;
+import com.zy.zmail.server.north.DoorResult;
 import com.zy.zmail.server.north.util.CRC8;
 import com.zy.zmail.server.north.util.HexString;
 import com.zy.zmail.server.north.util.Octet;
+
 
 import java.util.Calendar;
 import java.util.Date;
@@ -12,60 +14,94 @@ import java.util.Date;
 /**
  * Created by wenliz on 2017/1/18.
  */
- public class ZyudpCommand {
-    public static final int START_FLAG = 0xAA;
-    public static final int START_REQUEST = 0xBB;
+ public abstract  class ZyudpCommand {
 
 
-    public static final byte VERSION = 0x20;
-    public static final byte TYPE = 0x00;
-    public static final byte PLAN_TEXT = 0x00;
+    /**
+     * 存货
+     */
+    public static final int DELIVERY = 0x11;
+    public static final int DELIVERY_RESPONSE = 0xA1;
+    /**
+     * 取货
+     */
+    public static final int PICKUP = 0x12;
+    public static final int PICKUP_RESPONSE = 0xA2;
+    /**
+     * 查询存货状态
+     */
+    public static final int QUERY_STATUS = 0xB1;
+    public static final int QUERY_STATUS_RESPONSE = 0x21;
 
-    public static final int END_FLAG = 0XCC;
-    public static final int END_FLAG2 = 0XDD;
+    public static final int START_FLAG = 0x5A;
+    public static final int START_REQUEST = 0xA5;
 
-    public static final int COMMAND_LENGTH = 33;
-    private DoorMessage message;
-    private int index;
+    public static final int END_FLAG = 0xED;
 
-   public ZyudpCommand(DoorMessage message){
-       this.message = message;
-   }
 
-    protected void setStartAndEndFlag(byte[] data){
-        data[index++]  = (byte) ZyudpCommand.START_FLAG;
-        data[index++] = (byte) ZyudpCommand.START_REQUEST;
+    public static final int HEAD_LENGTH = 11;
 
-        data[data.length-2] = (byte)ZyudpCommand.END_FLAG;
-        data[data.length-1] = (byte)ZyudpCommand.END_FLAG2;
+    protected DoorMessage message;
+
+    protected byte[] getStartFlag(){
+        byte[] startFlags  = new byte[2];
+        startFlags[0]  = (byte) ZyudpCommand.START_FLAG;
+        startFlags[1] = (byte) ZyudpCommand.START_REQUEST;
+        return startFlags;
     }
 
-    private void getAddress(byte[] data){
-        for(int i=0; i<20; i++) {
-            data[index + i] = 0;
-        }
-        byte[] building = HexString.strToAscii(message.getBuildingNo().toString(),4);
-        System.arraycopy(building, 0, data, index, building.length);
-        index += building.length;
+    public byte[] pack(DoorMessage info){
+        this.message = info;
+        byte[] dataUnits = getDataUnits();
+        byte[] data = new byte[HEAD_LENGTH + dataUnits.length];
 
-        byte[] units = HexString.strToAscii(message.getBuildingNo().toString(),2);
-        System.arraycopy(units, 0, data, index, units.length);
-        index +=units.length;
+        //起始标志
+        byte[] startFlags = getStartFlag();
+        System.arraycopy(startFlags, 0, data, 0, 2);
+        //指令长度
+        data[2] = Octet.getFirstByte(data.length);
+        //命令字
+        data[3] = Octet.getFirstByte(message.getCommandNo());
+        //区号
+        data[4] = Octet.getFirstByte(message.getSectionNo());
+        //栋号
+        data[5] = Octet.getFirstByte(message.getBuildingNo());
+        //单元号
+        data[6] = Octet.getFirstByte(message.getUnitNo());
+        //楼层
+        data[7] = Octet.getFirstByte(message.getFloorNo());
+        //房号
+        data[8] = Octet.getFirstByte(message.getRoomNo());
+        System.arraycopy(dataUnits, 0, data, 9, dataUnits.length);
+        adjust(data);
 
-        byte[] rooms = HexString.strToAscii(message.getRoomNo().toString(),8);
-        System.arraycopy(rooms, 0, data,index, rooms.length);
-        index += rooms.length;
 
-        byte[] cabinets = HexString.strToAscii(message.getCabinetNo().toString(),4);
-        System.arraycopy(cabinets, 0, data,index, cabinets.length);
-        index += cabinets.length;
-
-        byte[] boxs = HexString.strToAscii(message.getBoxNo().toString(),2);
-        System.arraycopy(boxs, 0, data,index, boxs.length);
-        index += boxs.length;
+        // 校验计算
+        byte[] dataToCheck = new byte[ data.length- 2];
+        System.arraycopy(data, 0, dataToCheck,  0, dataToCheck.length);
+        byte code = CRC8.calcXor(dataToCheck);
+        data[data.length-2]  = code;
+        data[data.length-1] = (byte)(END_FLAG & 0xFF);
+        return data;
     }
 
-    private void getDeliveryTime(byte[] data){
+    public DoorResult parse(byte[] packet){
+        DoorResult result = new DoorResult();
+        int length = packet[2];
+
+        result.setCommandNo(packet[3]&0xFF);
+        result.setBuildingNo(packet[5]&0xFF);
+        result.setUnitNo(packet[6]&0xFF);
+        result.setFloorNo(packet[7]&0xFF);
+        result.setRoomNo(packet[8]&0xFF);
+        byte[] data = new byte[packet.length - HEAD_LENGTH];
+        System.arraycopy(packet, HEAD_LENGTH-2, data, 0, data.length);
+        parseUnit(data, result);
+
+        return result;
+    }
+
+    protected void getDeliveryTime(byte[] data, int index){
         if(message.getDeliveryTime() == null){
             message.setDeliveryTime(new Date(System.currentTimeMillis()));
         }
@@ -87,41 +123,30 @@ import java.util.Date;
         data[index++] = (byte)minute;
         data[index++] = (byte)second;
 
-
-
     }
 
-    public byte[] pack(){
-        index = 0;
-        byte[] data = new byte[COMMAND_LENGTH];
+    abstract protected byte[] getDataUnits();
+    abstract protected void adjust(byte[] data);
+    abstract protected void parseUnit(byte[] data, DoorResult result);
 
-        //标志
-        setStartAndEndFlag(data);
-
-        //长度
-        data[index++] = (byte)(COMMAND_LENGTH - 6);
-
-        //地址
-        getAddress(data);
-
-        data[index++] =  message.getOperateType();
-
-        getDeliveryTime(data);
-
-        // 校验计算
-        byte[] dataToCheck = new byte[COMMAND_LENGTH - 6];
-        System.arraycopy(data, 3, dataToCheck,  0, dataToCheck.length);
-        byte code = CRC8.calcXor(dataToCheck);
-        data[data.length-3]  = code;
-
-        return data;
+    public static int getCommandNo(byte[] packet){
+        return (int)(packet[3] & 0xFF);
     }
 
+    public static ZyudpCommand getInstance(int commandNo){
+        switch (commandNo){
+            case ZyudpCommand.DELIVERY:
+            case ZyudpCommand.DELIVERY_RESPONSE:
+                return new DeliveryCommand();
+            case ZyudpCommand.PICKUP:
+            case ZyudpCommand.PICKUP_RESPONSE:
+                return new PickupCommand();
+            case ZyudpCommand.QUERY_STATUS:
+            case ZyudpCommand.QUERY_STATUS_RESPONSE:
+                return new QueryStatusCommand();
 
+        }
 
-
-
-    public static ZyudpCommand getInstance(DoorMessage message){
-        return new ZyudpCommand(message);
+        return null;
     }
 }

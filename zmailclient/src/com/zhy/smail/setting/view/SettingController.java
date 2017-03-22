@@ -125,7 +125,7 @@ public class SettingController extends RootController implements Initializable {
             //userTabPane.getTabs().remove(factoryTab);
         }
 
-        protocolList.getItems().addAll("自有协议(UDP)","自有协议(TCP)");
+        protocolList.getItems().addAll("安本科技（UDP）","慧锐通（TCP）","振耀科技（UDP）");
 
         LocalConfig config = LocalConfig.getInstance();
         txtLocalCabinetNo.setText(config.getLocalCabinet());
@@ -325,22 +325,22 @@ public class SettingController extends RootController implements Initializable {
         config.saveProperties();
 
         Integer timeout = getInteger(txtTimeout);
-        if(timeout!=GlobalOption.timeout.getIntValue()) {
+        if(!timeout.equals(GlobalOption.timeout.getIntValue())) {
             GlobalOption.timeout.setIntValue(timeout);
             saveOption(GlobalOption.timeout);
         }
         Integer buildingNo = getInteger(txtBuildingNo);
-        if(buildingNo!=GlobalOption.buildingNo.getIntValue()) {
+        if(!buildingNo.equals(GlobalOption.buildingNo.getIntValue())) {
             GlobalOption.buildingNo.setIntValue(buildingNo);
             saveOption(GlobalOption.buildingNo);
         }
         Integer unitNo = getInteger(txtUnitNo);
-        if(unitNo != GlobalOption.unitNo.getIntValue()) {
+        if(!unitNo.equals(GlobalOption.unitNo.getIntValue())) {
             GlobalOption.unitNo.setIntValue(unitNo);
             saveOption(GlobalOption.unitNo);
         }
         Integer remainTime = getInteger(txtRemainTime);
-        if(remainTime != GlobalOption.remainTime.getIntValue()){
+        if(!remainTime.equals(GlobalOption.remainTime.getIntValue())){
             GlobalOption.remainTime.setIntValue(remainTime);
             saveOption(GlobalOption.remainTime);
         }

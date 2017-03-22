@@ -1,6 +1,8 @@
 package com.zy.zmail.server.north.zyudp;
 
 import com.zy.zmail.server.north.DoorMessage;
+import com.zy.zmail.server.north.DoorResult;
+import com.zy.zmail.server.north.zytcp.command.ZytcpCommand;
 import com.zy.zmail.server.north.zyudp.command.ZyudpCommand;
 
 /**
@@ -11,8 +13,14 @@ public class ZyudpProtocol {
 
     public byte[] pack(DoorMessage message){
 
-        ZyudpCommand  command = ZyudpCommand.getInstance(message);
-        return command.pack();
+        ZyudpCommand  command = ZyudpCommand.getInstance(message.getCommandNo());
+        return command.pack(message);
+    }
+
+    public DoorResult parse(byte[] packet){
+        int commandNo = ZyudpCommand.getCommandNo(packet);
+        ZyudpCommand command = ZyudpCommand.getInstance(commandNo);
+        return command.parse(packet);
     }
 
     public static ZyudpProtocol getInstance(){

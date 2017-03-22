@@ -1,5 +1,6 @@
 package com.zy.zmail.server.starter;
 
+import com.zy.zmail.server.cabinet.service.CabinetService;
 import com.zy.zmail.server.delivery.service.DeliveryLogService;
 import com.zy.zmail.server.north.DoorConnection;
 import com.zy.zmail.server.north.DoorSystemRunner;
@@ -24,6 +25,8 @@ public class SystemStarter implements ApplicationRunner{
     UserService userService;
     @Autowired
     DeliveryLogService deliveryLogService;
+    @Autowired
+    CabinetService cabinetService;
 
     @Override
     public void run(ApplicationArguments args) throws Exception{
@@ -39,7 +42,7 @@ public class SystemStarter implements ApplicationRunner{
         connection.setProtocolType(doorProtocol.getIntValue());
         connection.setServerIp(doorServer.getCharValue());
         connection.setServerPort(doorServerPort.getIntValue());
-        doorSystemRunner = new DoorSystemRunner(connection, userService, deliveryLogService);
+        doorSystemRunner = new DoorSystemRunner(connection, userService, deliveryLogService, cabinetService);
 
         (new Thread(doorSystemRunner)).start();
     }

@@ -25,16 +25,16 @@ public class SplashController extends RootController implements Initializable {
     private MediaPlayer mediaPlayer;
 
     @Override
-    public void setApp(MainApp app) {
+    public void setApp(MainApp app){
         this.app = app;
 
         welcomeView.setFitHeight(app.getRootStage().getHeight());
         welcomeView.setFitWidth(app.getRootStage().getWidth());
         welcomeView.setPreserveRatio(false);
 
-    }
+            }
 
-    public boolean play() {
+    public boolean play(){
         try {
             String viedoFile = LocalConfig.getInstance().getVideoFile();
             File file = new File(viedoFile);
@@ -43,31 +43,33 @@ public class SplashController extends RootController implements Initializable {
             welcomeView.setMediaPlayer(mediaPlayer);
             mediaPlayer.play();
             return true;
-        } catch (Exception e) {
+        }
+        catch (Exception e){
             e.printStackTrace();
             return false;
         }
     }
 
-    public void initialize(URL location, ResourceBundle resources) {
+    public void initialize(URL location, ResourceBundle resources){
+
 
 
     }
 
-    private void stopPlay() {
+    private void stopPlay(){
         mediaPlayer.stop();
         mediaPlayer.dispose();
-        mediaPlayer = null;
+        mediaPlayer=null;
     }
 
     @FXML
-    private void onMouseClicked(MouseEvent event) {
+    private void onMouseClicked(MouseEvent event){
         stopPlay();
         app.goHome();
     }
 
     @FXML
-    private void onKeypressed(KeyEvent event) {
+    private void onKeypressed(KeyEvent event){
         stopPlay();
         app.goHome();
     }
