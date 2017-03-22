@@ -31,7 +31,11 @@ public class SystemUtil {
             }
             // Ended By 罗鹏 Mar 21 2017
             return sb.toString();
-        } catch (UnknownHostException e) {
+
+        }
+
+        catch (UnknownHostException e){
+
 
         } catch (SocketException e) {
 

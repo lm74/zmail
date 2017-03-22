@@ -196,6 +196,7 @@ public class MainController implements Initializable {
 
     @FXML
     private void onKeyTyped(KeyEvent event){
+
         System.out.println("onKeyTyped " + event.getCharacter()+": " + event.getCode());
         if(event.getCharacter().equals(";") || event.getCharacter().equals("；")){
             startGetTyped = true;
@@ -204,6 +205,7 @@ public class MainController implements Initializable {
         else if (startGetTyped) {
             typedStr += event.getCharacter();
         }
+
     }
 
     private void startToLogin(String cardNo) {
@@ -212,6 +214,8 @@ public class MainController implements Initializable {
             SimpleDialog.showMessageDialog(app.getRootStage(), "无效卡", "");
             return;
         }
+
+
 
         UserService.getByCardNo(cardNo, new RestfulResult() {
             @Override
