@@ -152,7 +152,7 @@ public class MainController implements Initializable {
                 System.out.println("1=" + event.getCharacter());
             }
         });*/
-        }
+    }
 
     public void setAppTitle(String title) {
         lblAppTitle.setText(title);
@@ -199,14 +199,13 @@ public class MainController implements Initializable {
 
         System.out.println("onKeyTyped " + event.getCharacter()+": " + event.getCode());
         if(event.getCharacter().equals(";") || event.getCharacter().equals("；")){
-                startGetTyped = true;
-                typedStr = "";
-            }
+            startGetTyped = true;
+            typedStr = "";
+        }
         else if (startGetTyped) {
-                typedStr += event.getCharacter();
+            typedStr += event.getCharacter();
         }
 
-           
     }
 
     private void startToLogin(String cardNo) {

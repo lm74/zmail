@@ -3,6 +3,7 @@ package com.zhy.smail.common.utils;
 import com.zhy.smail.MainApp;
 import com.zhy.smail.component.SimpleDialog;
 import com.zhy.smail.config.GlobalOption;
+import org.jetbrains.annotations.NotNull;
 
 import java.net.*;
 import java.sql.Timestamp;
@@ -12,7 +13,7 @@ import java.util.Calendar;
  * Created by wenliz on 2017/3/6.
  */
 public class SystemUtil {
-    public static String getMacAddress(){
+    public static String getMacAddress() {
         try {
             MainApp app = new MainApp();
             StringBuffer sb = new StringBuffer("");
@@ -30,12 +31,13 @@ public class SystemUtil {
             }
             // Ended By 罗鹏 Mar 21 2017
             return sb.toString();
+
         }
 
         catch (UnknownHostException e){
 
-        }
-        catch (SocketException e){
+
+        } catch (SocketException e) {
 
         }
         return "000000000000";

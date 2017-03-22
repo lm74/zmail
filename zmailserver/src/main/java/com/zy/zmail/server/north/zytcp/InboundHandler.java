@@ -1,4 +1,4 @@
-//package com.zy.zmail.server.north.zytcp;
+package com.zy.zmail.server.north.zytcp;//package com.zy.zmail.server.north.zytcp;
 //
 //import org.apache.commons.logging.Log;
 //import org.apache.commons.logging.LogFactory;

@@ -16,7 +16,6 @@ import com.zhy.smail.restful.RfFaultEvent;
 import com.zhy.smail.restful.RfResultEvent;
 import com.zhy.smail.task.OpenAllBoxTask;
 import com.zhy.smail.user.entity.UserInfo;
-import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -28,7 +27,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.util.Callback;
 
 import java.net.URL;
@@ -74,6 +72,9 @@ public class LogListController extends RootController implements Initializable {
         if(this.pickedup == 1){
             this.periodType = 0;
             toggleContainer.setVisible(false);
+            // Added By 罗鹏 Mar 21 2017
+            pickupButton.setDisable(true);
+            // Ended By 罗鹏 Mar 21 2017
             tcPickupTime.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<DeliveryLog, String>, ObservableValue<String>>() {
                 @Override
                 public ObservableValue<String> call(TableColumn.CellDataFeatures<DeliveryLog, String> param) {
@@ -88,10 +89,17 @@ public class LogListController extends RootController implements Initializable {
         } else if(this.pickedup == 0){
             // 投取记录查询
             toggleContainer.setVisible(true);
+            // Added By 罗鹏 Mar 21 2017
+            pickupButton.setDisable(true);
+            // Ended By 罗鹏 Mar 21 2017
         } else if(this.pickedup == 2){
             // 未取记录查询
             lblTitle.setText("未取记录");
             toggleContainer.setVisible(true);
+            pickupButton.setVisible(true);
+            // Added By 罗鹏 Mar 21 2017
+            pickupButton.setDisable(false);
+            // Ended By 罗鹏 Mar 21 2017
             tcPickupTime.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<DeliveryLog, String>, ObservableValue<String>>() {
                 @Override
                 public ObservableValue<String> call(TableColumn.CellDataFeatures<DeliveryLog, String> param) {
