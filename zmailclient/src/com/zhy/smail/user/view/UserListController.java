@@ -345,11 +345,18 @@ public class UserListController implements Initializable {
     private void onDeleteAction(ActionEvent event) {
         List<UserInfo> users = getSelectedUsers();
         UserInfo userInfo = getSelectedUserInfo();
-        if (userInfo == null) {
+        // Modified By 罗鹏 Mar 21 2017
+        String message = "";
+        if (users.size() == 0 && userInfo == null) {
             SimpleDialog.showMessageDialog(app.getRootStage(), "请选择需要删除的用户.", "删除出错");
             return;
+        } else if (users.size() == 0 && userInfo != null) {
+            users.add(userInfo);
+            message = "你确认要删除你选择的" + users.size() + "个用户吗？";
+        } else {
+            message = "你确认要删除你选择的" + users.size() + "个用户吗？";
         }
-        String message = "你确认要删除你选择的" + users.size() + "个用户吗？";
+        // Ended By 罗鹏 Mar 21 2017
         SimpleDialog.Response response = SimpleDialog.showConfirmDialog(app.getRootStage(), message, "确认");
         if (response == SimpleDialog.Response.NO) return;
 

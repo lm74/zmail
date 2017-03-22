@@ -148,27 +148,27 @@ public class MainApp extends Application {
 
             @Override
             protected Integer call() throws Exception {
-            updateMessage("正在连接服务器...");
-            checked = false;
-           if(GlobalOption.appMode == 0){
-                   trySleep(5000);
-               }
-           updateMessage("正在连接服务器1...");
-            test();
+                updateMessage("正在连接服务器...");
+                checked = false;
+                if(GlobalOption.appMode == 0){
+                    trySleep(5000);
+                }
+                updateMessage("正在连接服务器1...");
+                test();
 
-            return resultValue;
-        }
-
-        private void trySleep(long m){
-                try {
-                        Thread.sleep(m);
-                    }
-                catch (Exception e){
-
-                            }
+                return resultValue;
             }
 
-        private void test(){
+            private void trySleep(long m){
+                try {
+                    Thread.sleep(m);
+                }
+                catch (Exception e){
+
+                }
+            }
+
+            private void test(){
                 UserService.testConnection(new RestfulResult() {
                     @Override
                     public void doResult(RfResultEvent event) {
@@ -188,13 +188,13 @@ public class MainApp extends Application {
                             updateMessage("正在连接服务器3...");
                             checked = true;
                             test();
+                        }
+                        else {
+                            resultValue = -1;
+                            updateValue(-1);
+                            if (event.getErrorNo() == -1) {
+                                updateMessage(event.getMessage());
                             }
-                            else {
-                                resultValue = -1;
-                                updateValue(-1);
-                                if (event.getErrorNo() == -1) {
-                                    updateMessage(event.getMessage());
-                                }
 
                             updateMessage("连接服务器(" + GlobalOption.serverIP + ")失败.本机进入脱机状态，只有管理员才能登录.");
                             GlobalOption.serverIP = "127.0.0.1";
