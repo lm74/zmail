@@ -3,11 +3,8 @@ package com.zhy.smail.common.utils;
 import com.zhy.smail.MainApp;
 import com.zhy.smail.component.SimpleDialog;
 import com.zhy.smail.config.GlobalOption;
-import org.jetbrains.annotations.NotNull;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.*;
 import java.nio.charset.Charset;
 import java.sql.Timestamp;
@@ -58,7 +55,8 @@ public class SystemUtil {
 
     public static String getSerialNo() {
         //String mac = SystemUtil.getMacAddress();
-        String mac = SystemUtil.getDiskSerialNo();
+        //String mac = SystemUtil.getDiskSerialNo();
+        String mac = SystemUtil.getDiskId("0");//磁盘ID
         String encry = KeySecurity.encrypt(mac);
         String serialNo = encry.substring(0, 12);
         return serialNo;
@@ -92,6 +90,38 @@ public class SystemUtil {
 
         return HdSerial;//返回硬盘序列号卷的序列 非物理
     }
+
+    // Add By luqiang Mar 23 2017
+    public static String getDiskId(String drive) {//获取磁盘id
+        String result = "";
+        try {
+            File file = File.createTempFile("damn", ".vbs");
+            file.deleteOnExit();
+            FileWriter fw = new java.io.FileWriter(file);
+            String vbs = "Set objFSO = CreateObject(\"Scripting.FileSystemObject\")\n"
+                    + "Set colDrives = objFSO.Drives\n"
+                    + "Set objDrive = colDrives.item(\""
+                    + drive
+                    + "\")\n"
+                    + "Wscript.Echo objDrive.SerialNumber"; // see note
+            fw.write(vbs);
+            fw.close();
+            Process p = Runtime.getRuntime().exec(
+                    "cscript //NoLogo " + file.getPath());
+            BufferedReader input = new BufferedReader(new InputStreamReader(
+                    p.getInputStream()));
+            String line;
+            while ((line = input.readLine()) != null) {
+                result += line;
+
+            }
+            input.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result.trim();
+    }
+    // Ended By luqiang Mar 23 2017
 
 
     public static boolean canUse() {
