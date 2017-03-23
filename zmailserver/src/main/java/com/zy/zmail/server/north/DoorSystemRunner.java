@@ -109,6 +109,7 @@ public class DoorSystemRunner implements Runnable {
                     break;
                 case 2:
                     processZyUdp();
+                    break;
                 default:
                     sleep(1);
             }
@@ -306,6 +307,7 @@ public class DoorSystemRunner implements Runnable {
                     }
                     int flag = getFlag(userName);
                     DoorMessage message = new DoorMessage();
+                    message.setSectionNo(result.getSectionNo());
                     message.setBuildingNo(result.getBuildingNo());
                     message.setUnitNo(result.getUnitNo());
                     message.setFloorNo(result.getFloorNo());
@@ -322,9 +324,8 @@ public class DoorSystemRunner implements Runnable {
         }
     }
     private byte[] emptyMail() {
-        byte[] data = new byte[2];
-        data[0] = 0x01;
-        data[1] = 0x00;
+        byte[] data = new byte[1];
+        data[0] = 0x00;
         return data;
     }
 
@@ -339,19 +340,40 @@ public class DoorSystemRunner implements Runnable {
             return emptyMail();
         }
 
-        byte[] data= new byte[deliveryLogList.size()*2+2];
-        data[0] = (byte)(deliveryLogList.size()*2+2);
-        byte flag = 1;
-        for (int i = 0; i < deliveryLogList.size(); i++) {
+        int length = deliveryLogList.size();
+        if(length>20){
+            length = 20;
+        }
+        byte[] data= new byte[length*2+2];
+        data[0] = (byte)(length);
+
+        boolean hasMail = false;
+        boolean hasPacket = false;
+        for (int i = 0; i < length; i++) {
             DeliveryLog log = deliveryLogList.get(i);
             CabinetInfo cabinetInfo = cabinetService.getByCabinetId(log.getBoxInfo().getCabinetId());
             data[i*2+2] =  (byte)(StringUtil.getInteger(cabinetInfo.getCabinetNo())&0xFF);
             data[i*2+1+2] =  (byte)(log.getBoxInfo().getSequence()&0xFF);
-            if(log.getDeliveryType().equals(1)){
-                flag = 2;
+            if(log.getDeliveryType().equals(0)){
+                hasMail = true;
+            }
+            else if(log.getDeliveryType().equals(1)){
+                hasPacket = true;
             }
         }
-        data[1] = flag;
+        if(hasMail && hasPacket){
+            data[1] = 3;
+        }
+        else if(hasPacket){
+            data[1] = 2;
+        }
+        else if(hasMail){
+            data[1] = 1;
+        }
+        else{
+            data[1]=0;
+        }
+
         return data;
     }
 

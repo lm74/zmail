@@ -159,19 +159,21 @@ public class LoginController implements Initializable{
     @FXML
     public void onLoginAction(ActionEvent actionEvent) throws IOException {
         String userName = txtUserName.getText();
-        String password = KeySecurity.encrypt(txtPassword.getText());
+        // Modified By 罗鹏 Mar 22 2017
+        String passwordStr = txtPassword.getText().trim();
+        String password = KeySecurity.encrypt(passwordStr);
         if (userName.length() == 0) {
-            SimpleDialog.showMessageDialog(app.getRootStage(), "请输入帐号，账号不能为空", "错误");
+            SimpleDialog.showMessageDialog(app.getRootStage(), "账号不能为空，请输入帐号", "错误");
             txtUserName.requestFocus();
             return;
         }
-
-        if (password.length() == 0) {
-            SimpleDialog.showMessageDialog(app.getRootStage(), "请输入密码，密码不能为空", "错误");
+        if ("".equals(passwordStr) || passwordStr == null) {
+            SimpleDialog.showMessageDialog(app.getRootStage(), "密码不能为空，请输入密码", "错误");
+            txtPassword.setText("");
             txtPassword.requestFocus();
             return;
         }
-
+        // Ended By 罗鹏 Mar 22 2017
         UserService.login(userName, password, new RestfulResult() {
             @Override
             public void doResult(RfResultEvent event) {
@@ -427,8 +429,13 @@ public class LoginController implements Initializable{
 
     }
 
-
-
-
+    // Added By 罗鹏 Mar 22 2017
+    @FXML
+    public void onResetAction(ActionEvent event) {
+        txtUserName.setText("");
+        txtPassword.setText("");
+        txtUserName.requestFocus();
+    }
+    // Ended By 罗鹏 Mar 22 2017
 
 }

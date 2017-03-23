@@ -5,7 +5,11 @@ import com.zhy.smail.component.SimpleDialog;
 import com.zhy.smail.config.GlobalOption;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.*;
+import java.nio.charset.Charset;
 import java.sql.Timestamp;
 import java.util.Calendar;
 
@@ -32,9 +36,7 @@ public class SystemUtil {
             // Ended By 罗鹏 Mar 21 2017
             return sb.toString();
 
-        }
-
-        catch (UnknownHostException e){
+        } catch (UnknownHostException e) {
 
 
         } catch (SocketException e) {
@@ -43,34 +45,65 @@ public class SystemUtil {
         return "000000000000";
     }
 
-    public static String getRegisterNo(){
+    public static String getRegisterNo() {
         String serialNo = getSerialNo();
         String encry2 = KeySecurity.encrypt(serialNo);
         String registerNo = "";
-        for(int i=0; i<4; i++){
-            registerNo += "-"+ encry2.substring(i*4, i*4+4);
+        for (int i = 0; i < 4; i++) {
+            registerNo += "-" + encry2.substring(i * 4, i * 4 + 4);
         }
 
         return registerNo.substring(1);
     }
 
-    public static String getSerialNo(){
-        String mac = SystemUtil.getMacAddress();
+    public static String getSerialNo() {
+        //String mac = SystemUtil.getMacAddress();
+        String mac = SystemUtil.getDiskSerialNo();
         String encry = KeySecurity.encrypt(mac);
-        String serialNo = encry.substring(0,12);
+        String serialNo = encry.substring(0, 12);
         return serialNo;
     }
 
-    public static boolean canUse(){
-        if(GlobalOption.useDays!=null && GlobalOption.useDays.getIntValue()>0){
-            if(GlobalOption.useStart != null && GlobalOption.useStart.getDateValue() != null){
+    public static String getDiskSerialNo() {
+        String line = "";
+        String HdSerial = "";//定义变量
+        try{
+            Process proces = Runtime.getRuntime().exec("cmd /c dir c:");//获取命令行参数
+
+            BufferedReader buffreader = new BufferedReader(
+                    new InputStreamReader(proces.getInputStream(),"GB2312"));
+
+            while ((line = buffreader.readLine()) != null) {
+
+                System.out.println(line);
+                if (line.indexOf("卷的序列号是") != -1) {  //读取参数并获取硬盘序列号
+                    HdSerial = line.substring(line.indexOf("卷的序列号是") + "卷的序列号是".length(),
+                            line.length());
+                    System.out.println(HdSerial);
+                    break;
+
+                }
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+
+        }
+
+        return HdSerial;//返回硬盘序列号卷的序列 非物理
+    }
+
+
+    public static boolean canUse() {
+        if (GlobalOption.useDays != null && GlobalOption.useDays.getIntValue() > 0) {
+            if (GlobalOption.useStart != null && GlobalOption.useStart.getDateValue() != null) {
                 Timestamp useStart = GlobalOption.useStart.getDateValue();
                 Integer useDays = GlobalOption.useDays.getIntValue();
                 Calendar start = Calendar.getInstance();
                 start.setTime(useStart);
                 Calendar now = Calendar.getInstance();
                 start.add(Calendar.DAY_OF_MONTH, useDays);
-                if(start.getTimeInMillis()<now.getTimeInMillis()){
+                if (start.getTimeInMillis() < now.getTimeInMillis()) {
                     return false;
                 }
             }

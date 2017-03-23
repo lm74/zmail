@@ -1,6 +1,5 @@
 package com.zhy.smail.user.view;
 
-import com.sun.corba.se.spi.orbutil.fsm.Action;
 import com.zhy.smail.MainApp;
 import com.zhy.smail.common.utils.KeySecurity;
 import com.zhy.smail.component.SimpleDialog;
@@ -26,7 +25,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.concurrent.ExecutionException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by wenliz on 2017/2/14.
@@ -352,12 +352,15 @@ public class UserEditController implements Initializable{
                 user.setFloorNo(txtFloorNo.getText());
                 user.setRoomNo(txtRoomNo.getText());
                 user.setUserName(user.getBuildingNo()+user.getUnitNo()+user.getFloorNo()+user.getRoomNo());
-                if(user.getUserName()==null || user.getUserName().length()==0){
-                    SimpleDialog.showMessageDialog(app.getRootStage(), "栋、单元、楼层、房号不能全部为空。","");
+                // Modified By 罗鹏 Mar 22 2017
+                if (user.getUserName() == null || user.getUserName().length() == 0) {
+                    SimpleDialog.showMessageDialog(app.getRootStage(), "楼栋号、单元号、楼层号、房号不能全部为空。", "");
                     txtRoomNo.requestFocus();
                     return false;
                 }
+                // Ended By 罗鹏 Mar 22 2017
                 user.setUserType(UserInfo.OWNER);
+                user.setPhoneNo(txtPhoneNo.getText());
                 break;
             case 1:
                 if(rdoManager.isSelected()) {
@@ -367,12 +370,9 @@ public class UserEditController implements Initializable{
                     user.setUserType(UserInfo.MAILMAN);
                 }
                 user.setUserName(txtBuildingNo.getText());
-                String phoneNo = txtPhoneNo.getText();
-                if(phoneNo == null || phoneNo.length() == 0){
-                    SimpleDialog.showMessageDialog(app.getRootStage(), "电话不能为空。","");
-                    txtPhoneNo.requestFocus();
-                    return false;
-                }
+                // Added By 罗鹏 Mar 22 2017
+                user.setPhoneNo(txtPhoneNo.getText());
+                // Ended By 罗鹏 Mar 22 2017
                 break;
             case 2:
                 if(rdoManager.isSelected()){
@@ -385,12 +385,24 @@ public class UserEditController implements Initializable{
                     user.setUserType(UserInfo.FACTORY_USER);
                 }
                 user.setUserName(txtBuildingNo.getText());
+                user.setPhoneNo(txtPhoneNo.getText());
                 break;
         }
-        if(user.getUserName()==null || user.getUserName().length()==0){
-            SimpleDialog.showMessageDialog(app.getRootStage(), "用户名不能为空。","");
+        // Modified By 罗鹏 Mar 22 2017
+        if (user.getUserName() == null || user.getUserName().length() == 0) {
+            SimpleDialog.showMessageDialog(app.getRootStage(), "用户名不能为空。", "");
             txtBuildingNo.requestFocus();
+            return false;
         }
+        if (user.getPhoneNo() != null || user.getPhoneNo().length() != 0) {
+            boolean flag = isValiedMobileNo(user.getPhoneNo());
+            if (!flag) {
+                SimpleDialog.showMessageDialog(app.getRootStage(), "您输入的电话号码格式不正确。", "");
+                txtPhoneNo.requestFocus();
+                return false;
+            }
+        }
+        // Ended By 罗鹏 Mar 22 2017
         user.setPhoneNo(txtPhoneNo.getText());
         user.setCardNo1(txtCard1No.getText());
         user.setCardNo2(txtCard2No.getText());
@@ -404,6 +416,17 @@ public class UserEditController implements Initializable{
         user.setCardNo10(txtCard10No.getText());
         return true;
     }
+
+    // Added By 罗鹏 Mar 22 2017
+    // 判断输入的电话号码是否合法
+    private boolean isValiedMobileNo(String phoneNo) {
+        boolean flag = false;
+        Pattern p = Pattern.compile("^((13[0-9])|(17[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$");
+        Matcher m = p.matcher(phoneNo);
+        flag = m.matches();
+        return flag;
+    }
+    // Ended By 罗鹏 Mar 22 2017
 
     private void showUser(){
         txtBuildingNo.requestFocus();

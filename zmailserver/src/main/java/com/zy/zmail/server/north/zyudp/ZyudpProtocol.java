@@ -12,6 +12,14 @@ public class ZyudpProtocol {
     private static ZyudpProtocol _instance;
 
     public byte[] pack(DoorMessage message){
+        switch (message.getCommandNo()){
+            case ZytcpCommand.DELIVERY:
+                message.setCommandNo(ZyudpCommand.DELIVERY);
+                break;
+            case ZytcpCommand.PICKUP:
+                message.setCommandNo(ZyudpCommand.PICKUP);
+                break;
+        }
 
         ZyudpCommand  command = ZyudpCommand.getInstance(message.getCommandNo());
         return command.pack(message);

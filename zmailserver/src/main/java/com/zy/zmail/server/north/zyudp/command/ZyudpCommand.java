@@ -5,6 +5,8 @@ import com.zy.zmail.server.north.DoorResult;
 import com.zy.zmail.server.north.util.CRC8;
 import com.zy.zmail.server.north.util.HexString;
 import com.zy.zmail.server.north.util.Octet;
+import com.zy.zmail.server.north.util.StringUtil;
+import com.zy.zmail.server.north.zytcp.command.ZytcpCommand;
 
 
 import java.util.Calendar;
@@ -33,13 +35,14 @@ import java.util.Date;
     public static final int QUERY_STATUS = 0xB1;
     public static final int QUERY_STATUS_RESPONSE = 0x21;
 
-    public static final int START_FLAG = 0x5A;
-    public static final int START_REQUEST = 0xA5;
-
+    // Modified By 罗鹏 Mar22 2017
+    public static final int START_FLAG = 0xA5;
+    public static final int START_REQUEST = 0x5A;
+    // Ended By 罗鹏 Mar22 2017
     public static final int END_FLAG = 0xED;
 
 
-    public static final int HEAD_LENGTH = 11;
+    public static final int HEAD_LENGTH = 17;
 
     protected DoorMessage message;
 
@@ -71,8 +74,12 @@ import java.util.Date;
         //楼层
         data[7] = Octet.getFirstByte(message.getFloorNo());
         //房号
-        data[8] = Octet.getFirstByte(message.getRoomNo());
-        System.arraycopy(dataUnits, 0, data, 9, dataUnits.length);
+        byte[] roomNos = HexString.strToAscii(message.getRoomNo().toString(), 6);
+        System.arraycopy(roomNos,0,data, 8, 6);
+        //length
+        data[14] = Octet.getFirstByte(dataUnits.length);
+
+        System.arraycopy(dataUnits, 0, data, 15, dataUnits.length);
         adjust(data);
 
 
@@ -90,10 +97,17 @@ import java.util.Date;
         int length = packet[2];
 
         result.setCommandNo(packet[3]&0xFF);
+        // Added By 罗鹏 Mar22 2017
+        result.setSectionNo(packet[4]&0xFF);
+        // Ended By 罗鹏 Mar22 2017
         result.setBuildingNo(packet[5]&0xFF);
         result.setUnitNo(packet[6]&0xFF);
         result.setFloorNo(packet[7]&0xFF);
-        result.setRoomNo(packet[8]&0xFF);
+        byte[] rooms = new byte[6];
+        System.arraycopy(packet, 8, rooms, 0, rooms.length);
+        String roomNo = HexString.asciiToStr(rooms);
+        result.setRoomNo(StringUtil.getInteger(roomNo));
+
         byte[] data = new byte[packet.length - HEAD_LENGTH];
         System.arraycopy(packet, HEAD_LENGTH-2, data, 0, data.length);
         parseUnit(data, result);

@@ -100,6 +100,7 @@ public class BoxEditController extends RootController  implements Initializable{
                             setOpened(true);
                         }
                         saveBox();
+
                     }
                 }
             });
@@ -122,7 +123,7 @@ public class BoxEditController extends RootController  implements Initializable{
         setUsed(boxInfo.isUsed());
         setLocked(boxInfo.isLocked());
 
-        if(boxInfo.getCabinetId() == GlobalOption.currentCabinet.getCabinetId()){
+        if(boxInfo.getCabinetId().equals( GlobalOption.currentCabinet.getCabinetId())){
             //clearButton.setDisable(false);
         }
         else{
@@ -299,6 +300,17 @@ public class BoxEditController extends RootController  implements Initializable{
                     setUsed(false);
 
                     saveBox();
+                    BoxService.clearBox(boxInfo.getBoxId(), GlobalOption.currentUser.getUserId(), new RestfulResult() {
+                        @Override
+                        public void doResult(RfResultEvent event) {
+
+                        }
+
+                        @Override
+                        public void doFault(RfFaultEvent event) {
+
+                        }
+                    });
                    // SimpleDialog.showMessageDialog(app.getRootStage(), "清箱成功。箱门已打开，请随手关好箱门.","信息");
                     //detectOpenDoor();
                 }

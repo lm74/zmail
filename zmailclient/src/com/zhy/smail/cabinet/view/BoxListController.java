@@ -299,6 +299,7 @@ public class BoxListController extends RootController implements Initializable {
                         boxInfo.setOpened(true);
                         saveBox(boxInfo);
 
+
                 }
                 onRefreshBoxes();
             }
@@ -338,6 +339,18 @@ public class BoxListController extends RootController implements Initializable {
                     boxInfo.setOpened(true);
                     boxInfo.setUsed(false);
                     saveBox(boxInfo);
+
+                    BoxService.clearBox(boxInfo.getBoxId(), GlobalOption.currentUser.getUserId(), new RestfulResult() {
+                        @Override
+                        public void doResult(RfResultEvent event) {
+
+                        }
+
+                        @Override
+                        public void doFault(RfFaultEvent event) {
+
+                        }
+                    });
 
                 }
                 onRefreshBoxes();

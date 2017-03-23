@@ -5,11 +5,16 @@ import com.zy.zmail.server.cabinet.entity.CabinetInfo;
 import com.zy.zmail.server.cabinet.entity.CabinetNode;
 import com.zy.zmail.server.cabinet.service.BoxService;
 import com.zy.zmail.server.common.json.JsonResult;
+import com.zy.zmail.server.delivery.entity.DeliveryLog;
+import com.zy.zmail.server.delivery.entity.LogBrief;
+import com.zy.zmail.server.delivery.service.DeliveryLogService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -24,6 +29,9 @@ public class BoxController {
     @Autowired
     private BoxService boxService;
 
+    @Autowired
+    private DeliveryLogService deliveryLogService;
+
     @RequestMapping(value="/byCabinetId", method= RequestMethod.GET)
     public JsonResult listByCabinetId(@RequestParam("cabinetId")  Integer cabinetId){
         JsonResult result = JsonResult.getInstance();
@@ -31,6 +39,24 @@ public class BoxController {
         result.setData(boxes);
         return result;
     }
+
+    @RequestMapping(value="/clearBox", method= RequestMethod.GET)
+    public JsonResult clearBox(@RequestParam("boxId")  Integer boxId,
+                               @RequestParam("userId") Integer userId){
+        JsonResult result = JsonResult.getInstance();
+        List<LogBrief> logs = deliveryLogService.listByBoxId(boxId);
+        for(int i=0; i<logs.size(); i++){
+            LogBrief log = logs.get(i);
+
+            log.setPickupTime(new Timestamp(System.currentTimeMillis()));
+            log.setPickupUser(userId);
+            log.setPickupType(log.getDeliveryType());
+            deliveryLogService.save(log);
+        }
+
+        return result;
+    }
+
     @RequestMapping(value="/applyMail", method= RequestMethod.GET)
     public JsonResult listApplyMail(@RequestParam("cabinetId")  Integer cabinetId){
         JsonResult result = JsonResult.getInstance();

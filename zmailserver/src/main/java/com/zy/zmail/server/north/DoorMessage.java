@@ -16,8 +16,16 @@ public class DoorMessage {
     private Integer commandNo;
     private Object data;
     private Date deliveryTime;
-
     private byte operateType;
+    private byte mailType;
+
+    public byte getMailType() {
+        return mailType;
+    }
+
+    public void setMailType(byte mailType) {
+        this.mailType = mailType;
+    }
 
     public byte getOperateType() {
         return operateType;
