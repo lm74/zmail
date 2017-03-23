@@ -32,6 +32,7 @@ public class LocalConfig {
     private final static String VIDEO_FILE = "videoFile";
     // Logo图片
     private final static String LOGO_IMAGE = "logoImage";
+    private final static String COUNT_DOWN_FOR_CONFIRM_DELIVERY = "countDownTimeForConfirmDelivery";
     private Properties properties;
     private SerialPortInfo serialPortInfo;
     private String localCabinet;
@@ -40,6 +41,7 @@ public class LocalConfig {
     private String registerNo;
     private String videoFile;
     private String logoImage;
+    private String countDownTime;
     private String serverUrl;
     private String localUrl;
 
@@ -102,6 +104,7 @@ public class LocalConfig {
             setRegisterNo(getString(REGISTER_NO, "0000"));
             setVideoFile(getString(VIDEO_FILE, ""));
             setLogoImage(getString(LOGO_IMAGE, ""));
+            setCountDownTime(getString(COUNT_DOWN_FOR_CONFIRM_DELIVERY,"30"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             log.error("config配置文件不存在，config配置文件的路径为：" + file.getPath());
@@ -148,6 +151,7 @@ public class LocalConfig {
             properties.setProperty(REGISTER_NO, getRegisterNo());
             properties.setProperty(VIDEO_FILE, getVideoFile());
             properties.setProperty(LOGO_IMAGE, getLogoImage());
+            properties.setProperty(COUNT_DOWN_FOR_CONFIRM_DELIVERY, getCountDownTime());
             FileOutputStream output = new FileOutputStream(file);
             properties.store(output, null);
         } catch (Exception e) {
@@ -337,4 +341,11 @@ public class LocalConfig {
         this.serialPortInfo = serialPortInfo;
     }
 
+    public String getCountDownTime() {
+        return countDownTime;
+    }
+
+    public void setCountDownTime(String countDownTime) {
+        this.countDownTime = countDownTime;
+    }
 }

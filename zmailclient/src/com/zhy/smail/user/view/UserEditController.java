@@ -240,6 +240,7 @@ public class UserEditController implements Initializable{
         rdoManager.setVisible(false);
         rdoAdvanceManager.setVisible(false);
         rdoFactory.setVisible(false);
+        txtFloorNo.setDisable(true);
         txtBuildingNo.requestFocus();
     }
 
@@ -326,7 +327,7 @@ public class UserEditController implements Initializable{
         UserInfo newUser = createNewUser();
         newUser.setBuildingNo(user.getBuildingNo());
         newUser.setUnitNo(user.getUnitNo());
-        newUser.setFloorNo(user.getFloorNo());
+        //newUser.setFloorNo(user.getFloorNo());
         if((user.getRoomNo()==null) || (user.getRoomNo().length()==0)){
             newUser.setRoomNo("1");
         }
@@ -349,12 +350,12 @@ public class UserEditController implements Initializable{
             case 0:
                 user.setBuildingNo(txtBuildingNo.getText());
                 user.setUnitNo(txtUnitNo.getText());
-                user.setFloorNo(txtFloorNo.getText());
+                //user.setFloorNo(txtFloorNo.getText());
                 user.setRoomNo(txtRoomNo.getText());
-                user.setUserName(user.getBuildingNo()+user.getUnitNo()+user.getFloorNo()+user.getRoomNo());
+                user.setUserName(user.getBuildingNo()+user.getUnitNo()+user.getRoomNo());
                 // Modified By 罗鹏 Mar 22 2017
-                if (user.getUserName() == null || user.getUserName().length() == 0) {
-                    SimpleDialog.showMessageDialog(app.getRootStage(), "楼栋号、单元号、楼层号、房号不能全部为空。", "");
+                if (isEmpty(user.getUserName())) {
+                    SimpleDialog.showMessageDialog(app.getRootStage(), "楼栋号、单元号、房号不能全部为空。", "");
                     txtRoomNo.requestFocus();
                     return false;
                 }
@@ -389,12 +390,12 @@ public class UserEditController implements Initializable{
                 break;
         }
         // Modified By 罗鹏 Mar 22 2017
-        if (user.getUserName() == null || user.getUserName().length() == 0) {
+        if (isEmpty(user.getUserName())) {
             SimpleDialog.showMessageDialog(app.getRootStage(), "用户名不能为空。", "");
             txtBuildingNo.requestFocus();
             return false;
         }
-        if (user.getPhoneNo() != null || user.getPhoneNo().length() != 0) {
+        if (!isEmpty(user.getPhoneNo())) {
             boolean flag = isValiedMobileNo(user.getPhoneNo());
             if (!flag) {
                 SimpleDialog.showMessageDialog(app.getRootStage(), "您输入的电话号码格式不正确。", "");
@@ -425,6 +426,20 @@ public class UserEditController implements Initializable{
         Matcher m = p.matcher(phoneNo);
         flag = m.matches();
         return flag;
+    }
+
+    private boolean isEmpty(String str){
+        if("".equals(str)){
+            return true;
+        }else if(str == null){
+            return true;
+        }else if("".equals(str.trim())){
+            return true;
+        }else if(str.trim() == null){
+            return true;
+        }else {
+            return false;
+        }
     }
     // Ended By 罗鹏 Mar 22 2017
 

@@ -26,7 +26,6 @@ import com.zhy.smail.setting.entity.SystemOption;
 import com.zhy.smail.setting.service.OptionService;
 import com.zhy.smail.task.ResponseManager;
 import com.zhy.smail.task.SendManager;
-import com.zhy.smail.task.SendingTask;
 import com.zhy.smail.user.service.UserService;
 import com.zhy.smail.user.view.*;
 import javafx.application.Application;
@@ -56,6 +55,7 @@ public class MainApp extends Application {
     private Stage rootStage;
     private MainController mainController;
     private TimeoutTimer timer = null;
+
     private Thread responseThread;
     private ResponseManager responseManager;
     private SimpleBooleanProperty offline;
@@ -552,4 +552,6 @@ public class MainApp extends Application {
             SendManager.gateway = null;
         }
     }
+
+
 }
