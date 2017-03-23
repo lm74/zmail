@@ -79,11 +79,20 @@ public class DoorResult {
 
     private Object[] data;
     private int errorNo;
+
+    public int getSectionNo() {
+        return sectionNo;
+    }
+
+    public void setSectionNo(int sectionNo) {
+        this.sectionNo = sectionNo;
+    }
+
     private int errorMessage;
     private int commandNo;
     private int buildingNo;
     private int unitNo;
     private int floorNo;
     private int roomNo;
-
+    private int sectionNo;
 }

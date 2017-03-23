@@ -124,7 +124,7 @@ public class OptionController {
         SystemOption unitNo = optionService.getById(SystemOption.UNIT_NO_ID);
 
         DoorMessage message = new DoorMessage();
-        message.setCommandNo(ZyudpCommand.DELIVERY);
+        message.setCommandNo(ZytcpCommand.DELIVERY);
         message.setBuildingNo(building.getIntValue());
         message.setUnitNo(unitNo.getIntValue());
         message.setFloorNo(8);
@@ -136,7 +136,7 @@ public class OptionController {
         DoorSystemRunner.messages.add(message);
         sleep(500);
         message = new DoorMessage();
-        message.setCommandNo(ZyudpCommand.PICKUP);
+        message.setCommandNo(ZytcpCommand.PICKUP);
         message.setBuildingNo(building.getIntValue());
         message.setUnitNo(unitNo.getIntValue());
         message.setFloorNo(8);

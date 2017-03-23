@@ -5,6 +5,8 @@ import com.zy.zmail.server.cabinet.entity.CabinetInfo;
 import com.zy.zmail.server.cabinet.service.BoxService;
 import com.zy.zmail.server.cabinet.service.CabinetService;
 import com.zy.zmail.server.common.json.JsonResult;
+import com.zy.zmail.server.delivery.entity.DeliveryLog;
+import com.zy.zmail.server.delivery.service.DeliveryLogService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,9 @@ public class CabinetController {
 
     @Autowired
     BoxService boxService;
+
+    @Autowired
+    DeliveryLogService deliveryLogService;
 
     @RequestMapping(method = RequestMethod.GET)
     public JsonResult listAll(){
@@ -58,6 +63,8 @@ public class CabinetController {
         }
         cabinetService.save(cabinetInfo);
         boxService.deleteByCabinetId(cabinetInfo.getCabinetId());
+        deliveryLogService.deleteByCabinetId(cabinetInfo.getCabinetId());
+
         int sequenceIndex= 0;
         sequenceIndex = createControlBoxes(1, cabinetInfo.getController1BoxNumber(), sequenceIndex, cabinetInfo);
         sequenceIndex = createControlBoxes(2, cabinetInfo.getController2BoxNumber(), sequenceIndex, cabinetInfo);

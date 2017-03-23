@@ -17,8 +17,10 @@ public interface DeliveryLogService {
     public List<DeliveryLog> listByDelivery(Integer cabinetId, Integer deliveryMan, Integer pickuped, Integer periodType);
     public List<CabinetNode> listAllByOwner(Integer ownerId, Integer pickuped);
     public List<DeliveryLog> listByOwner(Integer ownerId);
+    public List<LogBrief> listByBoxId(Integer boxId);
 
 
     public Integer save(LogBrief brief);
     public LogBrief getBriefByLogId(Integer logId);
+    public Integer deleteByCabinetId(Integer cabinetId);
 }

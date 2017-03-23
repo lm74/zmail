@@ -100,12 +100,23 @@ public class DeliveryLogServiceImpl implements DeliveryLogService {
     public List<DeliveryLog> listByOwner(Integer ownerId){
         String jqpl = "from DeliveryLog as log left join fetch log.boxInfo as box " +
                 " left join fetch log.pickupUser as user "+
-                " where box.cabinetId = :cabinetId and user.userId=:ownerId";
+                " where  user.userId=:ownerId";
 
             jqpl += " and log.pickupTime is null";
 
         Query query = em.createQuery(jqpl);
         query.setParameter("ownerId", ownerId);
+        return query.getResultList();
+    }
+
+    public List<LogBrief> listByBoxId(Integer boxId){
+        String jqpl = "from LogBrief as log "+
+                " where  log.boxId=:boxId";
+
+        jqpl += " and log.pickupTime is null";
+
+        Query query = em.createQuery(jqpl);
+        query.setParameter("boxId", boxId);
         return query.getResultList();
     }
 
@@ -197,5 +208,12 @@ public class DeliveryLogServiceImpl implements DeliveryLogService {
 
     public LogBrief getBriefByLogId(Integer logId){
        return  em.find(LogBrief.class, logId);
+    }
+
+    public Integer deleteByCabinetId(Integer cabinetId){
+        String jqpl = "delete from DeliveryLog  where boxId in (select boxId from boxInfo where cabinetId=:cabinetId)";
+        Query query = em.createNativeQuery(jqpl);
+        query.setParameter("cabinetId", cabinetId);
+        return query.executeUpdate();
     }
 }

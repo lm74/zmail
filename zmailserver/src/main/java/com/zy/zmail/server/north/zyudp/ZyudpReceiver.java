@@ -77,7 +77,7 @@ public class ZyudpReceiver implements Runnable {
     }
 
     public static byte[] extractPacket(byte[] data)  {
-        byte startFlag1 = ZyudpCommand.START_FLAG & 0xFF;
+        byte startFlag1 = (byte)(ZyudpCommand.START_FLAG & 0xFF);
         byte startFlag2 = (byte)(ZyudpCommand.START_REQUEST & 0xFF);
 
 

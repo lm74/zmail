@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="1024.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.76-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zhy.smail.user.view.LoginController">
+<BorderPane prefHeight="1024.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zhy.smail.user.view.LoginController">
     <top>
         <ToolBar fx:id="topToolbar" prefHeight="40.0" prefWidth="1240.0">
             <items>
@@ -40,16 +40,22 @@
                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
            </rowConstraints>
            <children>
-               <Label text="账号:" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
-               <Label text="密码:" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-               <TextField fx:id="txtUserName" onKeyPressed="#onUserNameKeyPressed" onKeyTyped="#onUserNameKeyTyped" prefHeight="22.0" prefWidth="330.0" GridPane.columnIndex="2" />
-               <PasswordField fx:id="txtPassword" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+               <!-- Modified By 罗鹏 Mar 22 2017 -->
+               <Label text="账号:" GridPane.columnIndex="1" GridPane.halignment="RIGHT"/>
+               <Label text="密码:" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1"/>
+               <TextField fx:id="txtUserName" onKeyPressed="#onUserNameKeyPressed" onKeyTyped="#onUserNameKeyTyped"
+                          prefHeight="22.0" prefWidth="330.0" promptText="请输入您的登录帐号" GridPane.columnIndex="2"/>
+               <PasswordField fx:id="txtPassword" promptText="请输入您的登录密码" GridPane.columnIndex="2"
+                              GridPane.rowIndex="1"/>
                <HBox prefHeight="100.0" prefWidth="200.0" spacing="30.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
                    <children>
-                       <Button fx:id="loginButton" mnemonicParsing="false" onAction="#onLoginAction" prefHeight="47.0" prefWidth="191.0" text="登录" />
-
+                       <Button fx:id="loginButton" mnemonicParsing="false" onAction="#onLoginAction" prefHeight="47.0"
+                               prefWidth="191.0" text="登录"/>
+                       <Button fx:id="resetButton" onAction="#onResetAction" mnemonicParsing="false" prefHeight="47.0"
+                               prefWidth="191.0" text="重置"/>
                    </children>
                </HBox>
+               <!-- Ended By 罗鹏 Mar 22 2017 -->
            </children>
        </GridPane>
    </center>

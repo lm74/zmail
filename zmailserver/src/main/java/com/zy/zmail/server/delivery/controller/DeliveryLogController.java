@@ -12,6 +12,7 @@ import com.zy.zmail.server.delivery.entity.LogBrief;
 import com.zy.zmail.server.delivery.service.DeliveryLogService;
 import com.zy.zmail.server.north.DoorMessage;
 import com.zy.zmail.server.north.DoorSystemRunner;
+import com.zy.zmail.server.north.util.Octet;
 import com.zy.zmail.server.north.util.StringUtil;
 import com.zy.zmail.server.north.zytcp.command.ZytcpCommand;
 import com.zy.zmail.server.setting.entity.SystemOption;
@@ -131,6 +132,7 @@ public class DeliveryLogController {
         message.setCommandNo(ZytcpCommand.DELIVERY);
         message.setDeliveryTime(new Date());
         message.setOperateType((byte)1);
+        message.setMailType(Octet.getFirstByte(deliveryType));
         DoorSystemRunner.messages.add(message);
 
         return result;
@@ -146,7 +148,7 @@ public class DeliveryLogController {
         boxService.save(box);
         CabinetInfo cabinetInfo = cabinetService.getByCabinetId(box.getCabinetId());
         log.setPickupTime(new Timestamp(System.currentTimeMillis()));
-        log.setPickupType(pickupType);
+        log.setPickupType(log.getDeliveryType());
         log.setPickupUser(pickupUser);
         deliveryLogService.save(log);
         DoorMessage message = new DoorMessage();
@@ -160,6 +162,7 @@ public class DeliveryLogController {
         message.setCommandNo(ZytcpCommand.PICKUP);
         message.setDeliveryTime(new Date());
         message.setOperateType((byte)2);
+        message.setMailType(Octet.getFirstByte(log.getDeliveryType()));
         DoorSystemRunner.messages.add(message);
         return result;
     }

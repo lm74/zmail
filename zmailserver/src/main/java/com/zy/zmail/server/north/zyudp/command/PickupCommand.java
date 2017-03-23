@@ -11,7 +11,12 @@ public class PickupCommand extends ZyudpCommand {
     @Override
     protected byte[] getDataUnits(){
         byte[] data = new byte[9];
-        data[0] = Octet.getFirstByte(message.getOperateType());
+        if(message.getMailType() == 0){
+            data[0] = 1;
+        }
+        else{
+            data[0] = 2;
+        }
         data[1] = Octet.getFirstByte(message.getCabinetNo());
         data[2] = Octet.getFirstByte(message.getBoxNo());
         getDeliveryTime(data, 3);

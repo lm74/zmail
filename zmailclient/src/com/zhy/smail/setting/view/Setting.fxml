@@ -125,8 +125,10 @@
                                 <TextField fx:id="txtDoorIP" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
                                 <TextField fx:id="txtDoorPort" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
                                 <Label text="对接协议：" GridPane.halignment="RIGHT"/>
-                                <ChoiceBox fx:id="protocolList" prefHeight="26.0" prefWidth="289.0"
+                                <!-- Modified By 罗鹏 Mar 22 2017-->
+                                <ChoiceBox fx:id="protocolList" prefHeight="26.0" prefWidth="310.0"
                                            GridPane.columnIndex="1"/>
+                                <!-- Ended By 罗鹏 Mar 22 2017-->
                                 <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1"
                                       GridPane.rowIndex="4">
                                     <children>

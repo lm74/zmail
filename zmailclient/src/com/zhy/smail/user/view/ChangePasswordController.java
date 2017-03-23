@@ -111,39 +111,39 @@ public class ChangePasswordController  implements Initializable {
     @FXML
     private void onSave(ActionEvent event){
         // Modified By 罗鹏 Mar 21 2017
-        if(txtOldPassword.getText()==null || txtOldPassword.getText().length() == 0){
+        if(txtOldPassword.getText().trim()==null || txtOldPassword.getText().trim().length() == 0){
             SimpleDialog.showMessageDialog(app.getRootStage(), "旧密码不能为空！","错误");
             txtOldPassword.requestFocus();
             return;
         }
-        if(txtNewPassword.getText().length() == 0){
+        if(txtNewPassword.getText().trim().length() == 0){
             SimpleDialog.showMessageDialog(app.getRootStage(), "新密码不能为空！","错误");
             txtNewPassword.requestFocus();
             return;
         }
-        if(txtConfigPassword.getText().length() == 0){
+        if(txtConfigPassword.getText().trim().length() == 0){
             SimpleDialog.showMessageDialog(app.getRootStage(), "确认密码不能为空！","错误");
             txtConfigPassword.requestFocus();
             return;
         }
-        if(!txtNewPassword.getText().equals(txtConfigPassword.getText())){
+        if(!txtNewPassword.getText().trim().equals(txtConfigPassword.getText().trim())){
             SimpleDialog.showMessageDialog(app.getRootStage(), "新密码和确认密码不一致，请重新输入！","错误");
             txtConfigPassword.requestFocus();
             return;
         }
-        // Ended By 罗鹏 Mar 21 2017
-        String oldPassword="";
-        if(txtOldPassword.isDisable()){
+        String oldPassword = "";
+        if (txtOldPassword.isDisable()) {
             oldPassword = user.getPassword();
-        }
-        else {
+        } else {
             oldPassword = KeySecurity.encrypt(txtOldPassword.getText());
         }
+        // Ended By 罗鹏 Mar 21 2017
         String newPasword = KeySecurity.encrypt(txtNewPassword.getText());
         UserService.changePassword(user.getUserId(), oldPassword, newPasword, new RestfulResult() {
             @Override
             public void doResult(RfResultEvent event) {
                 if(event.getResult() == 0){
+                    GlobalOption.currentUser.setPassword(newPasword);
                     SimpleDialog.showAutoCloseInfo(app.getRootStage(), "密码修改成功。");
                     onBackAction(null);
                 }

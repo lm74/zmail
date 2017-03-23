@@ -39,6 +39,11 @@ public class BoxService {
         HttpOperator.get(url, getBoxResultResult(result));
     }
 
+    public static void clearBox(Integer boxId, Integer userId, RestfulResult result){
+        String url = GlobalOption.getServerUrl() +"/box/clearBox?boxId=" + boxId+"&userId=" + userId;
+        HttpOperator.get(url, getBoxResultResult(result));
+    }
+
     public static  void getAnotherMaxAvailableCabinet(Integer currentCabinetId, String boxTypes, RestfulResult result){
         String url = GlobalOption.getServerUrl() +"/box/anotherMaxAvailableCabinet?currentCabinetId=" + currentCabinetId+"&boxTypes="+boxTypes;
         HttpOperator.get(url, new DefaultRestfulResult(result));

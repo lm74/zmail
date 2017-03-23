@@ -111,6 +111,17 @@ public class HexString {
         return (byte) c;
     }
 
+    public static String asciiToStr(byte[] bs){
+        if(bs==null || bs.length == 0) return "0";
+
+        String result = "";
+        for(int i=0; i<bs.length; i++){
+            char c = ascii2Char(bs[i]);
+            result += c;
+        }
+        return result;
+    }
+
     public static byte[] strToAscii(String str, int length){
         if(str == null || str.length() ==0) return new byte[0];
 
