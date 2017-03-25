@@ -42,7 +42,7 @@
                 <TextField fx:id="txtSerialNo" editable="false" prefHeight="22.0" prefWidth="330.0" GridPane.columnIndex="2" />
                 <HBox prefHeight="100.0" prefWidth="200.0" spacing="30.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
                     <children>
-                        <Button fx:id="loginButton" mnemonicParsing="false" onAction="#onRegisterAction" prefHeight="47.0" prefWidth="191.0" text="注册" />
+                        <Button fx:id="registerButton" mnemonicParsing="false" onAction="#onRegisterAction" prefHeight="47.0" prefWidth="191.0" text="注册" />
                   <Button mnemonicParsing="false" onAction="#onExitPlatformAction" prefHeight="47.0" prefWidth="191.0" text="退出系统" />
 
                     </children>

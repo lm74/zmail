@@ -8,6 +8,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
@@ -21,9 +22,20 @@ public class RegisterController  extends RootController implements Initializable
     private TextField txtSerialNo;
     @FXML
     private TextField txtRegisterNo;
+    @FXML
+    private Button registerButton;
 
     public void initialize(URL location, ResourceBundle resources){
-        txtSerialNo.setText(SystemUtil.getSerialNo());
+        String regiseterNo = SystemUtil.getRegisterNo();
+
+        if(regiseterNo == null  || regiseterNo.length() == 0){
+            SimpleDialog.showMessageDialog(app.getRootStage(), "获取序号失败，请插入网线后，单击确定键重新获取","");
+            regiseterNo = SystemUtil.getRegisterNo();
+        }
+        if(regiseterNo == null  || regiseterNo.length() == 0){
+            registerButton.setDisable( true);
+        }
+        txtSerialNo.setText(regiseterNo);
     }
 
     @FXML
