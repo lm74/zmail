@@ -46,6 +46,7 @@ public class SplashController extends RootController implements Initializable {
         }
         catch (Exception e){
             e.printStackTrace();
+			SimpleDialog.showAutoCloseError(app.getRootStage(),"您选择的视频文件不存在！路径："+LocalConfig.getInstance().getVideoFile());
             return false;
         }
     }
