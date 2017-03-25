@@ -1,8 +1,6 @@
 package com.zhy.smail.delivery.view;
 
 import com.zhy.smail.MainApp;
-import com.zhy.smail.cabinet.entity.BoxInfo;
-import com.zhy.smail.cabinet.service.BoxService;
 import com.zhy.smail.common.controller.RootController;
 import com.zhy.smail.config.GlobalOption;
 import com.zhy.smail.manager.entity.DeliveryLog;
@@ -11,7 +9,6 @@ import com.zhy.smail.restful.RestfulResult;
 import com.zhy.smail.restful.RfFaultEvent;
 import com.zhy.smail.restful.RfResultEvent;
 import com.zhy.smail.user.entity.UserInfo;
-import com.zhy.smail.user.service.UserService;
 import com.zhy.smail.user.view.UserViewController;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -47,7 +44,6 @@ public class DeliveryController extends RootController implements Initializable{
     private Button packetButton;
     @FXML
     private Button tomailButton;
-    private boolean gone;
 
     //private MainApp app;
 
@@ -101,35 +97,10 @@ public class DeliveryController extends RootController implements Initializable{
     }
 
     @FXML void onPutmailAction(ActionEvent event){
-        if(!listAvailableBox()){
-            return;
-        }
         PutmailController controller = app.goPutmail();
         if(controller!=null) {
             controller.checkBoxStatus();
         }
-    }
-
-    private boolean listAvailableBox(){
-        gone = false;
-        BoxService.listAvailableBox(GlobalOption.currentCabinet.getCabinetId(), new RestfulResult() {
-            @Override
-            public void doResult(RfResultEvent event) {
-                if(event.getResult()!=RfResultEvent.OK) return;
-
-                List<BoxInfo> boxes = (List<BoxInfo>) event.getData();
-                if (boxes.size() == 0 && GlobalOption.deliverySameMail.getIntValue() == 1) {
-                    app.goConfirmSameList();
-                    gone = true;
-                }
-            }
-
-            @Override
-            public void doFault(RfFaultEvent event) {
-
-            }
-        });
-        return !gone;
     }
 
     @FXML void onOccupyBoxAction(ActionEvent event){

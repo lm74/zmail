@@ -27,6 +27,4 @@ public interface UserService {
 
     public void delete(Integer userId);
     public void deleteByIds(String ids);
-
-    public List<UserInfo> findUserInfoByNoPickupMail();
 }

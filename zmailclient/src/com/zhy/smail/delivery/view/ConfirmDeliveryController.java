@@ -183,13 +183,9 @@ public class ConfirmDeliveryController extends RootController implements Initial
             else if(parent.equals("putmail")){
                 app.goPutmail();
             }
-            else if(parent.equals("putmailf")){
-                app.goConfirmSameList();
-            }
             else{
                 app.goPutdown();
             }
-
         }
 
     }

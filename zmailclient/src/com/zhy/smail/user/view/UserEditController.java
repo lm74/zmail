@@ -339,6 +339,7 @@ public class UserEditController implements Initializable{
             catch (Exception e){
                 newUser.setRoomNo("1");
             }
+
         }
         user = newUser;
         showUser();
@@ -394,20 +395,12 @@ public class UserEditController implements Initializable{
             txtBuildingNo.requestFocus();
             return false;
         }
-        if (userClass == 1) {
-            if (isEmpty(user.getPhoneNo())) {
-                SimpleDialog.showMessageDialog(app.getRootStage(), "电话号码不能为空。", "");
+        if (!isEmpty(user.getPhoneNo())) {
+            boolean flag = isValiedMobileNo(user.getPhoneNo());
+            if (!flag) {
+                SimpleDialog.showMessageDialog(app.getRootStage(), "您输入的电话号码格式不正确。", "");
                 txtPhoneNo.requestFocus();
                 return false;
-            }
-        } else {
-            if (!isEmpty(user.getPhoneNo())) {
-                boolean flag = isValiedMobileNo(user.getPhoneNo());
-                if (!flag) {
-                    SimpleDialog.showMessageDialog(app.getRootStage(), "您输入的电话号码格式不正确。", "");
-                    txtPhoneNo.requestFocus();
-                    return false;
-                }
             }
         }
         // Ended By 罗鹏 Mar 22 2017

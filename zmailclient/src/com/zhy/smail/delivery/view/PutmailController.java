@@ -6,7 +6,6 @@ import com.zhy.smail.cabinet.entity.CabinetEntry;
 import com.zhy.smail.cabinet.service.BoxService;
 import com.zhy.smail.common.controller.RootController;
 import com.zhy.smail.component.SimpleDialog;
-import com.zhy.smail.component.music.Speaker;
 import com.zhy.smail.config.GlobalOption;
 import com.zhy.smail.delivery.service.SqlSuggestionProvider;
 import com.zhy.smail.lcp.BoxEntry;
@@ -17,7 +16,6 @@ import com.zhy.smail.restful.RfFaultEvent;
 import com.zhy.smail.restful.RfResultEvent;
 import com.zhy.smail.task.GetCabinetStatus;
 import com.zhy.smail.user.entity.UserInfo;
-import com.zhy.smail.user.service.UserService;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -72,7 +70,6 @@ public class PutmailController extends RootController implements Initializable {
     public void setUser(UserInfo user) {
         this.user = user;
         txtRoomNo.setText(user.getUserName());
-        // 信件可以重复投递
         if(GlobalOption.deliverySameMail.getIntValue() == 1){
             DeliveryLogService.listByOwner(GlobalOption.currentCabinet.getCabinetId(), user.getUserId(),0, new RestfulResult() {
                 @Override
@@ -220,63 +217,41 @@ public class PutmailController extends RootController implements Initializable {
         });
     }
 
-    private void setAvailableText() {
-        if (GlobalOption.deliverySameMail.getIntValue() == 1) {
-            lblAvailableBox.setText(String.valueOf(mailBoxes.size()));
-            app.goConfirmSameList();
-        }else{
-            showAvailableText();
-        }
-    }
-
-    private void showAvailableText() {
+    private void setAvailableText(){
         lblAvailableBox.setText(String.valueOf(mailBoxes.size()));
-        startDeliveryButton.setDisable(true);
-        String nodesTypes = BoxInfo.BOX_TYPE_MAIL + "," + BoxInfo.BOX_TYPE_SMALL;
-        BoxService.getAnotherMaxAvailableCabinet(GlobalOption.currentCabinet.getCabinetId(), nodesTypes, new RestfulResult() {
-            @Override
-            public void doResult(RfResultEvent event) {
-                if (event.getResult() > 0) {
-                    Integer count = Integer.valueOf(event.getData().toString());
-                    if (count == 0) {
-                        SimpleDialog.showMessageDialog(app.getRootStage(), "全部信箱和小箱已满，不能投信.", "");
-                    } else {
-                        String message = "本柜信箱和小箱已满," + event.getResult() + "号柜有" + event.getData().toString() + "个空箱,请到" + event.getResult() + "号柜投信.";
-                        SimpleDialog.showMessageDialog(app.getRootStage(), message, "");
+        if(mailBoxes.size() == 0){
+            startDeliveryButton.setDisable(true);
+            String nodesTypes = BoxInfo.BOX_TYPE_MAIL+","+BoxInfo.BOX_TYPE_SMALL;
+            BoxService.getAnotherMaxAvailableCabinet(GlobalOption.currentCabinet.getCabinetId(), nodesTypes, new RestfulResult() {
+                @Override
+                public void doResult(RfResultEvent event) {
+                    if(event.getResult()>0 ){
+                        Integer count = Integer.valueOf(event.getData().toString());
+                        if(count == 0){
+                            SimpleDialog.showMessageDialog(app.getRootStage(), "全部信箱和小箱已满，不能投信.", "");
+                        }
+                        else {
+                            String message = "本柜信箱和小箱已满," + event.getResult() + "号柜有" + event.getData().toString() + "个空箱,请到" + event.getResult() + "号柜投信.";
+                            SimpleDialog.showMessageDialog(app.getRootStage(), message, "");
 
+                        }
                     }
                 }
-            }
 
-            @Override
-            public void doFault(RfFaultEvent event) {
+                @Override
+                public void doFault(RfFaultEvent event) {
 
-            }
-        });
-    }
-
-    // 得到未取信件的用户信息
-    public List findUserInfoByNoPickupMail() {
-        List user = new ArrayList<UserInfo>();
-        UserService.findUserInfoByNoPickupMail(new RestfulResult() {
-            @Override
-            public void doResult(RfResultEvent event) {
-                if (event.getResult() == RfResultEvent.OK && event.getData() != null) {
-                    List<UserInfo> userList = (List<UserInfo>) event.getData();
-                    for (int i = 0; i < userList.size(); i++) {
-                        UserInfo userInfo = (UserInfo) userList.get(i);
-                        user.add(userInfo);
-                    }
                 }
-            }
+            });
+        }
+        else {
+            startDeliveryButton.setDisable(false);
+        }
 
-            @Override
-            public void doFault(RfFaultEvent event) {
 
-            }
-        });
-        return user;
     }
+
+
 
     protected void  changeUser(UserInfo user){
         setUser(user);
@@ -284,11 +259,13 @@ public class PutmailController extends RootController implements Initializable {
 
     @FXML
     private void onStartDeliveryAction(ActionEvent event) {
-        if (selectedBox == null) {
-            box = mailBoxes.get(0);
-        } else {
+        if(selectedBox == null){
+            box =  mailBoxes.get(0);
+        }
+        else{
             box = selectedBox;
         }
+
         startDelivery(box, user);
     }
 
@@ -303,9 +280,13 @@ public class PutmailController extends RootController implements Initializable {
             // Ended By 罗鹏 Mar 21 2017
             return;
         }
+
+
         ConfirmDeliveryController controller = app.goConfirmDelivery();
         controller.setUser(user);
         controller.setBox(box);
+
+
         GlobalOption.parents.push("putmail");
     }
 

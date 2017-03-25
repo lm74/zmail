@@ -224,10 +224,4 @@ public class UserServiceImpl implements UserService{
 
         return 0;
     }
-    // 得到没有取信件的用户信息
-    public List<UserInfo> findUserInfoByNoPickupMail() {
-        String jqpl = "from UserInfo as user where user in (select log.pickupUser from DeliveryLog as log where log.pickupTime is null )";
-        Query query = em.createQuery(jqpl);
-        return (List<UserInfo>) query.getResultList();
-    }
 }

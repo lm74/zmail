@@ -477,10 +477,6 @@ public class MainApp extends Application {
         return (LogListController) loadFxml("manager/view/LogList.fxml");
     }
 
-    public ConfirmDeliveryForSameUserController goConfirmSameList() {
-        return (ConfirmDeliveryForSameUserController) loadFxml("delivery/view/ConfirmDeliveryForSameUser.fxml");
-    }
-
     private RootController loadFxml(String path) {
         try {
             FXMLLoader fxmlLoader;
