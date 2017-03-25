@@ -1,5 +1,6 @@
 package com.zhy.smail.user.view;
 
+import com.zhy.smail.MainApp;
 import com.zhy.smail.common.controller.RootController;
 import com.zhy.smail.common.utils.SystemUtil;
 import com.zhy.smail.component.SimpleDialog;
@@ -25,12 +26,12 @@ public class RegisterController  extends RootController implements Initializable
     @FXML
     private Button registerButton;
 
-    public void initialize(URL location, ResourceBundle resources){
+    public void setApp(MainApp app) {
         String serialNo = SystemUtil.getSerialNo();
 
         if(serialNo == null  || serialNo.length() == 0){
             SimpleDialog.showMessageDialog(app.getRootStage(), "获取序号失败，请插入网线后，单击确定键重新获取","");
-            serialNo = SystemUtil.getRegisterNo();
+            serialNo = SystemUtil.getSerialNo();
         }
         if(serialNo == null  || serialNo.length() == 0){
             registerButton.setDisable( true);
@@ -38,9 +39,12 @@ public class RegisterController  extends RootController implements Initializable
         txtSerialNo.setText(serialNo);
     }
 
+    public void initialize(URL location, ResourceBundle resources){
+
+    }
+
     @FXML
     private void  onRegisterAction(ActionEvent event){
-
         if(SystemUtil.getRegisterNo().equals(txtRegisterNo.getText())){
             SimpleDialog.showMessageDialog(app.getRootStage(), "注册成功!","注册成功");
             LocalConfig.getInstance().setRegisterNo(txtRegisterNo.getText());
