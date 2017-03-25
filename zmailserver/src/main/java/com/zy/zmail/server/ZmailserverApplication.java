@@ -10,5 +10,6 @@ public class ZmailserverApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ZmailserverApplication.class, args);
+		System.out.println("服务端启动完成！");
 	}
 }
