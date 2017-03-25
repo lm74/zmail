@@ -31,6 +31,8 @@ public class ZytcpGateway {
     private boolean opened;
     private boolean logined;
     private long lastHeartbeat = 0;
+    private ZytcpReceiver receiver = null;
+    private Thread receiverThread=null;
 
     public boolean isOpened() {
         return opened;
@@ -60,7 +62,19 @@ public class ZytcpGateway {
         if(socket == null) return;
 
         try {
-            socket.close();
+            if(!socket.isClosed()) {
+                try {
+                    if(receiver != null) {
+                        receiver.setCanceled(true);
+                        receiverThread.join();
+                    }
+                }
+                catch (Exception e){
+
+                }
+                socket.close();
+            }
+
             opened = false;
         }
         catch (IOException e){
@@ -84,7 +98,7 @@ public class ZytcpGateway {
 
         if(!sendMessage(data)) return false;
 
-        try {
+        /*try {
             byte[] sdata = response.poll(WAIT_TIME, TimeUnit.SECONDS);
             DoorResult result = protocol.parse(sdata);
             if(result.getErrorNo() == DoorResult.SUCCESS){
@@ -93,7 +107,7 @@ public class ZytcpGateway {
         }
         catch (InterruptedException e){
 
-        }
+        }*/
         lastHeartbeat = System.currentTimeMillis();
         return true;
     }
@@ -114,10 +128,11 @@ public class ZytcpGateway {
             if(sdata == null){
                 return false;
             }
-            DoorResult result = protocol.parse(sdata);
+            /*DoorResult result = protocol.parse(sdata);
             if(result.getErrorNo() == DoorResult.SUCCESS){
                 logined = true;
-            }
+            }*/
+            logined = true;
         }
         catch (InterruptedException e){
 
@@ -128,6 +143,7 @@ public class ZytcpGateway {
     public boolean sendMessage(byte[] data){
         try {
             socket.getOutputStream().write(data);
+            socket.getOutputStream().flush();
             String message = "发送数据包成功：ip=" + serverIp + " ;portNo=" +portNo
                     + ";data=" + StringUtil.parse(data);;
 
@@ -144,9 +160,9 @@ public class ZytcpGateway {
     public static void receive(byte[] data){
         try {
             response.put(data);
-            String message = "收到数据包：data=" + StringUtil.parse(data);;
+            /*String message = "收到数据包：data=" + StringUtil.parse(data);;
 
-            log.info(message);
+            log.info(message);*/
         }
         catch (InterruptedException e){
 
@@ -162,7 +178,9 @@ public class ZytcpGateway {
         try{
             InetAddress inet = InetAddress.getByName(serverIp);
             socket = new Socket(inet, portNo);
-            new Thread(new ZytcpReceiver(socket));
+            receiver=new ZytcpReceiver(socket,this);
+            receiverThread = new Thread(receiver);
+            receiverThread.start();
             opened = true;
         }
         catch (UnknownHostException e){

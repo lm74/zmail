@@ -26,6 +26,7 @@ package com.zhy.smail.component.keyboard;
  * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *******************************************************************************/
 
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -60,11 +61,11 @@ public class MainDemo extends Application implements VkProperties {
   public void start(Stage stage) {
     Screen screen = Screen.getPrimary();
     Rectangle2D bounds = screen.getVisualBounds();
-    double scale =Math.min(bounds.getHeight()/512, bounds.getWidth()/640);
-    double scaleX = bounds.getWidth()/640;
-    double scaleY = bounds.getHeight()/512;
+    double scale = Math.min(bounds.getHeight() / 512, bounds.getWidth() / 640);
+    double scaleX = bounds.getWidth() / 640;
+    double scaleY = bounds.getHeight() / 512;
 
-    stage.setTitle("FX FXOK (" + System.getProperty("javafx.runtime.version") + ")"+"scale="+scale);
+    stage.setTitle("FX FXOK (" + System.getProperty("javafx.runtime.version") + ")" + "scale=" + scale);
     stage.setResizable(true);
 
     //KeyBoardPopup popup = KeyBoardPopupBuilder.create().initLocale(Locale.ENGLISH).build();
@@ -158,59 +159,130 @@ public class MainDemo extends Application implements VkProperties {
     popup.addGlobalFocusListener();
 
 
-
     stage.show();
 
   }
 
   public static char ascii2Char(byte ASCII) {
-        return (char) ASCII;
+    return (char) ASCII;
+  }
+
+  public static byte char2ASCII(char c) {
+    return (byte) c;
+  }
+
+  public static byte[] strToAscii(String str, int length) {
+    if (str == null || str.length() == 0) return new byte[0];
+
+    int cslength = str.length();
+    if (length > cslength) {
+      int extralength = length - cslength;
+      String temp = "";
+      for (int i = 0; i < extralength; i++) {
+        temp = temp.concat("0");
+      }
+      str = temp + str;
+    }
+
+    char[] cs = str.toCharArray();
+    byte[] ases = new byte[length];
+    for (int i = 0; i < cs.length; i++) {
+      byte asc = char2ASCII(cs[i]);
+      ases[i] = asc;
+    }
+    return ases;
+  }
+
+  public static void writeFile(String fileName, String content) {
+    File file = new File(fileName);
+
+    try {
+      if (!file.exists()) {
+        file.createNewFile();
       }
 
-          public static byte char2ASCII(char c) {
-        return (byte) c;
+      FileWriter fw = new FileWriter(file.getAbsoluteFile());
+      BufferedWriter bw = new BufferedWriter(fw);
+      try {
+        bw.write(content);
+      } finally {
+        bw.close();
       }
+    }
+    catch (IOException e){
 
-          public static byte[] strToAscii(String str, int length){
-        if(str == null || str.length() ==0) return new byte[0];
+    }
 
-                int cslength = str.length();
-        if(length>cslength){
-            int extralength = length-cslength;
-            String temp = "";
-            for(int i=0; i<extralength; i++){
-                temp = temp.concat("0");
-              }
-            str = temp + str;
-          }
+}
 
-                char[] cs = str.toCharArray();
-        byte[] ases = new byte[length];
-        for(int i=0; i<cs.length; i++){
-            byte asc = char2ASCII(cs[i]);
-            ases[i]=asc;
-          }
-        return ases;
+  public static void readFileByLines(String fileName) {
+    File file = new File(fileName);
+    BufferedReader reader = null;
+    try {
+      System.out.println("以行为单位读取文件内容，一次读一整行：");
+      reader = new BufferedReader(new FileReader(file));
+      String tempString = null;
+      int line = 1;
+      // 一次读入一行，直到读入null为文件结束
+      while ((tempString = reader.readLine()) != null) {
+        // 显示行号
+        System.out.println("line " + line + ": " + tempString);
+        line++;
       }
+      reader.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+    } finally {
+      if (reader != null) {
+        try {
+          reader.close();
+        } catch (IOException e1) {
+        }
+      }
+    }
+  }
 
   public static void main(String[] args) {
-//    Application.launch(args);
-    /*Calendar cal =Calendar.getInstance();
-    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    cal.set(Calendar.HOUR, 0);
-    cal.set(Calendar.MINUTE, 0);
-    cal.set(Calendar.SECOND, 0);
-    cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY); //获取本周一的日期
-    System.out.println(df.format(cal.getTime()));
-    //这种输出的是上个星期周日的日期，因为老外那边把周日当成第一天
-    cal.set(Calendar.DAY_OF_MONTH, 1);
-    System.out.println(df.format(cal.getTime()));*/
-
-    String  str = "301";
-        byte[] aa = strToAscii(str, 5);
-        String bb = HexString.toString(aa);
-        System.out.print(bb);
-
+    String path = System.getProperty("user.home")+"\\zz.s";
+    writeFile(path, "3FF((((DKDKDKKDKK");
+    readFileByLines(path);
   }
+
+  public static String getCPUSerial() {
+    String result = "";
+    try {
+      File file = File.createTempFile("tmp", ".vbs");
+      file.deleteOnExit();
+      FileWriter fw = new java.io.FileWriter(file);
+
+      String vbs = "On Error Resume Next \r\n\r\n" + "strComputer = \".\"  \r\n"
+              + "Set objWMIService = GetObject(\"winmgmts:\" _ \r\n"
+              + "    & \"{impersonationLevel=impersonate}!\\\\\" & strComputer & \"\\root\\cimv2\") \r\n"
+              + "Set colItems = objWMIService.ExecQuery(\"Select * from Win32_Processor\")  \r\n "
+              + "For Each objItem in colItems\r\n " + "    Wscript.Echo objItem.ProcessorId  \r\n "
+              + "    exit for  ' do the first cpu only! \r\n" + "Next                    ";
+
+      fw.write(vbs);
+      fw.close();
+      Process p = Runtime.getRuntime().exec("cscript //NoLogo " + file.getPath());
+      BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
+      String line;
+      while ((line = input.readLine()) != null) {
+        result += line;
+      }
+      input.close();
+      file.delete();
+    } catch (Exception e) {
+      e.fillInStackTrace();
+    }
+    if (result.trim().length() < 1 || result == null) {
+      result = "无CPU_ID被读取";
+    }
+    return result.trim();
+  }
+
+
+
+
 
 }

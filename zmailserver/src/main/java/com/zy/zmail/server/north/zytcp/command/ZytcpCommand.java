@@ -70,10 +70,20 @@ abstract public class ZytcpCommand {
         data[5] = Octet.getFirstByte(message.getBuildingNo());
         //单元号
         data[6] = Octet.getFirstByte(message.getUnitNo());
-        //楼层
-        data[7] = Octet.getFirstByte(message.getFloorNo());
-        //房号
-        data[8] = Octet.getFirstByte(message.getRoomNo());
+        if(message.getFloorNo()!=null && message.getFloorNo() == 0){   //楼层未填
+            int floorNo = message.getRoomNo()/100;
+            int roomNo = message.getRoomNo() - floorNo * 100;
+            data[7] = Octet.getFirstByte(floorNo);
+            data[8] = Octet.getFirstByte(roomNo);
+        }
+        else {
+            //楼层
+            data[7] = Octet.getFirstByte(message.getFloorNo());
+            //房号
+            data[8] = Octet.getFirstByte(message.getRoomNo());
+        }
+
+
         System.arraycopy(dataUnits, 0, data, 9, dataUnits.length);
         adjust(data);
         return data;
@@ -89,7 +99,7 @@ abstract public class ZytcpCommand {
         result.setFloorNo(packet[7]&0xFF);
         result.setRoomNo(packet[8]&0xFF);
         byte[] data = new byte[packet.length - HEAD_LENGTH];
-        System.arraycopy(packet, HEAD_LENGTH-1, data, 0, data.length);
+        System.arraycopy(packet, HEAD_LENGTH, data, 0, data.length);
         parseUnit(data, result);
 
         return result;
