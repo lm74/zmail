@@ -97,7 +97,7 @@ public class SystemUtil {
         try {
             File file = File.createTempFile("damn", ".vbs");
             file.deleteOnExit();
-            FileWriter fw = new java.io.FileWriter(file);
+            FileWriter fw = new FileWriter(file);
             String vbs = "Set objFSO = CreateObject(\"Scripting.FileSystemObject\")\n"
                     + "Set colDrives = objFSO.Drives\n"
                     + "Set objDrive = colDrives.item(\""
