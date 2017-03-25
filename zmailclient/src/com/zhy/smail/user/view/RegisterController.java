@@ -26,16 +26,16 @@ public class RegisterController  extends RootController implements Initializable
     private Button registerButton;
 
     public void initialize(URL location, ResourceBundle resources){
-        String regiseterNo = SystemUtil.getRegisterNo();
+        String serialNo = SystemUtil.getSerialNo();
 
-        if(regiseterNo == null  || regiseterNo.length() == 0){
+        if(serialNo == null  || serialNo.length() == 0){
             SimpleDialog.showMessageDialog(app.getRootStage(), "获取序号失败，请插入网线后，单击确定键重新获取","");
-            regiseterNo = SystemUtil.getRegisterNo();
+            serialNo = SystemUtil.getRegisterNo();
         }
-        if(regiseterNo == null  || regiseterNo.length() == 0){
+        if(serialNo == null  || serialNo.length() == 0){
             registerButton.setDisable( true);
         }
-        txtSerialNo.setText(regiseterNo);
+        txtSerialNo.setText(serialNo);
     }
 
     @FXML

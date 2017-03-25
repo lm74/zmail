@@ -128,6 +128,8 @@ public class MainApp extends Application {
             return;
         }
 
+        goRegister();
+
     }
 
     private void initVK(Stage primaryStage) {
