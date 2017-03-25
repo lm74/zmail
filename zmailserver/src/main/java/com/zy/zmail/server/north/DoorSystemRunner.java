@@ -5,6 +5,7 @@ import com.zy.zmail.server.cabinet.service.CabinetService;
 import com.zy.zmail.server.delivery.entity.DeliveryLog;
 import com.zy.zmail.server.delivery.service.DeliveryLogService;
 import com.zy.zmail.server.north.Abudp.AbudpSender;
+import com.zy.zmail.server.north.util.Octet;
 import com.zy.zmail.server.north.util.StringUtil;
 import com.zy.zmail.server.north.zytcp.ZytcpGateway;
 import com.zy.zmail.server.north.zytcp.ZytcpProtocol;
@@ -16,6 +17,7 @@ import com.zy.zmail.server.user.entity.UserInfo;
 import com.zy.zmail.server.user.service.UserService;
 import org.springframework.stereotype.Service;
 
+import javax.swing.plaf.metal.OceanTheme;
 import java.util.List;
 import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -32,7 +34,7 @@ public class DoorSystemRunner implements Runnable {
     private UserService userService;
     private DeliveryLogService deliveryLogService;
     private CabinetService cabinetService;
-    private int waitTime = 20;
+    private int waitTime = 200;
     public DoorSystemRunner(){
         canceled = false;
     }
@@ -100,31 +102,37 @@ public class DoorSystemRunner implements Runnable {
 
     public void run(){
         while (!canceled){
-            switch (connection.getProtocolType().intValue()){
-                case 0:
-                    processAbUdp();
-                    break;
-                case 1:
-                    processTcp();
-                    break;
-                case 2:
-                    processZyUdp();
-                    break;
-                default:
-                    sleep(1);
+            try {
+                switch (connection.getProtocolType().intValue()) {
+                    case 0:
+                        processAbUdp();
+                        break;
+                    case 1:
+                        processTcp();
+                        break;
+                    case 2:
+                        processZyUdp();
+                        break;
+                    default:
+                        sleep(100);
+                }
+            }
+            catch (Exception e){
+
             }
         }
+
     }
 
     private void increaseWaitTime(){
-        if(waitTime<30){
-            waitTime += 10;
+        if(waitTime<30000){
+            waitTime += 10000;
         }
     }
 
     private void processTcp(){
         try {
-            DoorMessage message = messages.poll(waitTime, TimeUnit.SECONDS);
+            DoorMessage message = messages.poll(waitTime, TimeUnit.MILLISECONDS);
             if(connection.getServerIp()==null || connection.getServerIp().length()==0) return;
             if(connection.getServerPort()<1024) return;
 
@@ -146,7 +154,7 @@ public class DoorSystemRunner implements Runnable {
                 }
             }
 
-            waitTime = 2000;
+            waitTime = 200;
             if(message == null){
                 reponseQuery();
                 zytcpGateway.heartbeat(connection.getBuildingNo(), connection.getUnitNo());
@@ -173,27 +181,51 @@ public class DoorSystemRunner implements Runnable {
                 ZytcpProtocol protocol = ZytcpProtocol.getInstance();
                 DoorResult result= protocol.parse(data);
                 if(result.getCommandNo() == ZytcpCommand.QUERY_STATUS){
-
+                    byte flag = 0;
                     String userName = "";
                     if(result.getBuildingNo()>0){
                         userName+=result.getBuildingNo();
                     }
+                    else{
+                        flag = 2;
+                    }
                     if(result.getUnitNo()>0){
                         userName += result.getUnitNo();
+                    }
+                    else{
+                        flag = 2;
                     }
                     if(result.getFloorNo()>0){
                         userName += result.getFloorNo();
                     }
-                    if(result.getRoomNo()>0){
-                        userName += result.getRoomNo();
+                    else{
+                        flag = 2;
                     }
-                    int flag = getFlag(userName);
+                    if(result.getRoomNo()>0){
+                        if(result.getRoomNo()>=10){
+                            userName += result.getRoomNo();
+                        }
+                        else{
+                            userName += "0" + result.getRoomNo();
+                        }
+                    }
+                    else{
+                        flag = 2;
+                    }
+                    byte[] context;
+                    if(flag == 0) {
+                        context = getFlag(userName);
+                    }
+                    else{
+                        context = new byte[1];
+                        context[0]= flag;
+                    }
                     DoorMessage message = new DoorMessage();
                     message.setBuildingNo(result.getBuildingNo());
                     message.setUnitNo(result.getUnitNo());
                     message.setFloorNo(result.getFloorNo());
                     message.setRoomNo(result.getRoomNo());
-                    message.setData(flag);
+                    message.setData(context);
                     message.setCommandNo(ZytcpCommand.QUERY_STATUS_RESPONSE);
                     byte[] rdata = protocol.pack(message);
                     zytcpGateway.sendMessage(rdata);
@@ -205,13 +237,18 @@ public class DoorSystemRunner implements Runnable {
         }
     }
 
-    private int getFlag(String userName) {
-        int flag=0;
+    private byte[] getFlag(String userName) {
+        byte flag=0;
+        String cabinetNo="";
+        int cabinetId=0;
+        int boxNo = 0;
+        byte[] data = new byte[1];
+        data[0] = 0;
         UserInfo user = userService.getByUserName(userName);
         if(user != null) {
             List<DeliveryLog> deliveryLogList = deliveryLogService.listByOwner(user.getUserId());
             if(deliveryLogList.size() == 0){
-                flag = 5;
+                data[0] = 5;
             }
             else {
                 boolean hasMail = false;
@@ -219,8 +256,12 @@ public class DoorSystemRunner implements Runnable {
                 for (int i = 0; i < deliveryLogList.size(); i++) {
                     DeliveryLog log = deliveryLogList.get(i);
                     if (log.getDeliveryType() == 0) {
+                        boxNo = log.getBoxInfo().getSequence();
+                        cabinetId = log.getBoxInfo().getCabinetId();
                         hasMail = true;
                     } else if (log.getDeliveryType() == 1) {
+                        boxNo = log.getBoxInfo().getSequence();
+                        cabinetId = log.getBoxInfo().getCabinetId();
                         hasPacket = true;
                     }
                 }
@@ -232,12 +273,20 @@ public class DoorSystemRunner implements Runnable {
                 } else if (hasPacket) {
                     flag = 7;
                 }
+                if(hasMail || hasPacket){
+                    data = new byte[3];
+                    data[0] = flag;
+
+                    CabinetInfo cabinetInfo = cabinetService.getByCabinetId(cabinetId);
+                    data[1] = Octet.getFirstByte(Integer.parseInt(cabinetInfo.getCabinetNo()));
+                    data[2] = Octet.getFirstByte(boxNo);
+                }
             }
         }
         else {
-            flag = 2;
+            data[0] = 2;
         }
-        return flag;
+        return data;
     }
 
     private void processAbUdp(){
@@ -305,7 +354,7 @@ public class DoorSystemRunner implements Runnable {
                     if(result.getRoomNo()>0){
                         userName += result.getRoomNo();
                     }
-                    int flag = getFlag(userName);
+                    //byte[] context = getFlag(userName);
                     DoorMessage message = new DoorMessage();
                     message.setSectionNo(result.getSectionNo());
                     message.setBuildingNo(result.getBuildingNo());
@@ -379,7 +428,7 @@ public class DoorSystemRunner implements Runnable {
 
     private void sleep(int seconds){
         try{
-            Thread.sleep( seconds * 1000);
+            Thread.sleep( seconds );
         }
         catch (Exception e){
 
