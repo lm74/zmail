@@ -40,6 +40,7 @@ public class RegisterController  extends RootController implements Initializable
 
     @FXML
     private void  onRegisterAction(ActionEvent event){
+
         if(SystemUtil.getRegisterNo().equals(txtRegisterNo.getText())){
             SimpleDialog.showMessageDialog(app.getRootStage(), "注册成功!","注册成功");
             LocalConfig.getInstance().setRegisterNo(txtRegisterNo.getText());

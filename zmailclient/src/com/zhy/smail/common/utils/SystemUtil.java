@@ -60,6 +60,7 @@ public class SystemUtil {
 
     public static String getSerialNo() {
         String mac = SystemUtil.getMacAddress();
+
         if(mac.length() == 0){
             mac = FileUtils.readMac();
             if(mac == null || mac.length() ==0){
@@ -70,6 +71,7 @@ public class SystemUtil {
             FileUtils.writeMac(mac);
         }
         //String mac = SystemUtil.getDiskSerialNo();
+
         String encry = KeySecurity.encrypt(mac);
         String serialNo = encry.substring(0, 12);
         return serialNo;
@@ -120,5 +122,73 @@ public class SystemUtil {
             }
         }
         return true;
+    }
+
+    public static String getMotherboardSN() {//主板ID
+        String result = "";
+        try {
+            File file = File.createTempFile("realhowto",".vbs");
+            file.deleteOnExit();
+            FileWriter fw = new java.io.FileWriter(file);
+
+            String vbs =
+                    "Set objWMIService = GetObject(\"winmgmts:\\\\.\\root\\cimv2\")\n"
+                            + "Set colItems = objWMIService.ExecQuery _ \n"
+                            + "   (\"Select * from Win32_BaseBoard\") \n"
+                            + "For Each objItem in colItems \n"
+                            + "    Wscript.Echo objItem.SerialNumber \n"
+                            + "    exit for  ' do the first cpu only! \n"
+                            + "Next \n";
+
+            fw.write(vbs);
+            fw.close();
+            Process p = Runtime.getRuntime().exec("cscript //NoLogo " + file.getPath());
+            BufferedReader input =
+                    new BufferedReader
+                            (new InputStreamReader(p.getInputStream()));
+            String line;
+            while ((line = input.readLine()) != null) {
+                result += line;
+            }
+            input.close();
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        return result.trim();
+    }
+
+
+    public static String getCPUSerial() {//CPUId
+        String result = "";
+        try {
+            File file = File.createTempFile("tmp", ".vbs");
+            file.deleteOnExit();
+            FileWriter fw = new java.io.FileWriter(file);
+
+            String vbs = "On Error Resume Next \r\n\r\n" + "strComputer = \".\"  \r\n"
+                    + "Set objWMIService = GetObject(\"winmgmts:\" _ \r\n"
+                    + "    & \"{impersonationLevel=impersonate}!\\\\\" & strComputer & \"\\root\\cimv2\") \r\n"
+                    + "Set colItems = objWMIService.ExecQuery(\"Select * from Win32_Processor\")  \r\n "
+                    + "For Each objItem in colItems\r\n " + "    Wscript.Echo objItem.ProcessorId  \r\n "
+                    + "    exit for  ' do the first cpu only! \r\n" + "Next                    ";
+
+            fw.write(vbs);
+            fw.close();
+            Process p = Runtime.getRuntime().exec("cscript //NoLogo " + file.getPath());
+            BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            String line;
+            while ((line = input.readLine()) != null) {
+                result += line;
+            }
+            input.close();
+            file.delete();
+        } catch (Exception e) {
+            e.fillInStackTrace();
+        }
+        if (result.trim().length() < 1 || result == null) {
+            result = "无CPU_ID被读取";
+        }
+        return result.trim();
     }
 }
