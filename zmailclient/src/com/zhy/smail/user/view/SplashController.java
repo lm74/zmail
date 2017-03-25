@@ -2,6 +2,7 @@ package com.zhy.smail.user.view;
 
 import com.zhy.smail.MainApp;
 import com.zhy.smail.common.controller.RootController;
+import com.zhy.smail.component.SimpleDialog;
 import com.zhy.smail.config.LocalConfig;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -45,7 +46,8 @@ public class SplashController extends RootController implements Initializable {
             return true;
         }
         catch (Exception e){
-            e.printStackTrace();
+//            e.printStackTrace();
+            SimpleDialog.showAutoCloseError(app.getRootStage(),"您选择的视频文件不存在！路径："+LocalConfig.getInstance().getVideoFile());
             return false;
         }
     }

@@ -314,6 +314,12 @@ public class SettingController extends RootController implements Initializable {
 
     @FXML
     private void onGeneralSaveAction(ActionEvent event){
+        if ((Integer.valueOf(txtRemainTime.getText())<10)&&(Integer.valueOf(txtRemainTime.getText())>=1)){//限制设置待机时间
+            txtRemainTime.setText("10");
+//            SimpleDialog.showAutoCloseError(app.getRootStage(), "待机时间不能少于10秒！");
+            SimpleDialog.showMessageDialog(app.getRootStage(),"待机时间不能少于10秒！","");
+            return;
+        }
         saveGeneral();
     }
 

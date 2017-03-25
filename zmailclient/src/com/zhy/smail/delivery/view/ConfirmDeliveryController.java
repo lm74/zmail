@@ -132,7 +132,8 @@ public class ConfirmDeliveryController extends RootController implements Initial
                                 public void run() {
                                     confirmButton.setDisable(false);
                                     lblConfirmMessage.setVisible(true);
-                                    lblLine1.setText("投递对象:" + user.getBuildingNo()+"栋" + user.getUnitNo()+"单元"+user.getFloorNo()+user.getRoomNo()+"号房");
+//                                    lblLine1.setText("投递对象:" + user.getBuildingNo()+"栋" + user.getUnitNo()+"单元"+user.getFloorNo()+user.getRoomNo()+"号房");
+                                    lblLine1.setText("投递对象:" + user.getBuildingNo()+"栋" + user.getUnitNo()+"单元"+user.getRoomNo()+"号房");//防止层号显示为null
                                     lblConfirmMessage.setText(box.getSequence()+"号箱门已开，请放入物品后，点击确认投递。");
                                     OpeningLogService.save(GlobalOption.currentUser.getUserId(),  box.getBoxId(), "开箱成功", new DefaultRestfulResult());
                                     Speaker.delivery();
