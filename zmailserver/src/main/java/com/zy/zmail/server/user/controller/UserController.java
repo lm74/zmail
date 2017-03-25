@@ -230,4 +230,12 @@ public class UserController {
         return result;
     }
 
+    @RequestMapping(value = "/findUserInfoByNoPickupMail")
+    public JsonResult findUserInfoByNoPickupMail() {
+        JsonResult result = JsonResult.getInstance();
+        List<UserInfo> userList = userService.findUserInfoByNoPickupMail();
+        result.setData(userList);
+        return result;
+    }
+
 }

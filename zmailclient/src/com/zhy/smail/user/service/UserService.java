@@ -180,4 +180,21 @@ public class UserService {
 
         }
     }
+
+    // 找到还没有取信件的用户信息
+    public static void findUserInfoByNoPickupMail(RestfulResult result) {
+        String url = GlobalOption.getServerUrl() + "/user/findUserInfoByNoPickupMail";
+        HttpOperator.get(url, new RestfulResult() {
+            @Override
+            public void doResult(RfResultEvent event) {
+                objectToUserInfo(event);
+                result.doResult(event);
+            }
+
+            @Override
+            public void doFault(RfFaultEvent event) {
+                result.doFault(event);
+            }
+        });
+    }
 }

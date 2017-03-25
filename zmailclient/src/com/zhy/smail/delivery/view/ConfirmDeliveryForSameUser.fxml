@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="1024.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.112"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.zhy.smail.delivery.view.ConfirmDeliveryForSameUserController">
+    <top>
+        <ToolBar fx:id="topToolbar" prefHeight="40.0" prefWidth="1240.0">
+            <items>
+                <Button mnemonicParsing="false" onAction="#onBackAction" text="返回"/>
+                <Region fx:id="topLeft"/>
+                <Label text="重复投件"/>
+                <Region fx:id="topRight"/>
+                <Label fx:id="lblTimer" text="99"/>
+            </items>
+        </ToolBar>
+    </top>
+    <center>
+        <VBox>
+            <Label text="信箱已满，以下用户已有信箱可以再次投递：" styleClass="offline">
+                <font>
+                    <Font size="29.0"/>
+                </font>
+            </Label>
+            <Label text="">
+            </Label>
+            <Label text="">
+            </Label>
+            <FlowPane fx:id="boxesFlow" orientation="HORIZONTAL" prefHeight="902.0" prefWidth="1280.0">
+                <children>
+                    <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="200.0" styleClass="empty-button"
+                            text="用户1"/>
+                    <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="200.0" styleClass="empty-button"
+                            text="用户2"/>
+                    <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="200.0" styleClass="empty-button"
+                            text="用户3"/>
+                    <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="200.0" styleClass="empty-button"
+                            text="用户4"/>
+                    <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="200.0" styleClass="empty-button"
+                            text="用户5"/>
+                    <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="200.0" styleClass="empty-button"
+                            text="用户6"/>
+                    <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="200.0" styleClass="empty-button"
+                            text="用户7"/>
+                    <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="200.0" styleClass="empty-button"
+                            text="用户8"/>
+                    <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="200.0" styleClass="empty-button"
+                            text="用户9"/>
+                    <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="200.0" styleClass="empty-button"
+                            text="用户10"/>
+                    <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="200.0" styleClass="empty-button"
+                            text="用户11"/>
+                    <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="200.0" styleClass="empty-button"
+                            text="用户12"/>
+                    <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="200.0" styleClass="empty-button"
+                            text="用户13"/>
+                    <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="200.0" styleClass="empty-button"
+                            text="用户14"/>
+                    <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="200.0" styleClass="empty-button"
+                            text="用户15"/>
+                    <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="200.0" styleClass="empty-button"
+                            text="用户16"/>
+                    <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="200.0" styleClass="empty-button"
+                            text="用户17"/>
+                    <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="200.0" styleClass="empty-button"
+                            text="用户18"/>
+                    <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="200.0" styleClass="empty-button"
+                            text="用户19"/>
+                    <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="200.0" styleClass="empty-button"
+                            text="用户20"/>
+                    <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="200.0" styleClass="empty-button"
+                            text="用户21"/>
+                    <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="200.0" styleClass="empty-button"
+                            text="用户22"/>
+                    <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="200.0" styleClass="empty-button"
+                            text="用户23"/>
+                    <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="200.0" styleClass="empty-button"
+                            text="用户24"/>
+                    <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="200.0" styleClass="empty-button"
+                            text="用户25"/>
+                    <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="200.0" styleClass="empty-button"
+                            text="用户26"/>
+                    <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="200.0" styleClass="empty-button"
+                            text="用户27"/>
+                    <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="200.0" styleClass="empty-button"
+                            text="用户28"/>
+                    <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="200.0" styleClass="empty-button"
+                            text="用户29"/>
+                    <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="200.0" styleClass="empty-button"
+                            text="用户30"/>
+                    <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="200.0" styleClass="empty-button"
+                            text="用户31"/>
+                    <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="200.0" styleClass="empty-button"
+                            text="用户32"/>
+                    <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="200.0" styleClass="empty-button"
+                            text="用户32"/>
+                    <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="200.0" styleClass="empty-button"
+                            text="用户34"/>
+                    <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="200.0" styleClass="empty-button"
+                            text="用户35"/>
+                </children>
+            </FlowPane>
+        </VBox>
+    </center>
+    <bottom>
+        <VBox prefHeight="470.0" prefWidth="100.0" BorderPane.alignment="CENTER"/>
+    </bottom>
+</BorderPane>
