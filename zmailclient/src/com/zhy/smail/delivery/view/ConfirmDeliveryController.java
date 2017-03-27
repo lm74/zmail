@@ -132,9 +132,33 @@ public class ConfirmDeliveryController extends RootController implements Initial
                                 public void run() {
                                     confirmButton.setDisable(false);
                                     lblConfirmMessage.setVisible(true);
-                                    lblLine1.setText("投递对象:" + user.getBuildingNo()+"栋" + user.getUnitNo()+"单元"+user.getFloorNo()+user.getRoomNo()+"号房");
-                                    lblConfirmMessage.setText(box.getSequence()+"号箱门已开，请放入物品后，点击确认投递。");
-                                    OpeningLogService.save(GlobalOption.currentUser.getUserId(),  box.getBoxId(), "开箱成功", new DefaultRestfulResult());
+                                    String buildingNo = "";
+                                    String unitNo = "";
+                                    String floorNo = "";
+                                    String roomNo = "";
+                                    if (isEmpty(user.getBuildingNo())) {
+                                        buildingNo = "";
+                                    } else {
+                                        buildingNo = user.getBuildingNo();
+                                    }
+                                    if (isEmpty(user.getUnitNo())) {
+                                        unitNo = "";
+                                    } else {
+                                        unitNo = user.getUnitNo();
+                                    }
+                                    if (isEmpty(user.getFloorNo())) {
+                                        floorNo = "";
+                                    } else {
+                                        floorNo = user.getFloorNo();
+                                    }
+                                    if (isEmpty(user.getRoomNo())) {
+                                        roomNo = "";
+                                    } else {
+                                        roomNo = user.getRoomNo();
+                                    }
+                                    lblLine1.setText("投递对象:" + buildingNo + "栋" + unitNo + "单元" + floorNo + roomNo + "号房");
+                                    lblConfirmMessage.setText(box.getSequence() + "号箱门已开，请放入物品后，点击确认投递。");
+                                    OpeningLogService.save(GlobalOption.currentUser.getUserId(), box.getBoxId(), "开箱成功", new DefaultRestfulResult());
                                     Speaker.delivery();
                                 }
                             });
@@ -290,4 +314,18 @@ public class ConfirmDeliveryController extends RootController implements Initial
         countDownTimer.start();
     }
     // Ended By 罗鹏 Mar 23 2017
+
+    private boolean isEmpty(String str){
+        if("".equals(str)){
+            return true;
+        }else if(str == null){
+            return true;
+        }else if("".equals(str.trim())){
+            return true;
+        }else if(str.trim() == null){
+            return true;
+        }else {
+            return false;
+        }
+    }
 }
