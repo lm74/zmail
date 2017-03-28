@@ -7,6 +7,7 @@ import com.zhy.smail.config.GlobalOption;
 
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.*;
@@ -129,7 +130,7 @@ public class SystemUtil {
         try {
             File file = File.createTempFile("realhowto",".vbs");
             file.deleteOnExit();
-            FileWriter fw = new java.io.FileWriter(file);
+            java.io.FileWriter fw = new java.io.FileWriter(file);
 
             String vbs =
                     "Set objWMIService = GetObject(\"winmgmts:\\\\.\\root\\cimv2\")\n"
@@ -164,7 +165,7 @@ public class SystemUtil {
         try {
             File file = File.createTempFile("tmp", ".vbs");
             file.deleteOnExit();
-            FileWriter fw = new java.io.FileWriter(file);
+            java.io.FileWriter fw = new java.io.FileWriter(file);
 
             String vbs = "On Error Resume Next \r\n\r\n" + "strComputer = \".\"  \r\n"
                     + "Set objWMIService = GetObject(\"winmgmts:\" _ \r\n"

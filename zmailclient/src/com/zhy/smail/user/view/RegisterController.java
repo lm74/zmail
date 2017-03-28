@@ -27,6 +27,7 @@ public class RegisterController  extends RootController implements Initializable
     private Button registerButton;
 
     public void setApp(MainApp app) {
+        this.app = app;
         String serialNo = SystemUtil.getSerialNo();
 
         if(serialNo == null  || serialNo.length() == 0){
