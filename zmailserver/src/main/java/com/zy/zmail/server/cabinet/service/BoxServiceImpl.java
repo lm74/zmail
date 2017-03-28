@@ -70,13 +70,20 @@ public class BoxServiceImpl implements BoxService{
         Query query = em.createNativeQuery(sql);
         List results = query.getResultList();
         List<CabinetNode> nodes = new ArrayList<>();
+        if(results == null || results.size() == 0) return results;
+
         for(int i=0; i<results.size(); i++){
             Object[] objects = (Object[])results.get(i);
             CabinetNode node = new CabinetNode();
-            node.setCabinetId(Integer.valueOf(objects[0].toString()));
-            node.setCabinetNo(Integer.valueOf(objects[1].toString()));
-            node.setCount(Integer.valueOf(objects[2].toString()));
-            nodes.add(node);
+            try {
+                node.setCabinetId(Integer.valueOf(objects[0].toString()));
+                node.setCabinetNo(Integer.valueOf(objects[1].toString()));
+                node.setCount(Integer.valueOf(objects[2].toString()));
+                nodes.add(node);
+            }
+            catch (Exception e){
+
+            }
         }
 
         return nodes;
