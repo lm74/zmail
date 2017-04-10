@@ -89,6 +89,7 @@ public class ConfirmDeliveryForSameUserController extends RootController impleme
         return user;
     }
 
+
     public void setUserInfoList(List<UserInfo> userInfoList) {
         buttonMap.clear();
         this.userInfoList = userInfoList;
@@ -113,12 +114,35 @@ public class ConfirmDeliveryForSameUserController extends RootController impleme
                             if (!event.getResult().equals(RfResultEvent.OK)) {
                                 return;
                             }
+                            Integer type = 0;
+                            int boxNumber = 0;
                             List<DeliveryLog> logs = (List<DeliveryLog>) event.getData();
+                            if (logs == null || logs.size() == 0) {
+                                return;
+                            }else{
+                                for(int i = 0; i < logs.size();i++){
+                                    type = logs.get(i).getDeliveryType();
+                                    if(0 == type){
+                                        BoxInfo boxInfo = logs.get(i).getBoxInfo();
+                                        startDelivery(boxInfo, userInfo);
+                                        break;
+                                    }else{
+                                        boxNumber++;
+                                    }
+                                }
+                                if(boxNumber == logs.size()){
+                                    button.setDisable(true);
+                                    SimpleDialog.showMessageDialog(app.getRootStage(), "箱门已装满包裹，不能投递信件！.","");
+                                    return;
+                                }
+                            }
+
+                            /*List<DeliveryLog> logs = (List<DeliveryLog>) event.getData();
                             if (logs == null || logs.size() == 0) {
                                 return;
                             }
                             BoxInfo boxInfo = logs.get(0).getBoxInfo();
-                            startDelivery(boxInfo, userInfo);
+                            startDelivery(boxInfo, userInfo);*/
                         }
 
                         @Override

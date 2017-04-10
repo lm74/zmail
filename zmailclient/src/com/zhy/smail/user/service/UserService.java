@@ -181,7 +181,7 @@ public class UserService {
         }
     }
 
-    // 找到还没有取信件的用户信息
+    // 找到还没有取信件且投递类型为信件的用户信息
     public static void findUserInfoByNoPickupMail(RestfulResult result) {
         String url = GlobalOption.getServerUrl() + "/user/findUserInfoByNoPickupMail";
         HttpOperator.get(url, new RestfulResult() {
@@ -197,4 +197,5 @@ public class UserService {
             }
         });
     }
+
 }
