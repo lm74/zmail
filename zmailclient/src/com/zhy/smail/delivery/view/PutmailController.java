@@ -82,7 +82,7 @@ public class PutmailController extends RootController implements Initializable {
                         for(int i=0; i<logs.size(); i++){
                             DeliveryLog log = (DeliveryLog) logs.get(i);
                             if(log.getBoxInfo().getBoxType() == BoxInfo.BOX_TYPE_MAIL ||
-                                    log.getBoxInfo().getBoxType() == BoxInfo.BOX_TYPE_SMALL){
+                                    log.getBoxInfo().getBoxType() == BoxInfo.BOX_TYPE_SMALL&&log.getDeliveryType()==0){
                                 //startDelivery(log.getBoxInfo(), log.getPickupUser());
                                 selectedBox = log.getBoxInfo();
                                 break;
