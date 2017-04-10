@@ -4,6 +4,7 @@ import com.zhy.smail.cabinet.view.BoxListController;
 import com.zhy.smail.cabinet.view.CabinetListController;
 import com.zhy.smail.common.controller.RootController;
 import com.zhy.smail.common.utils.SystemUtil;
+import com.zhy.smail.component.DownCounter;
 import com.zhy.smail.component.SimpleDialog;
 import com.zhy.smail.component.TimeoutTimer;
 import com.zhy.smail.component.keyboard.control.KeyBoardPopup;
@@ -54,7 +55,8 @@ public class MainApp extends Application {
     private Scene rootScene;
     private Stage rootStage;
     private MainController mainController;
-    private TimeoutTimer timer = null;
+
+    private DownCounter counter = null;
 
     private Thread responseThread;
     private ResponseManager responseManager;
@@ -72,12 +74,12 @@ public class MainApp extends Application {
         this.offline.set(offline);
     }
 
-    public TimeoutTimer getTimer() {
-        return timer;
+    public DownCounter getCounter() {
+        return counter;
     }
 
-    public void setTimer(TimeoutTimer timer) {
-        this.timer = timer;
+    public void setCounter(DownCounter counter) {
+        this.counter = counter;
     }
 
     public Scene getRootScene() {
@@ -498,8 +500,8 @@ public class MainApp extends Application {
 
     EventHandler<KeyEvent> keyEventEventHandler = new EventHandler<KeyEvent>() {
         public void handle(final KeyEvent keyEvent) {
-            if (timer != null) {
-                timer.restart();
+            if (counter != null) {
+                counter.restart();
             }
             Speaker.keyTypeSound();
         }
@@ -508,8 +510,8 @@ public class MainApp extends Application {
     EventHandler<MouseEvent> mouseEventEventHandler = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent event) {
-            if (timer != null) {
-                timer.restart();
+            if (counter != null) {
+                counter.restart();
             }
         }
     };
@@ -518,7 +520,7 @@ public class MainApp extends Application {
         createTimeout(lblTimer, GlobalOption.TimeoutTotal);
     }
 
-    public void createTimeout(Label lblTimer, Integer timeout) {
+    /*public void createTimeout(Label lblTimer, Integer timeout) {
         if (timer != null) {
             timer.cancel();
         }
@@ -529,6 +531,23 @@ public class MainApp extends Application {
             }
         });
         timer.start();
+    }*/
+
+    public void createTimeout(Label lblTimer, Integer timeout) {
+        if (counter == null) {
+            counter = new DownCounter(lblTimer, timeout, new DownCounter.TimeoutCallback() {
+                @Override
+                public void run() {
+                    goHome();
+                }
+            });
+            counter.start();
+        }
+        else {
+            counter.setTotal(timeout);
+            counter.setTitle(lblTimer);
+            counter.restart();
+        }
     }
 
     public void stopApplication() {
@@ -536,10 +555,9 @@ public class MainApp extends Application {
     }
 
     public void stop() throws Exception {
-        if (timer != null) {
-            timer.cancel();
-
-            timer = null;
+        if (counter != null) {
+            counter.destroy();
+            counter = null;
         }
         if (responseManager != null) {
             responseManager.setCanceled(true);

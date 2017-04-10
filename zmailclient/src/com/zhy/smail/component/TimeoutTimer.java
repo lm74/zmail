@@ -39,11 +39,13 @@ public class TimeoutTimer {
             @Override
             public void run() {
                 perTotal--;
+                System.out.println("Thread:" + Thread.currentThread().getId());
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
                         if(title!=null) {
                             title.setText(String.valueOf(perTotal));
+                            System.out.println("Thread:" + Thread.currentThread().getId());
                         }
                     }
                 });
