@@ -232,7 +232,7 @@ public class SimpleDialog {
             }
         });
 
-        new Thread(task).start();
+        new Thread(task, "SimpleDialog").start();
         dialog.showDialog();
     }
 
@@ -283,7 +283,7 @@ public class SimpleDialog {
             }
         });
 
-        new Thread(task).start();
+        new Thread(task,"SimpleDialog").start();
 
         dialog.showDialog();
     }
@@ -354,7 +354,7 @@ public class SimpleDialog {
 
 
 
-        new Thread(task).start();
+        new Thread(task, "SimpleDialog").start();
         return progressDialog;
     }
 }

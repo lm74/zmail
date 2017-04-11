@@ -247,7 +247,7 @@ public class MainApp extends Application {
             try {
                 gateway.startGateway();
                 responseManager = new ResponseManager();
-                responseThread = new Thread(responseManager);
+                responseThread = new Thread(responseManager, "udpResponseManager");
                 responseThread.start();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -285,7 +285,7 @@ public class MainApp extends Application {
                 gateway.connect(gateway.getPortName());
 
                 responseManager = new ResponseManager();
-                responseThread = new Thread(responseManager);
+                responseThread = new Thread(responseManager, "ComResponseManager");
                 responseThread.start();
 
 
@@ -520,18 +520,7 @@ public class MainApp extends Application {
         createTimeout(lblTimer, GlobalOption.TimeoutTotal);
     }
 
-    /*public void createTimeout(Label lblTimer, Integer timeout) {
-        if (timer != null) {
-            timer.cancel();
-        }
-        timer = new TimeoutTimer(lblTimer, timeout, new TimeoutTimer.TimeoutCallback() {
-            @Override
-            public void run() {
-                goHome();
-            }
-        });
-        timer.start();
-    }*/
+
 
     public void createTimeout(Label lblTimer, Integer timeout) {
         if (counter == null) {
@@ -573,6 +562,8 @@ public class MainApp extends Application {
             }
             SendManager.gateway = null;
         }
+
+        Speaker.getInstance().stop();
     }
 
 

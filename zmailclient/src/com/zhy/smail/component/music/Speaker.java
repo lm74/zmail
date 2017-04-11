@@ -6,11 +6,18 @@ import javafx.scene.media.MediaPlayer;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by wenliz on 2017/2/22.
  */
 public class Speaker {
+    public static BlockingQueue<String> playQueue = new LinkedBlockingQueue<String>();
+    private static Thread playThread;
+    private static SoundPlayer soundPlayer=null;
+    private static Speaker _instance=null;
     /**
      * 欢迎使用智能信包箱
      */
@@ -187,32 +194,116 @@ public class Speaker {
     }
 
     private static void playMusic(String path){
-        try {
-            if (path.startsWith("/")) {
-                path = path.substring(1);
-            }
-            String music0 = "file:/"+getWorkDir() + path;
-            System.out.println(music0);
-            Media media2 = new Media(music0);
-            MediaPlayer mp2 = new MediaPlayer(media2);
-            mp2.setOnEndOfMedia(new Runnable() {
-                @Override
-                public void run() {
-                    System.out.println("Playing End.");
-                }
-            });
-            mp2.setOnError(new Runnable() {
-                @Override
-                public void run() {
-                    String errorMessage = mp2.getError().getMessage();
-                    System.out.println("MediaPlayer Error: " + errorMessage);
-                }
-            });
-            mp2.play();
-        }
-        catch (Exception e){
-            System.out.println(e.getMessage());
+        getInstance();
+       playQueue.add(path);
+
+    }
+
+    public static Speaker getInstance(){
+        if(_instance == null){
+            _instance = new Speaker();
+            _instance.start();
         }
 
+        return _instance;
+    }
+
+    public void start(){
+        if(soundPlayer == null){
+            soundPlayer = new SoundPlayer();
+            playThread = new Thread(soundPlayer, "Mp3PlayThread");
+            playThread.start();
+        }
+    }
+
+    public void stop(){
+        if(soundPlayer != null){
+            soundPlayer.setCancelled(true);
+            try {
+                playThread.join();
+            }
+            catch (Exception e){
+
+            }
+            soundPlayer = null;
+            playThread = null;
+        }
+    }
+
+    public class SoundPlayer implements  Runnable{
+        private boolean cancelled;
+        MediaPlayer mp2;
+        public SoundPlayer(){
+        }
+
+        public boolean isCancelled() {
+            return cancelled;
+        }
+
+        public void setCancelled(boolean cancelled) {
+            this.cancelled = cancelled;
+        }
+
+        public void run(){
+            cancelled = false;
+
+            while(!cancelled){
+                try{
+                        String path = playQueue.poll(1, TimeUnit.SECONDS);
+                        if (path == null){
+                           continue;
+                        }
+
+                        if(mp2!=null){
+                            mp2.dispose();
+                            mp2 = null;
+                        }
+
+                        play(path);
+
+                }
+                catch (Exception e){
+
+                }
+            }
+        }
+
+
+        private  void play(String path){
+            try {
+                if (path.startsWith("/")) {
+                    path = path.substring(1);
+                }
+                String music0 = "file:/"+getWorkDir() + path;
+
+                Media media2 = new Media(music0);
+                mp2 = new MediaPlayer(media2);
+                System.out.println("Playing..." + Thread.currentThread().getId());
+
+                mp2.setOnEndOfMedia(new Runnable() {
+                    @Override
+                    public void run() {
+                        System.out.println("Playing End." + Thread.currentThread().getId());
+
+
+                    }
+                });
+                mp2.setOnError(new Runnable() {
+                    @Override
+                    public void run() {
+                        String errorMessage = mp2.getError().getMessage();
+                        System.out.println("MediaPlayer Error: " + errorMessage);
+
+
+                    }
+                });
+
+                mp2.play();
+            }
+            catch (Exception e){
+                System.out.println(e.getMessage());
+
+            }
+        }
     }
 }

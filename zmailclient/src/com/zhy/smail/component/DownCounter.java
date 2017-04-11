@@ -47,7 +47,7 @@ public class DownCounter {
     public void start(){
         if(executor == null) {
             executor = new DownExecutor(title, total, callback);
-            executorThread = new Thread(executor);
+            executorThread = new Thread(executor,"DownExecutor");
             executorThread.start();
         }
         else{

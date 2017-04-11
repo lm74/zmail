@@ -84,7 +84,7 @@ public class UdpGateway  extends Gateway{
     public void startGateway() throws  GatewayException, IOException, InterruptedException{
         listenTo();
         udpReceiver = new UdpReceiver(this, socket);
-        receiverThread = new Thread(udpReceiver);
+        receiverThread = new Thread(udpReceiver,"UdpReceiver");
         receiverThread.start();
         opened = true;
 
