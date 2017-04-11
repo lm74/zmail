@@ -6,7 +6,6 @@ import com.zhy.smail.common.controller.RootController;
 import com.zhy.smail.common.utils.SystemUtil;
 import com.zhy.smail.component.DownCounter;
 import com.zhy.smail.component.SimpleDialog;
-import com.zhy.smail.component.TimeoutTimer;
 import com.zhy.smail.component.keyboard.control.KeyBoardPopup;
 import com.zhy.smail.component.keyboard.control.KeyBoardPopupBuilder;
 import com.zhy.smail.component.music.Speaker;
@@ -314,6 +313,7 @@ public class MainApp extends Application {
             Parent root = fxmlLoader.load();
             mainController = fxmlLoader.getController();
             mainController.setApp(this);
+
             rootScene.setRoot(root);
         } catch (Exception e) {
             SimpleDialog.showMessageDialog(getRootStage(), e.getMessage(), "错误");
@@ -329,6 +329,7 @@ public class MainApp extends Application {
             getRootScene().setRoot(root);
             controller.setLoginType(loginType);
             controller.setApp(this);
+
             return controller;
         } catch (Exception e) {
             SimpleDialog.showMessageDialog(getRootStage(), e.getMessage(), "错误");

@@ -95,16 +95,19 @@ public class SettingController extends RootController implements Initializable {
 
     private int currentProtocolIndex;
 
+    ChangeListener<Boolean> offlineChange;
+
 
     public void setApp(MainApp app) {
         this.app = app;
         app.createTimeout(lblTimer);
-        app.offlineProperty().addListener(new ChangeListener<Boolean>() {
+        offlineChange = new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
                 lblOffline.setVisible(newValue);
             }
-        });
+        };
+        app.offlineProperty().addListener(offlineChange);
     }
 
     @Override
@@ -194,7 +197,12 @@ public class SettingController extends RootController implements Initializable {
 
     @FXML
     private void onBackAction(ActionEvent event){
+        destroy();
         app.goManager();
+    }
+
+    private void destroy(){
+        app.offlineProperty().removeListener(offlineChange);
     }
 
     private void saveFactory(){
@@ -414,6 +422,7 @@ public class SettingController extends RootController implements Initializable {
 
     @FXML
     private void  onCabinetListAction(ActionEvent event){
+        destroy();
         app.goCabinetList();
     }
 

@@ -5,8 +5,6 @@ import com.zhy.smail.cabinet.entity.CabinetInfo;
 import com.zhy.smail.cabinet.entity.CabinetProperty;
 import com.zhy.smail.cabinet.service.CabinetService;
 import com.zhy.smail.component.SimpleDialog;
-import com.zhy.smail.component.TimeoutTimer;
-import com.zhy.smail.config.GlobalOption;
 import com.zhy.smail.restful.RestfulResult;
 import com.zhy.smail.restful.RfFaultEvent;
 import com.zhy.smail.restful.RfResultEvent;

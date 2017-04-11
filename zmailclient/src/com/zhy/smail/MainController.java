@@ -52,6 +52,7 @@ public class MainController implements Initializable {
     private String typedStr;
     private boolean startGetTyped;
     private Timer timer;
+    ChangeListener<Boolean> offlineListener;
 
     public void initialize(URL location, ResourceBundle resources) {
         String imageUrl = LocalConfig.getInstance().getLogoImage();
@@ -116,11 +117,12 @@ public class MainController implements Initializable {
         }, 0, 1000);
     }
 
-    private void destoryTimer() {
+    private void destroyTimer() {
         if (timer != null) {
             timer.cancel();
+            timer= null;
         }
-        timer = null;
+
     }
 
     @FXML
@@ -138,20 +140,21 @@ public class MainController implements Initializable {
 
     public void setApp(MainApp app) {
         this.app = app;
-
-        app.offlineProperty().addListener(new ChangeListener<Boolean>() {
+        offlineListener = new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
                 lblOffline.setVisible(newValue);
             }
-        });
-   /*app.getRootStage().addEventHandler(KeyEvent.KEY_TYPED, new EventHandler<KeyEvent>() {
+        };
+
+        app.offlineProperty().addListener(offlineListener);
     }
-            @Override
-            public void handle(KeyEvent event) {
-                System.out.println("1=" + event.getCharacter());
-            }
-        });*/
+
+    public void destroy(){
+        destroyTimer();
+        if(app!=null){
+            app.offlineProperty().removeListener(offlineListener);
+        }
     }
 
     public void setAppTitle(String title) {
@@ -160,26 +163,30 @@ public class MainController implements Initializable {
 
     @FXML
     private void onLoginAction(ActionEvent event) throws IOException {
+        destroy();
         app.goLogin(3);
-        destoryTimer();
+
     }
 
     @FXML
     private void onDeliveryAction(ActionEvent event) throws IOException {
+        destroy();
         app.goLogin(2);
-        destoryTimer();
+
     }
 
     @FXML
     private void onManagerAction(ActionEvent event) {
+        destroy();
         app.goLogin(1);
-        destoryTimer();
+
     }
 
     @FXML
     private void onHelpAction(ActionEvent event) throws IOException {
+        destroy();
         app.goHelp();
-        destoryTimer();
+
     }
 
     @FXML
@@ -224,6 +231,7 @@ public class MainController implements Initializable {
                     Speaker.invalideCard();
                     SimpleDialog.showMessageDialog(app.getRootStage(), "无效卡", "");
                 } else {
+                    destroy();
                     UserInfo user = (UserInfo) event.getData();
                     GlobalOption.currentUser = user;
                     LoginController loginController = null;
@@ -252,7 +260,7 @@ public class MainController implements Initializable {
                         loginController.passwordFocus();
                     }
                 }
-                destoryTimer();
+
             }
 
             @Override
